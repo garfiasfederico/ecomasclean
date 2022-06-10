@@ -1,0 +1,63 @@
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Ventas Registradas
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es" >
+                                        <thead>
+                                            <tr style="background-color:#138496;color:white;">     
+                                                <th>Id</th>                                                                                           
+                                                <th>Fecha de Venta</th>                                                
+                                                <th>Turno</th>
+                                                <th>Estado</th>
+                                                <th>Subtotal</th>                                                
+                                                <th>Descuento</th>
+                                                <th>IVA</th>                                                                                                
+                                                <th>IEPS</th>
+                                                <th>Total</th>
+                                                <th>Forma de Pago</th>
+                                                <th>Pago</th>
+                                                <th>Cambio</th>
+                                                <th>Acciones</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                            
+                                        <?php if($this->ventas != null):?>                                       
+                                            <?php foreach($this->ventas  as $venta):?>
+                                                <tr>
+                                                    <td class="sorting_desc"><?php echo $venta->id?></td>
+                                                    <td><?php echo $venta->fecha_registro?></td>
+                                                    <td><?php echo $venta->turnos_id?></td>
+                                                    <td><?php echo $venta->estado_turno=="1"?"abierto":"cerrado"?></td>
+                                                    <td><?php echo "$ ".number_format($venta->subtotal,2)?></td>
+                                                    <td><?php echo "$ ".number_format($venta->descuento,2)?></td>                                                    
+                                                    <td><?php echo "$ ".number_format($venta->iva,2)?></td>                                                    
+                                                    <td><?php echo "$ ".number_format($venta->ieps,2)?></td>                                                    
+                                                    <td><?php echo "$ ".number_format($venta->total,2)?></td>                                                    
+                                                    <td><?php echo $venta->forma_pago?></td>                                                    
+                                                    <td><?php echo "$ ".number_format($venta->pago,2)?></td>                                                    
+                                                    <td><?php echo "$ ".number_format($venta->cambio,2)?></td>                                                                                                        
+                                                    <td style="text-align:center;">
+                                                            <form style="display:inline;" target="_blank" action="<?php echo $this->path?>/Ventas/imprimirventa" method="POST"><input type="hidden" name="vnt" value="<?php echo $venta->id?>"><button title="Imprimir Ticket" type="submit" class="btn btn-info"><i class="fa fa-print"></i></button></form>                                                            
+                                                    </td>
+                                                </tr>  
+                                            <?php endforeach;?>
+                                        <?php endif;?>                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+ <script>
+        setTimeout(function(){$("#collapseCaja").addClass("show");},1)
+</script>

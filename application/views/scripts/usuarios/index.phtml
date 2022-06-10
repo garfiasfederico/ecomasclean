@@ -1,0 +1,145 @@
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Catálogo de Productos
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es">
+                                        <thead>
+                                            <tr style="background-color:green;color:white;">
+                                                <th>Fecha de Registro</th>
+                                                <th>Cuenta</th>
+                                                <th>Rol</th>
+                                                <th>Empleado Titular</th>
+                                                <th>Activo</th>
+                                                <th>Estatus</th>                                                
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>             
+                                        <tbody>
+                                        <?php if($this->usuarios!=null):?>
+                                        <?php foreach($this->usuarios as $usuario):?>
+                                            <tr id="rowuser<?php echo $usuario->id?>">
+                                                    <td><?php echo $usuario->fecha_registro?></td>
+                                                    <td><?php echo $usuario->cuenta?></td>
+                                                    <td><?php echo $usuario->rol?></td>
+                                                    <td><?php echo $usuario->nombre_empleado?></td>
+                                                    <td style="text-align:center"><input onclick="updateStatusUsuario(this)" type="checkbox" class="form-checkbox" usuarios_id ="<?php echo $usuario->id?>" <?php echo $usuario->status?" checked ":""?>/></td>
+                                                    <td id="usuarioStatus<?php echo $usuario->id?>"><?php echo $usuario->status==1?"Activo":"Baja"?></td>                                                
+                                                    <td style="text-align:center"><button class="btn btn-warning" data-toggle="modal" data-target="#changePassword" href="#" onclick="showchangePassword('<?php echo $usuario->cuenta?>',<?php echo $usuario->id?>)"><i style="" class="fa fa-key"></i></button></td>
+                                            </tr>
+                                        <?php endforeach;?>
+                                        <?php endif;?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="text-align:right">
+                                    <br/>
+                                    <button onclick="iniciaForm()" class="btn btn-primary" data-toggle="modal" data-target="#altaUsuario" title="Agregar Usuario"><i style="font-size:2em;" class="fa fa-plus"></i></button>
+
+                                </div>
+                            </div>
+                        </div>
+<script>
+setTimeout(function(){$("#collapseUsuarios").addClass("show");},1)
+</script>
+<div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:green;color:white;">
+                <h5 class="modal-title" id="modal-titlechangePassword" >Cambiar Contraseña de la cuenta: <span id="cuenta_usuario"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodychangePassword">                                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+                <button type="button" class="btn btn-primary" onclick="changePassword()" id="buttonChange">Aceptar</button>                
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="modal fade bd-example-modal-lg" id="altaUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:green;color:white;">
+                <h5 class="modal-title" id="modal-titlealtaUsuario" >Crear Nuevo Usuario </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyaltaUsuario">
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+                <button type="button" class="btn btn-primary" onclick="almacenaUsuario()" id="buttonAddUsuario">Agregar</button>                
+            </div>
+            </div>
+        </div>
+        </div> 
+        <script>
+        function iniciaForm(){
+            form='<center>'+
+            '<div><i class="fa fa-user" style="font-size:1.5em;"></i></div>'+
+            '<hr/>'+
+            '<table style="padding:10px;">'+
+             '   <tr>'+
+              '      <td style="padding:5px">Empleado: </td>'+
+               '     <td style="padding:5px" colspan="3">'+
+                '        <select type="select" class="form-control custom-select" id="empleados_id">'+
+                        <?php if($this->empleados!=null):?>
+                       <?php foreach($this->empleados as $empleado):?>                            
+                            '<option value="<?php echo $empleado->id?>">'+
+                            <?php echo "'".$empleado->nombre." ".$empleado->apellido_paterno." ".$empleado->apellido_materno."'+"?>
+                        '</option>'+    
+                        <?php endforeach;?>           
+                        <?php endif;?>
+                     '   </select>'+
+                    '</td>'+
+                '</tr>'+
+                '<tr>'+
+                    '<td style="padding:5px">Rol: </td>'+
+                    '<td style="padding:5px">'+
+                        '<select type="select" class="form-control custom-select" id="roles_id">'+
+                        <?php if($this->roles!=null):?>
+                        <?php foreach($this->roles as $rol):?>
+                            '<option value="<?php echo $rol->id?>">'+
+                                <?php echo "'".$rol->descripcion."'+"?>
+                            '</option>'+
+                            <?php endforeach;?>                
+                        <?php endif;?>
+                        '</select>'+
+                    '</td>'+
+                    '<td style="padding:5px">Cuenta: </td>'+
+                    '<td style="padding:5px">'+
+                       '<input type="text" class="form-control input" id="cuenta"/>'+
+                        '<span style="color:red;display:none" id="cuentaError">*Rellena el campo</span>'+
+                    '</td>'+
+                '</tr>'     +          
+                '<tr>'+
+                    '<td style="padding:5px">Password: </td>'+
+                    '<td style="padding:5px">'+
+                        '<input type="password" class="form-control input" id="password"/>'+
+                        '<span style="color:red;display:none" id="passwordError" >*Rellena el campo</span>'+
+                    '</td>'+
+                    '<td style="padding:5px">Confirmar Password: </td>'+
+                    '<td style="padding:5px">'+
+                        '<input type="password" class="form-control input" id="confirma_password"/>'+
+                        '<span style="color:red;display:none" id="confirmaError" >*Password no coincide</span>'+
+                    '</td>'+
+                '</tr>'     +           
+            '</table>'+
+            '</center>';
+           $("#modal-bodyaltaUsuario").html(form);
+        }
+        </script>       

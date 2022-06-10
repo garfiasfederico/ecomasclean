@@ -1,0 +1,293 @@
+<?php $path= Zend_Layout::getMvcInstance()->getView()->baseUrl();
+    $varsSessions = new Zend_Session_Namespace("users");
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        
+        <title>ECO + Clean Administracion</title>
+        <link href="<?php echo $path?>/css/styles.css" rel="stylesheet" />
+        <link href="<?php echo $path?>/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <link rel="icon" href="<?php echo $path?>/images/eco.png" type="image/ico" />
+        <script src="<?php echo $path?>/js/all.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed" style="height:100% !important;" onkeyup="if(event.keyCode==114) modalVenta()">
+    <style>
+    input:hover{
+        background-color: #E4EFFF;
+        color: green;
+    }
+    </style>
+        <input type="hidden" id="path" value="<?php echo $path?>">        
+        <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+            
+            <a class="navbar-brand" href="<?php echo $varsSessions->rol=="ADMINISTRADOR"?$path."/Administrador":$path."/Caja"?>"> <img   style="width:200px;position:fixed;top:5px;" src="<?php echo $path?>/images/logo.png"></a>
+            <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <!--<input class="form-control" type="text" placeholder="Búsqueda" aria-label="Búsqueda" aria-describedby="basic-addon2" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                    </div>-->
+                </div>
+            </form>
+            <!-- Navbar-->
+            <!--<ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#!" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                </li>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#!">Settings</a>
+                    <a class="dropdown-item" href="#!">Activity Log</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="login.html">Logout</a>
+                </div>
+            </ul>-->
+            <div class="dropdown" style="margin-right:100px;">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="fas fa-user fa-fw"></i>
+            </button>
+            <div
+             class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" data-toggle="modal" data-target="#infoModal" href="#">Info</a>              
+                <a class="dropdown-item" href="<?php echo $this->path?>/Login/logout">Cerrar Sesión</a>              
+            </div>
+            </div>
+
+
+        </nav>
+        <div id="layoutSidenav">
+        
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                        <br/>
+                        <div class="sb-sidenav-menu-heading">General</div>
+                        <?php if ($varsSessions->rol=="ADMINISTRADOR"):?>                            
+                            <a class="nav-link" href="<?php echo $path?>/Administrador">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt" style="color:red"></i></div>
+                                Resumen
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Gestión</div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns" style="color:red"></i></div>
+                                Artículos
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Productos"><i class="fa fa-plus" style="color:green"> </i>&nbsp;Agregar</a>
+                                    <a class="nav-link" href="<?php echo $path?>/Productos/catalogo"><i class="fa fa-list" style="color:green"> </i>&nbsp;Catálogo</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClientes" aria-expanded="false" aria-controls="collapseClientes">
+                                <div class="sb-nav-link-icon"><i class="fas fa-address-book" style="color:red"></i></div>
+                                Clientes
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseClientes" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Clientes"><i class="fa fa-plus" style="color:green"> </i>&nbsp;Agregar</a>
+                                    <a class="nav-link" href="<?php echo $path?>/Clientes/Listado"><i class="fa fa-list" style="color:green"> </i>&nbsp;Listado</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProveedores" aria-expanded="false" aria-controls="collapseProveedores">
+                                <div class="sb-nav-link-icon"><i class="fas fa-address-book" style="color:red"></i></div>
+                                Proveedores
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseProveedores" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Proveedores"><i class="fa fa-plus" style="color:green"> </i>&nbsp;Agregar</a>
+                                    <a class="nav-link" href="<?php echo $path?>/Proveedores/asociar"><i class="fa fa-truck" style="color:green"> </i>&nbsp;Asociar Productos</a>
+                                    <a class="nav-link" href="<?php echo $path?>/Proveedores/Listado"><i class="fa fa-list" style="color:green"> </i>&nbsp;Listado</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmpleados" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users" style="color:red"></i></div>
+                                Empleados
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseEmpleados" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Empleados"><i class="fa fa-plus" style="color:green"> </i>&nbsp;Registrar</a>
+                                    <a class="nav-link" href="<?php echo $path?>/Empleados/Listado"><i class="fa fa-list" style="color:green">  </i>&nbsp;Listado</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="false" aria-controls="collapseUsuarios">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-circle" style="color:red"></i></div>
+                                Usuarios
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseUsuarios" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Usuarios"><i class="fa fa-key" style="color:green"> </i>&nbsp;Administrar</a>                                    
+                                </nav>
+                            </div>
+                            <?php endif;?>  
+                            
+                            <?php if ($varsSessions->rol=="ADMINISTRADOR" || $varsSessions->rol=="CAJERO"):?>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCaja" aria-expanded="false" aria-controls="collapseCaja">
+                                <div class="sb-nav-link-icon"><i class="fas fa-inbox" style="color:red"></i></div>
+                                Caja
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseCaja" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Caja"><i class="fa fa-shopping-bag" style="color:green"> </i>&nbsp;Ventas</a> 
+                                    <a class="nav-link" href="<?php echo $path?>/Caja/Devoluciones"><i class="fa fa-share" style="color:green"> </i>&nbsp;Devoluciones</a> 
+                                    <a class="nav-link" href="<?php echo $path?>/Caja/retiros"><i class="fa fa-reply" style="color:green"> </i>&nbsp;Retiros</a> 
+
+                                    <a class="nav-link" href="<?php echo $path?>/Caja/turnos"><i class="fa fa-check-circle" style="color:green"> </i>&nbsp;Cortes</a>
+                                    <a class="nav-link" href="<?php echo $path?>/Caja/listado"><i class="fa fa-list" style="color:green"> </i>&nbsp;Listado</a>
+                                </nav>
+                            </div>
+                            <?php if($varsSessions->rol=="ADMINISTRADOR"):?>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompras" aria-expanded="false" aria-controls="collapseCompras">
+                                <div class="sb-nav-link-icon"><i class="fas fa-check" style="color:red"></i></div>
+                                Compras
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseCompras" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Compras"><i class="fa fa-shopping-basket" style="color:green"> </i>&nbsp;Registrar Compra</a>                                     
+                                    <a class="nav-link" href="<?php echo $path?>/Compras/listado"><i class="fa fa-list" style="color:green"> </i>&nbsp;Listado</a>                                     
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInventarios" aria-expanded="false" aria-controls="collapseInventarios">
+                                <div class="sb-nav-link-icon"><i class="fas fa-list-ol" style="color:red"></i></div>
+                                Inventarios
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseInventarios" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Inventarios"><i class="fa fa-circle" style="color:green"> </i>&nbsp;Costo</a>                                     
+                                    <!-- <a class="nav-link" href="<?php echo $path?>/Inventarios/historial"><i class="fa fa-list" style="color:green"> </i>&nbsp;Historial</a>-->
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacturacion" aria-expanded="false" aria-controls="collapseFacturacion">
+                                <div class="sb-nav-link-icon"><i class="fas fa-circle" style="color:red"></i></div>
+                                Facturación
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseFacturacion" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo $path?>/Facturacion"><i class="fa fa-cloud" style="color:green"> </i>&nbsp;Facturar</a>                                     
+                                    <a class="nav-link" href="<?php echo $path?>/Facturacion/listado"><i class="fa fa-list-ol" style="color:green"> </i>&nbsp;Listado</a>                                     
+                                    <!-- <a class="nav-link" href="<?php echo $path?>/Inventarios/historial"><i class="fa fa-list" style="color:green"> </i>&nbsp;Historial</a>-->
+                                </nav>
+                            </div>
+                            <?php endif;?>
+                            <?php endif;?>
+
+
+
+
+                            
+                           <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Empleados
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                        Agregar
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="login.html">Login</a>
+                                            <a class="nav-link" href="register.html">Register</a>
+                                            <a class="nav-link" href="password.html">Forgot Password</a>
+                                        </nav>
+                                    </div>
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                                        Error
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="401.html">401 Page</a>
+                                            <a class="nav-link" href="404.html">404 Page</a>
+                                            <a class="nav-link" href="500.html">500 Page</a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div>-->
+                            <?php if($varsSessions->rol=="ADMINISTRADOR"): ?>
+                            <!-- <div class="sb-sidenav-menu-heading">Consultas</div>
+                            <a class="nav-link" href="<?php echo $path?>/Ventas">
+                                <div class="sb-nav-link-icon"><i class="fa fa-chart-pie"></i></div>
+                                Ventas
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                                Compras
+                            </a> -->
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logeado como: <?php echo $varsSessions->usuario?></div>                                                
+                    </div>
+                    <?php endif;?>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content" style="">
+                <main>
+                    <div class="container-fluid">
+                       <?php echo $this->layout()->content ?>                                  
+                    </div>                      
+                </main>
+            </div>              
+            </div>
+        </div>
+        <script src="<?php echo $path?>/js/jquery-3.6.0.js" crossorigin="anonymous"></script>
+        <script src="<?php echo $path?>/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="<?php echo $path?>/js/scripts.js"></script>
+        <script src="<?php echo $path?>/js/Chart.min.js" crossorigin="anonymous"></script>
+        <!--<script src="<?php echo $path?>/assets/demo/chart-area-demo.js"></script>-->
+        <!--<script src="<?php echo $path?>/assets/demo/chart-bar-demo.js"></script>-->
+        <script src="<?php echo $path?>/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="<?php echo $path?>/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="<?php echo $path?>/assets/demo/datatables-demo.js"></script>        
+        <script src="<?php echo $path?>/vendors/documentready.js"></script>
+
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:black;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Información</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <center>
+                <i style="font-size:30pt" class="fa fa-user"></i>
+                </center>
+                <hr/>
+                Empleado: <?php echo $varsSessions->usuario?>
+                <br/>
+                Cuenta: <?php echo $varsSessions->cuenta?>                
+                <br/>
+                Rol: <?php echo $varsSessions->rol?>                
+                <br/>
+                Fecha de registro: <?php echo $varsSessions->fecha_registro?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,15 @@
+<?php if($this->asociados!=null):?>
+<?php foreach($this->asociados as $asociado):?>
+    <tr id="rowasociado<?php echo $asociado->items_id?>">
+            <td style="text-align:center" class="items_id"><?php echo $asociado->items_id?></td>            
+            <td>
+            <?php echo $asociado->nombre?>
+            </td>
+            <td style="text-align:center">
+            <?php echo $asociado->existencias?>
+            </td>
+            <td style="text-align:center"><button class="btn btn-warning" onclick="removeAsociado('<?php echo $asociado->items_id?>')"><i class="fa fa-times"></i></button>
+            </td>'+
+        </tr>';
+<?php endforeach;?>
+<?php endif;?>

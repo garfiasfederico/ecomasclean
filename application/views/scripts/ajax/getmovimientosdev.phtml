@@ -1,0 +1,73 @@
+<?php if($this->movimientos!=null):?>
+    <?php foreach($this->movimientos as $movimiento):
+        $mov="";
+        switch($movimiento->tipo){
+            case "I":
+                $mov = "Itercambio de Artículo";
+                break;
+            case "D":
+                $mov = "Devolución de Efectivo";
+                break;
+            case "C":
+                $mov = "Cupón de Descuento";
+                break;
+
+        }
+        
+        ?>
+
+
+
+        <tr style="text-align:center">                                                    
+            <td><?php echo $movimiento->id?></td>
+            <td><?php echo $movimiento->nombre?></td>
+            <td><?php echo $movimiento->unidad?></td>
+            <td><?php echo $movimiento->precio?></td>            
+            <td><?php echo $movimiento->total?></td>
+            <td><?php echo $movimiento->cantidad?></td>            
+            <td>
+                <?php if($movimiento->tipo=="C"):
+                    //Obtenemos la información del CUPON generado
+                    $ModelCupon = new Model_Cuponesdev();
+                    $codigo = $ModelCupon->getCodigo($movimiento->id);                    
+                    $saldoinicial = $ModelCupon->getSaldoInicial($codigo);
+                    ?>
+                <button class="btn btn-info" style="width:30px;height:30px; vertical-align:middle;" onclick="$('#descmov<?php echo $movimiento->id?>').toggle('fast')"><i style="font-size:1em;color:white" class="fa fa-info"></i></button>
+                <div class="tableinfo" id="descmov<?php echo $movimiento->id?>" style="display:none;position:absolute;border:dotted 1px gray;padding:5px;background-color:white">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Cupon Global</th>
+                            <th>Saldo Inicial</th>
+                            <th>Saldo Final</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b><?php echo $codigo?></b></td>
+                                <td><?php echo "$ ".number_format($saldoinicial,2)?></td>
+                                <td><?php echo "$ ".number_format($saldoinicial,2)?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <?php endif;?>
+            </td>
+            <td><?php echo $mov?></td>
+
+            <td><button class="btn btn-warning">Cancelar</button></td>
+        </tr>
+    <?php endforeach;?>
+    <script>
+            setTimeout(function(){
+                $("#labelDetalleMovimientos").show();
+                $("#contenedorDetalleMovimientos").show();            
+            },100)
+            
+    </script>
+    <?php else:?>
+        <script>
+            $("#labelDetalleMovimientos").hide("");
+            $("#contenedorDetalleMovimientos").hide("");            
+        </script>
+<?php endif;?>

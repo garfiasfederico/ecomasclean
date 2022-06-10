@@ -1,0 +1,18 @@
+<?php if($this->productos!= null):?>
+<style>
+    .producto:hover{
+        background-color: green;
+        color: white;
+    }
+</style>
+<table>
+<?php foreach($this->productos as $producto):?>    
+    <tr class="producto" onclick="$('#input_producto').val('<?php echo $producto->identificador?>'); $('#lista_producto_v').html(''); $('#lista_productos_v').hide(); addProducto();" style="cursor:pointer">
+        <td style="padding:2px;"><?php echo $producto->identificador." - ".$producto->nombre." - $ ".number_format($producto->precio_publico,2)?></td>
+        <td style="padding:2px;"><img style="width:50px;" src="<?php echo $this->path."/images/items/".$producto->avatar?>"></td>
+</tr>
+<?php endforeach;?>
+</table>
+<?php else:?>
+    <span style="color:orange;">Artículo no localizado!</span>
+<?php endif;?>

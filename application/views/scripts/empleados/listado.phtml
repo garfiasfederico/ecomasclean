@@ -1,0 +1,51 @@
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Empleados
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es">
+                                        <thead>
+                                            <tr style="background-color:orange;color:white;">
+                                                <th>Id</th>
+                                                <th>Fecha de Registro</th>                                                
+                                                <th>Nombre</th>
+                                                <th>Teléfono de Casa</th>
+                                                <th>Teléfono Celular</th>                                                
+                                                <th>Activo</th>
+                                                <th>Estatus</th>                                                                                                
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                            
+                                        <?php if($this->empleados != null):?>                                       
+                                            <?php foreach($this->empleados as $empleado):?>
+                                                <tr style="background-color:<?php echo $empleado->status==1?"white":"#FFE0B7"?>" id="rowempleado<?php echo $empleado->id?>">
+                                                    <td><?php echo $empleado->id?></td>
+                                                    <td><?php echo $empleado->fecha_registro?></td>
+                                                    <td><?php echo $empleado->nombre." ".$empleado->apellido_paterno." ".$empleado->apellido_materno?></td>
+                                                    <td><?php echo $empleado->telefono_casa?></td>
+                                                    <td><?php echo $empleado->telefono_celular?></td>                                                    
+                                                    <td style="text-align:center"><input type="checkbox" empleados_id = "<?php echo $empleado->id?>" onchange="updateStatusEmpleado(this);" class="form-check-input" <?php echo $empleado->status==1?"checked":""?> ></td>
+                                                    <td style="text-align:center" id="empleadostatus<?php echo $empleado->id?>"><?php echo $empleado->status==1?"Activo":"Baja"?></td>                                                    
+                                                    <td style="text-align:center">
+                                                            <form style="display:inline;" action="<?php echo $this->path?>/Empleados/editar" method="POST"><input type="hidden" name="empleados_id" value="<?php echo $empleado->id?>"><button type="submit" class="btn btn-info"><i class="fa fa-edit"></i></button></form>
+                                                    </td>
+                                                </tr>  
+                                            <?php endforeach;?>
+                                        <?php endif;?>                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            setTimeout(function(){$("#collapseEmpleados").addClass("show");},1)
+                        </script>

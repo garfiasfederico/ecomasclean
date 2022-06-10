@@ -1,0 +1,13 @@
+<?php if ($this->compras_id!=null):?>
+<div class="alert alert-success">El registro de Compra ha sido almacenado Satisfactoriamente, de la misma forma se informa que los inventarios de los productos <?php echo $this->actualizados?> han sido actualizados correctamente. !</div>
+<script>
+    $("#inputIdentificadorCompra").val("");
+    $("#inputFechaCompra").val("");
+    $("#inputTotalCompra").val("");
+    $(".cantidades").each(function(){
+        $(this).val("1");
+    })
+</script>
+<?php else:?>
+    <div class="alert alert-danger">El registro de Compra no ha podido ser almacenado, favor de intentar más tarde !</div>
+<?php endif;?>

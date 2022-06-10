@@ -1,0 +1,53 @@
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Proveedores
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es">
+                                        <thead>
+                                            <tr style="background-color:white;color:black;">
+                                                <th>Id</th>
+                                                <th>Fecha de Registro</th>                                                
+                                                <th>Tipo Persona</th>
+                                                <th>RFC</th>
+                                                <th>Nombre o razón social</th>
+                                                <th>Teléfono Celular</th>                                                
+                                                <th>Activo</th>
+                                                <th>Estatus</th>                                                                                                
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                            
+                                        <?php if($this->proveedores != null):?>                                       
+                                            <?php foreach($this->proveedores as $proveedor):?>
+                                                <tr style="background-color:<?php echo $proveedor->status==1?"white":"#FFE0B7"?>" id="rowproveedor<?php echo $proveedor->id?>">
+                                                    <td><?php echo $proveedor->id?></td>
+                                                    <td><?php echo $proveedor->fecha_registro?></td>
+                                                    <td><?php echo $proveedor->tipo_persona?></td>
+                                                    <td><?php echo $proveedor->rfc?></td>
+                                                    <td><?php echo $proveedor->nombre?></td>                                                    
+                                                    <td><?php echo $proveedor->telefono_celular?></td>                                                    
+                                                    <td style="text-align:center"><input type="checkbox" proveedores_id = "<?php echo $proveedor->id?>" onchange="updateStatusProveedor(this);" class="form-check-input" <?php echo $proveedor->status==1?"checked":""?> ></td>
+                                                    <td style="text-align:center" id="proveedorstatus<?php echo $proveedor->id?>"><?php echo $proveedor->status==1?"Activo":"Baja"?></td>                                                    
+                                                    <td style="text-align:center">
+                                                            <form style="display:inline;" action="<?php echo $this->path?>/Proveedores/editar" method="POST"><input type="hidden" name="proveedores_id" value="<?php echo $proveedor->id?>"><button type="submit" class="btn btn-info"><i class="fa fa-edit"></i></button></form>
+                                                    </td>
+                                                </tr>  
+                                            <?php endforeach;?>
+                                        <?php endif;?>                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            setTimeout(function(){$("#collapseProveedores").addClass("show");},1)
+                        </script>

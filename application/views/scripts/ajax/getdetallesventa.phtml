@@ -1,0 +1,47 @@
+<?php if($this->detalles!=null):?>
+<?php foreach($this->detalles as $detalle):?>
+    <tr>        
+        <td><?php echo $detalle->venta_items_id?></td>
+        <td><?php echo $detalle->nombre?></td>
+        <td><?php echo $detalle->unidad?></td>
+        <td style="text-align:right">$ <?php echo number_format($detalle->precio*(1+$detalle->iva),2)?></td>
+        <td style="text-align:center"><?php echo $detalle->cantidad?></td>
+        <td style="text-align:center">$<?php echo number_format($detalle->descuento,2)?></td>
+        <td style="text-align:right">$ <?php echo number_format($detalle->total,2)?></td>
+        <td style="text-align:center"><input id="cantidad<?php echo $detalle->venta_items_id?>" class="numeric" type="text" style="text-align:center;width:70px;" class="form-control input" value="1"/></td>
+        
+        <td>
+            <select id="movimiento<?php echo $detalle->venta_items_id?>" class="form-control custom-select custom-select-md">
+                <option value="I">Intercambio</option>
+                <option value="D">Devolución de Efectivo</option>                                                            
+                <option value="C">Cupón de Descuento</option>  
+            </select>           
+        </td>
+        <td>
+            <button class="btn btn-success" style="display:inline" id="button<?php echo $detalle->venta_items_id?>" 
+                onclick="                        
+                            registraMovimiento(this,$('#cantidad<?php echo $detalle->venta_items_id?>').val(),$('#movimiento<?php echo $detalle->venta_items_id?> option:selected').val(),<?php echo $detalle->venta_items_id ?>)
+                        "
+                ventas_id="<?php echo $detalle->ventas_id?>"
+                items_id="<?php echo $detalle->items_id?>"                
+                precio="<?php echo $detalle->precio?>"
+                iva="<?php echo $detalle->iva?>"
+                descuento="<?php echo $detalle->descuento?>"
+                cantidad_adquirida="<?php echo $detalle->cantidad?>"
+                
+                >
+                
+
+                Registrar
+            </button>
+        </td>
+    </tr>
+<?php endforeach;?>
+<script>
+    $(document).ready(function(){
+        refreshnumeric();
+    });
+</script>
+<?php else:?>
+<div class="alert alert-info">No existe la Venta Buscada.</div>
+<?php endif;?>

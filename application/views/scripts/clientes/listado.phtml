@@ -1,0 +1,55 @@
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Clientes
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es">
+                                        <thead>
+                                            <tr style="background-color:purple;color:white;">
+                                                <th>Id</th>
+                                                <th>Fecha de Registro</th>                                                
+                                                <th>Tipo Persona</th>
+                                                <th>RFC</th>
+                                                <th>Nombre o razón social</th>
+                                                <th>Teléfono Celular</th> 
+                                                <th>Ubicación</th> 
+                                                <th>Activo</th>
+                                                <th>Estatus</th>                                                                                                
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                            
+                                        <?php if($this->clientes != null):?>                                       
+                                            <?php foreach($this->clientes as $cliente):?>
+                                                <tr style="background-color:<?php echo $cliente->status==1?"white":"#FFE0B7"?>" id="rowcliente<?php echo $cliente->id?>">
+                                                    <td><?php echo $cliente->id?></td>
+                                                    <td><?php echo $cliente->fecha_registro?></td>
+                                                    <td><?php echo $cliente->tipo_persona?></td>
+                                                    <td><?php echo $cliente->rfc?></td>
+                                                    <td><?php echo $cliente->nombre?></td>                                                    
+                                                    <td><?php echo $cliente->telefono_celular?></td> 
+                                                    <td style="text-align:center"><?php echo ($cliente->ubicacion!=null||$cliente->ubicacion!="")?"<a href='$cliente->ubicacion' target='blank_'><i style='font-size:20pt' class='fa fa-map-marker'></i></a>":""?></td>                                                                                                            
+                                                    <td style="text-align:center"><input type="checkbox" clientes_id = "<?php echo $cliente->id?>" onchange="updateStatusCliente(this);" class="form-check-input" <?php echo $cliente->status==1?"checked":""?> ></td>
+                                                    <td style="text-align:center" id="clientestatus<?php echo $cliente->id?>"><?php echo $cliente->status==1?"Activo":"Baja"?></td>                                                    
+                                                    <td style="text-align:center">
+                                                            <form style="display:inline;" action="<?php echo $this->path?>/Clientes/editar" method="POST"><input type="hidden" name="clientes_id" value="<?php echo $cliente->id?>"><button type="submit" class="btn btn-info"><i class="fa fa-edit"></i></button></form>
+                                                    </td>
+                                                </tr>  
+                                            <?php endforeach;?>
+                                        <?php endif;?>                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            setTimeout(function(){$("#collapseClientes").addClass("show");},1)
+                        </script>

@@ -1,0 +1,179 @@
+<?php if(isset($this->result)):?>
+
+    <?php if($this->result):?>
+    <script>
+       setTimeout(function(){$("#modal-bodyItem").html('<div id="result_item" class="alert alert-success" style=""><i class="fa fa-check"></i> Artículo almacenado Satisfactoriamente!</div>');},200);
+    </script>
+    <?php else:?>
+    <script>
+       setTimeout(function(){$("#modal-bodyItem").html('<div id="result_item" class="alert alert-warning" style=""><i class="fa fa-cancel"></i> Ocurrió un error, intente más tarde!</div>');},200);
+    </script>
+    <?php endif;?>
+    <script>
+        // setTimeout(function(){$("#result_item").show("slow")},200)
+        // setTimeout(function(){$("#result_item").hide("slow")},2000)
+        setTimeout(function(){$("#infoItem").modal("show")},300)
+    </script>
+<?php endif;?>
+<div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header" style="background-color:black;color:white"><h3 class="text-center font-weight-light my-4">Registrar Artículo</h3></div>
+                                    <div class="card-body">
+                                        <form action="<?php echo $this->path?>/Productos/index" method="POST" enctype="multipart/form-data">
+                                            <h2 style="color:gray">Generales</h2>     
+                                            <div style="text-align:center">
+                                                <span id="avatar">
+                                                    <!--<i style='font-size:5em' class='fa fa-spinner fa-spin fa-3x fa-fw'></i>-->
+                                                    <img  style="width:200px" src="<?php echo $this->path?>/images/items/generic.png"/>
+                                                </span>
+                                                
+                                            </div>                                            
+                                            <br/>                                    
+                                            <span class="small mb-1">Imagen (Avatar)</span>
+                                            <div class="custom-file">                                                
+                                                <input type="file" class="custom-file-input" id="fileavatar" name="fileavatar" lang="en" onchange="setImage()">
+                                                <label class="custom-file-label" for="fileavatar">Seleccionar Archivo</label>                                                
+                                            </div>
+                                            <div class="form-row">
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="inputIdentificador"><br/>Código de Barras*</label>
+                                                <input class="form-control py-4" id="inputIdentificador" name="identificador" type="text" aria-describedby="identificadorHelp" placeholder="Identificador de Producto" required/>
+                                            </div>   
+                                            </div>             
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="inputClave"><br/>Clave*</label>
+                                                <input class="form-control py-4" id="inputClave" name="clave" type="text" aria-describedby="claveHelp" placeholder="Clave del Producto" required/>
+                                            </div>   
+                                            </div>             
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputNombre">Nombre del Producto*</label>
+                                                        <input class="form-control py-4" id="inputNombre" name="nombre" maxlength="30" type="text" placeholder="Nombre del Producto" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputAlias">Alias*</label>
+                                                        <input class="form-control py-4" id="inputAlias" name="alias" maxlength="15" type="text" placeholder="Alias" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputUnidad">Unidad*</label>
+                                                        <select class="form-control custom-select custom-select-lg mb-3" id="selectUnidad" name="unidad">
+                                                        <?php foreach($this->unidades as $unidad):?>
+                                                                <option style="background-color: red;" value="<?php echo $unidad->clave?>"><?php echo $unidad->descripcion?></option>
+                                                        <?php endforeach;?>    
+                                                        </select>                                                            
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+                                            <div class="form-row">
+                                            <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputCosto">Costo de Compra*</label>
+                                                        <input class="form-control py-4 numeric"  id="inputCosto" name="costo" type="money" placeholder="$ 0.00" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputPrecio">Precio Menudeo*</label>
+                                                        <input class="form-control py-4 numeric" id="inputPrecio" name="precio" type="money" placeholder="$ 0.00" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputPrecioMayoreo">Precio Mayoreo*</label>
+                                                        <input class="form-control py-4 numeric" id="inputPrecioMayoreo" name="precio_mayoreo" type="money" placeholder="$ 0.00" required/>
+                                                    </div>
+                                                </div>  
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputPrecioDistribuidor">Precio Distribuidor*</label>
+                                                        <input class="form-control py-4 numeric"  id="inputPrecioDistribuidor" name="precio_distribuidor" type="money" placeholder="$ 0.00" required/>
+                                                    </div>
+                                                </div>                                              
+                                            </div>      
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputExistencias">Existencias*</label>
+                                                        <input class="form-control py-4 numeric" id="inputExistencias" name="existencias" type="text" placeholder="1" required/>
+                                                    </div>
+                                                </div>  
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="selectCategoria">Categoria*</label>
+                                                        <select class="form-control custom-select custom-select-lg mb-3" id="selectCategoria" name="categoria">
+                                                            <?php if($this->categorias!=null):?>
+                                                            <?php foreach($this->categorias as $categoria):?>
+                                                                <option style="background-color: red;" value="<?php echo $categoria->clave?>"><?php echo $categoria->descripcion?></option>
+                                                            <?php endforeach;?>
+                                                            <?php endif;?>
+                                                        </select>
+                                                    </div>
+                                                </div>                                                
+                                            </div>
+                                            <h2 style="color:gray">Impuestos</h2>  
+                                            <div class="form-row">
+                                                <div class="col-md-1">
+                                                    <div class="form-group" >
+                                                        <label class="small mb-1" for="inputiva" >IVA <i class="fa fa-info-circle" style="font-size:1.5em;color:green;cursor:pointer" onclick="$('#infoIva').show('fast')" onmouseout="$('#infoIva').hide('slow')" ></i></label>
+                                                        <input class="form-control py-4 numeric" id="inputiva" name="iva" type="money" placeholder="0" value=".16" />
+                                                        <div id="infoIva" style="width:300px;border:dotted 1px gray;padding:10px; font-size:10pt;background-color:#F5F5F5;position:absolute;top:10px;left:50px;display:none;">
+                                                            Indicar la "tasa" de IVA INCLUIDO que aplica para el producto<br/>
+                                                            <table style="width:100%;text-align:center;font-weight:bold" border="1">
+                                                            <tr>
+                                                                <td>.16</td>
+                                                                <td>.10</td>
+                                                                <td>0</td>
+                                                            </tr>
+                                                            </table>                                                               
+                                                        </div>
+                                                    </div>
+                                                </div>                                                
+                                            </div>                                                                                                                                                         
+                                            <div class="form-group mt-4 mb-0" style="text-align:right"><a href="<?php echo $this->path?>/Productos/catalogo"><button  type="button" class="btn btn-secondary">Cancelar</button></a>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary">Almacenar Producto</button></div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <div class="small"><a href="login.html"></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>            
+        </div>
+        <script>
+            setTimeout(function(){$("#collapseLayouts").addClass("show");},1)
+        </script>
+
+<div class="modal fade" id="infoItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:black;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Resultado de Almacenamiento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyItem">                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>

@@ -1,0 +1,289 @@
+<?php if(isset($this->resultado)):?>
+
+<?php if($this->resultado):?>
+<script>
+    setTimeout(function(){$("#modal-bodyCliente").html('<div id="result_item" class="alert alert-success" style=""><i class="fa fa-check"></i> Cliente almacenado Satisfactoriamente!</div>')},200);
+</script>
+<?php else:?>
+<script>
+    setTimeout(function(){$("#modal-bodyCliente").html('<div id="result_item" class="alert alert-warning" style=""><i class="fa fa-close"></i> Ocurrió un error, intente más tarde!</div>')},200);
+</script>
+<?php endif;?>
+<script>
+    // setTimeout(function(){$("#result_item").show("slow")},200)
+    // setTimeout(function(){$("#result_item").hide("slow")},2000)
+    setTimeout(function(){$("#infoCliente").modal("show")},300)
+</script>
+<?php endif;?>
+<div id="layoutAuthentication" style="">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header" style="background-color:purple;color:white;"><h3 class="text-center font-weight-light my-4">Registrar Cliente</h3></div>
+                                <div class="card-body">
+                                    <form action="<?php echo $this->path?>/Clientes/index" method="POST" enctype="multipart/form-data">
+                                        <div style="text-align:center">                                                                                        
+                                        </div> 
+                                        <h2 style="color:gray">Generales</h2>                                                                        
+                                        <div class="form-row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNombre">Nombre*</label>
+                                                    <input class="form-control py-4" id="inputNombre" name="nombre" maxlength="50" type="text" placeholder="Nombre del Cliente" required/>
+                                                </div>
+                                            </div>                                            
+                                            
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputDireccionEntrega">Dirección de Entrega*</label>
+                                                    <input class="form-control py-4" id="inputDireccionEntrega" name="direccion_entrega" maxlength="300" type="text" placeholder="Dirección de Entrega" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputCorreo">Ubicación*</label>
+                                                    <input class="form-control py-4" id="ubicacion" name="ubicacion" type="text" placeholder="Link Google Maps" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputCorreo">Referencia al Domicilio*</label>
+                                                    <input class="form-control py-4" id="referencia" name="referencia" type="text" placeholder="Detras de... Al lado de...." required/>
+                                                </div>
+                                            </div>                                                                                        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputTelefonoCasa">Teléfono*</label>
+                                                    <input class="form-control py-4" id="inputTelefonoCasa" name="telefono_casa" type="text" placeholder="Teléfono" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputCelular">Celular</label>
+                                                        <input class="form-control py-4" id="inputCelular" name="telefono_celular" type="text" placeholder="Celular" />
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputCorreo">Correo electrónico</label>
+                                                        <input class="form-control py-4" id="inputCorreo" name="correo_electronico" type="text" placeholder="Correo electrónico" />
+                                                    </div>
+                                            </div>                                        
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectgiro">Giro de la Empresa*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="giro_comercio" name="giro_comercio">
+                                                        <option value="comercializadora">Comercializadora</option>
+                                                        <option value="distribuidor">Distribuidor</option>
+                                                        <option value="veterinaria">Veterinaria</option>
+                                                        <option value="educativa">Institución Educativa</option>
+                                                        <option value="gobierno">Gobierno</option>
+                                                        <option value="municipios">Municipios</option>
+                                                        <option value="oficinas">Oficinas</option>
+                                                        <option value="lavaautos">Lava Autos</option>
+                                                        <option value="restaurante">Restaurante</option>
+                                                        <option value="hospital">Hospital</option>
+                                                        <option value="clinica">Clínica</option>
+                                                        <option value="bar">Bares</option>
+                                                        <option value="gymnasio">Gymnasio</option>
+                                                        <option value="iglesia">Iglesia</option>
+                                                        <option value="hogar" selected>Hogar</option>
+                                                        <option value="salon">Salón de Fiestas</option>
+                                                    </select>
+                                                </div>
+                                            </div>    
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputnotas">Perfil del Cliente*</label>
+                                                    <textarea class="form-control py-4" id="inputnotas" name="notas" placeholder="Preferencias" required></textarea>
+                                                </div>
+                                        </div>                                        
+                                        <div class="col-md-2">
+                                                <div class="form-group" style="text-align:left">
+                                                    <label class="small mb-1" for="inputContacto">Incluir Datos de Contacto</label>
+                                                    <input type="checkbox" class="form-control py-4" id="inputContacto" name="contacto" onclick="if($(this).prop('checked')) $('#contacto_content').show('slow'); else $('#contacto_content').hide('slow'); " />
+                                                </div>
+                                        </div>                                        
+                                        <div class="col-md-2">
+                                                <div class="form-group" style="text-align:left">
+                                                    <label class="small mb-1" for="inputConfactura">Incluir Datos de Facturación</label>
+                                                    <input type="checkbox" class="form-control py-4" id="inputConfactura" name="confactura" onclick="incluirFacturacion($(this).prop('checked'))" />
+                                                </div>
+                                        </div>                                        
+                                        </div>
+                                        <div id="contacto_content" style="display:none;">
+                                            <h2 style="color:gray">Contacto</h2>
+                                            <div class="form-row" >  
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputNombreContacto">Nombre Contacto</label>
+                                                        <input class="form-control py-4" id="inputNombreContacto" name="nombre_contacto" maxlength="200" type="text" placeholder="Nombre del Contacto" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputTelefonoContacto">Telefono Casa</label>
+                                                        <input class="form-control py-4" id="inputTelefonoContacto" name="telefono_contacto" maxlength="10" type="text" placeholder="Teléfono" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputCelularContacto">Celular</label>
+                                                        <input class="form-control py-4" id="inputCelularContacto" name="celular_contacto" maxlength="10" type="text" placeholder="Celular" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputCorreoElectronicoContacto">Correo Electrónico</label>
+                                                        <input class="form-control py-4" id="inputCorreoElectronicoContacto" name="correo_electronico_contacto" maxlength="200" type="text" placeholder="Correo Electrónico"/>
+                                                    </div>
+                                                </div>                                            
+                                            </div>
+                                        </div>
+                                        <div id="facturacion_content" style="display:none">
+                                        <h2 style="color:gray">Fiscales</h2>                                                                        
+                                        <div class="form-row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNombre">Persona:</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectPersona" name="tipo_persona">
+                                                        <option value="fisica">Física</option>
+                                                        <option value="moral">Moral</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputRFC">RFC*</label>
+                                                    <input class="form-control py-4" id="inputRFC" name="rfc" maxlength="13" type="text" placeholder="RFC" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="input_nombrecomercial">Razón Social*</label>
+                                                    <input class="form-control py-4" id="input_nombrecomercial" name="nombre_comercial" maxlength="200" type="text" placeholder="Nombre Comercial" />
+                                                </div>
+                                            </div>                                            
+                                        </div>                                                                                                                                                                                                                           
+                                        <h2 style="color:gray">Domicilio Fiscal</h2>                                      
+                                        <div class="form-row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputCalle">Calle*</label>
+                                                    <input class="form-control py-4" id="inputCalle" name="calle" type="text" placeholder="calle"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNumInterno"># Int.</label>
+                                                    <input class="form-control py-4" id="inpuNumInterno" name="num_interno" type="text" placeholder="No. I" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNumExterno"># Ext.</label>
+                                                    <input class="form-control py-4" id="inputNumExterno" name="num_externo" type="text" placeholder="No. E" />
+                                                </div>
+                                            </div>                                           
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputColonia">Colonia*</label>
+                                                    <input class="form-control py-4" id="inputColonia" name="colonia" type="tex" placeholder="Colonia" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputLocalidad">Localidad</label>
+                                                    <input class="form-control py-4" id="inputLocalidad" name="localidad" type="text" placeholder="Localidad" />
+                                                </div>
+                                            </div>
+                                        </div>      
+                                        <div class="form-row">
+                                        <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputMunicipio">Municipio*</label>
+                                                    <input class="form-control py-4" id="inputMunicipio" name="municipio" type="tex" placeholder="Municipio" />
+                                                </div>
+                                            </div>
+                                        <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputCp">C.P.*</label>
+                                                    <input class="form-control py-4" id="inputCp" name="cp" type="text" placeholder="C.P." />
+                                                </div>
+                                        </div>                                                                                                                                                                        
+                                        <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputEstado">Estado</label>
+                                                    <input class="form-control py-4" id="inputEstado" name="estado" type="text" placeholder="Estado" />
+                                                </div>
+                                            </div>     
+                                        </div>
+                                        </div>
+                                         
+                                        
+                                        <!-- <h2 style="color:gray">Laboral</h2>
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectArea">Área de empleo*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectArea" name="area_trabajo">
+                                                        <option value="mesero">Mesero</option>
+                                                        <option value="cocina">Cocina</option>
+                                                        <option value="barra">Barra</option>
+                                                        <option value="administrador">Administrador</option>
+                                                    </select>
+                                                </div>                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectTurno">Turno*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectTurno" name="turno">
+                                                        <option value="matutino">Matutino</option>
+                                                        <option value="vespertino">Vespertino</option>
+                                                        <option value="mixto">Mixto</option>                                                        
+                                                    </select>
+                                                </div>                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputCodigo">Clave Acceso*</label>
+                                                    <input class="form-control py-4" id="inputCodigo" name="codigo_acceso" type="text" placeholder="Clave Acceso" required/>
+                                                </div>
+                                        </div>
+                                        </div> -->                                            
+                                        <div class="form-group mt-4 mb-0" style="text-align:right"><a href="<?php echo $this->path?>/Clientes/listado"><button  type="button" class="btn btn-secondary">Cancelar</button></a>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary">Almacenar Cliente</button></div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small"><a href="login.html"></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>            
+    </div>
+    <script>
+        setTimeout(function(){$("#collapseClientes").addClass("show");},1)
+    </script>
+<div class="modal fade" id="infoCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:purple;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Resultado de Almacenamiento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyCliente">                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>

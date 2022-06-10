@@ -1,0 +1,181 @@
+<script>
+    // setTimeout(function(){$("#result_item").show("slow")},200)
+    // setTimeout(function(){$("#result_item").hide("slow")},2000)    
+    setTimeout(function(){
+        $('#infoFacturacion').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show:false
+        });                    
+    },200);
+</script>
+<style>
+        .itemcliente:hover{
+                color:blue;
+                background-color: #f5f5f5;
+        }
+</style>
+<div id="layoutAuthentication" style="">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header" style="background-color:#FF58AE;color:white;"><h3 class="text-center font-weight-light my-4">Facturación</h3></div>
+                                <div class="card-body">                                
+                                        <div style="text-align:center">                                                                                        
+                                        </div> 
+                                        <h2 style="color:gray">Venta</h2>                                                                        
+                                        <div class="form-row">                                            
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputRFC">Ticket de Venta*</label>
+                                                    <input class="form-control py-4" id="inputTicket" name="ticket" maxlength="13" type="text" placeholder="Ticket" onkeyup="if(event.keyCode==13)getDetalleVentaFac()"required/>
+                                                </div>
+                                            </div>                                            
+                                        </div>                                                                                       
+                                        <h2 style="color:gray">Detalles de la Venta</h2>                                                                        
+                                        <div class="form-row" id="contenedorDetalleVenta">
+                                            <div class="col-md-12" id="detalles_venta">
+                                            <table class="table ">
+                                            <thead>
+                                                <tr style="text-align:center">                                                    
+                                                    <th>Id</th>
+                                                    <th>Producto</th>
+                                                    <th>Unidad</th>
+                                                    <th>Precio</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Descuento</th>
+                                                    <th>IVA Incluido</th>
+                                                    <th>Total</th>                                                    
+                                                </tr>
+                                            <thead>
+                                            <tbody id="detalles">
+                                               
+                                            </tbody>                                            
+                                            </table>
+                                                
+                                            </div>                                            
+                                        </div> 
+                                        <div id="receptorContent" style="display:none;">                                                                                             
+                                        <h2 style="color:gray">Cliente o Receptor</h2>                                      
+                                        <div class="form-row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputRFC">RFC*</label>
+                                                    <input class="form-control py-4" id="inputRFC" name="rfc" type="text" placeholder="RFC" required onkeyup="getClientes()" maxlength="13" autocomplete="off"/><span id="loadingClientes"></span>
+                                                        <div style="width:500px;position:absolute;background-color:white;padding:10px;z-index:999;display:none;border:dotted 1px black;" id="list_clientes" >                                                                
+                                                        </div>       
+                                                </div>
+                                            </div>                                            
+                                        </div>      
+                                        <div class="form-row">
+                                        <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNombre">Nombre o Razón Social</label>
+                                                    <input class="form-control py-4" id="inputNombre" name="nombre" type="tex" placeholder="Nombre o Razón Social" />
+                                                </div>
+                                            </div>                                        
+                                        </div>
+                                        </div> 
+                                        <div id="usoContent" style="display:none">
+                                        <h2 style="color:gray">Uso de CFDI</h2>
+                                        <div class="form-row">
+                                        <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputUso">Uso de CFDI:</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectUso" name="uso_cfdi">
+                                                        <option value="G01">G01-Adquisición de mercancías</option>
+                                                        <option value="G02">G02-Devoluciones, descuentos o bonificaciones</option>
+                                                        <option value="G03" selected>G03-Gastos en general</option>
+                                                        <option value="I01">I01-Construcciones</option>
+                                                        <option value="I02">I02-Mobiliario y equipo de oficina por inversiones</option>
+                                                        <option value="I03">I03-Equipo de transporte</option>
+                                                        <option value="I04">I04-Equipo de cómputo y accesorios</option>
+                                                        <option value="I05">I05-Dados, troqueles, moldes, matrices y herramental</option>
+                                                        <option value="I06">I06-Comunicaciones telefónicas</option>
+                                                        <option value="I07">I07-Comunicaciones satelitales</option>
+                                                        <option value="I08">I08-Otra maquinaria y equipo</option>
+                                                        <option value="D01">D01-Honorarios médicos, dentales y gastos hospitalarios.</option>
+                                                        <option value="D02">D02-Gastos médicos por incapacidad o discapacidad</option>
+                                                        <option value="D03">D03-Gastos funerales.</option>
+                                                        <option value="D04">D04-Donativos</option>
+                                                        <option value="D05">D05-Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación).</option>
+                                                        <option value="D06">D06-Aportaciones voluntarias al SAR.</option>
+                                                        <option value="D07">D07-Primas por seguros de gastos médicos.</option>
+                                                        <option value="D08">D08-Gastos de transportación escolar obligatoria.</option>
+                                                        <option value="D09">D09-Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones.</option>
+                                                        <option value="D10">D10-Pagos por servicios educativos (colegiaturas)</option>
+                                                        <option value="P01">P01-Por definir</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <!-- <h2 style="color:gray">Laboral</h2>
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectArea">Área de empleo*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectArea" name="area_trabajo">
+                                                        <option value="mesero">Mesero</option>
+                                                        <option value="cocina">Cocina</option>
+                                                        <option value="barra">Barra</option>
+                                                        <option value="administrador">Administrador</option>
+                                                    </select>
+                                                </div>                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectTurno">Turno*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectTurno" name="turno">
+                                                        <option value="matutino">Matutino</option>
+                                                        <option value="vespertino">Vespertino</option>
+                                                        <option value="mixto">Mixto</option>                                                        
+                                                    </select>
+                                                </div>                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputCodigo">Clave Acceso*</label>
+                                                    <input class="form-control py-4" id="inputCodigo" name="codigo_acceso" type="text" placeholder="Clave Acceso" required/>
+                                                </div>
+                                        </div>
+                                        </div> -->                                            
+                                        <div class="form-group mt-4 mb-0" style="text-align:right"><button  type="button" class="btn btn-secondary" onclick="clearFac();">Cancelar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" onclick="Facturar()">Facturar</button></div>                                    
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small"><a href="login.html"></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>            
+    </div>
+
+
+
+<script>
+        setTimeout(function(){$("#collapseFacturacion").addClass("show");},1)
+</script>
+
+<div class="modal fade" id="infoFacturacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF58AE;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Procesamiento de Facturación</h5>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyFacturacion">                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>

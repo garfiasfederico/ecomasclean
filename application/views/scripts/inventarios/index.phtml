@@ -1,0 +1,93 @@
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Inventario
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es">
+                                        <thead>
+                                            <tr style="background-color:pink;color:black;">
+                                                <th>Id</th>
+                                                <th>Producto</th>                                                
+                                                <th>Unidad</th>
+                                                <th>Costo</th>
+                                                <th>Precio Menudeo</th>
+                                                <th>Precio Mayoreo</th>                                                
+                                                <th>Existencias</th>
+                                                <th>Costo Total</th>                                                                                                
+                                                <th>Costo Al Menudeo</th>                                                                                                
+                                                <th>Costo Al Mayoreo</th>                                                                                                                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                            
+                                        <?php 
+                                        
+                                        $costototal= 0;
+                                        $costototalmenudeo = 0;
+                                        $costototalmayoreo = 0;
+                                        if($this->productos != null):?>                                       
+                                            <?php foreach($this->productos as $producto):
+                                                $costototal+= $producto->existencias*$producto->costo;
+                                                $costototalmenudeo += $producto->existencias*$producto->precio_publico;
+                                                $costototalmayoreo += $producto->existencias*$producto->precio_mayoreo
+                                                
+                                                ?>
+                                                <tr style="" id="rowcliente<?php echo $producto->id?>">
+                                                    <td><?php echo $producto->id?></td>
+                                                    <td><?php echo $producto->nombre?></td>
+                                                    <td><?php echo $producto->unidad?></td>
+                                                    <td style="text-align:right">$ <?php echo number_format($producto->costo,2)?></td>
+                                                    <td style="text-align:right">$ <?php echo number_format($producto->precio_publico,2)?></td>                                                    
+                                                    <td style="text-align:right">$ <?php echo number_format($producto->precio_mayoreo,2)?></td>  
+                                                    <td style="text-align:right"><?php echo number_format($producto->existencias,2)?></td>                                                                                                        
+                                                    <td style="text-align:right">$ <?php echo number_format(($producto->existencias*$producto->costo),2)?></td>                                                                                                        
+                                                    <td style="text-align:right">$ <?php echo number_format(($producto->existencias*$producto->precio_publico),2)?></td>                                                                                                        
+                                                    <td style="text-align:right">$ <?php echo number_format(($producto->existencias*$producto->precio_mayoreo),2)?></td>                                                                                                        
+                                                </tr>  
+                                            <?php endforeach;?>
+                                        <?php endif;?>                         
+                                        </tbody>
+                                    </table>
+                                </div>                                
+                            </div>                            
+                        </div>
+                        <div style="width:100%">
+                                   <table class="table table-hover">
+                                    <thead>
+                                                <tr style="text-align:center;background-color:pink">
+                                                    <th>Costo Total de Inventario</th>
+                                                    <th>Costo Total de Inventario Menudeo</th>
+                                                    <th>Costo Total de Inventario Mayoreo</th>
+                                                    <th style="background-color:#DCFFE5">Ganancia Neta Menudeo</th>
+                                                    <th style="background-color:#DCFFE5">Ganancia Neta Mayoreo </th>
+                                                </tr>
+                                    </thead>
+                                    <tbody>
+                                                <tr style="text-align:center;font-size:2.0em;">
+                                                    <td style="vertical-align:middle">$ <?php echo number_format($costototal,2)?></td>
+                                                    <td style="vertical-align:middle">$ <?php echo number_format($costototalmenudeo,2)?></td>
+                                                    <td style="vertical-align:middle">$ <?php echo number_format($costototalmayoreo,2)?></td>
+                                                    <td style="vertical-align:middle">$ <?php echo number_format(($costototalmenudeo - $costototal),2)?></td>
+                                                    <td style="vertical-align:middle">$ <?php echo number_format(($costototalmayoreo - $costototal),2)?></td>
+                                                    <td style="vertical-align:middle"> 
+                                                        <div style="width:100%;text-align:right">
+                                                            <form action="<?php echo $this->path?>/Inventarios/reporteinventario" method="POST" target="blank_">                                                                
+                                                                <button type="submit" style="height:80px;width:80px;" class="btn btn-success"><i style="font-size:2em;" class="fa fa-print"></i></button>
+                                                            </form>
+                                                         </div>                                                 
+                                                    </td>
+
+                                                    
+                                                </tr>
+                                    </tbody>
+                                   </table>
+                        </div>                        
+                        <script>
+                            setTimeout(function(){$("#collapseInventarios").addClass("show");},1)
+                        </script>

@@ -1,0 +1,193 @@
+<script>
+    // setTimeout(function(){$("#result_item").show("slow")},200)
+    // setTimeout(function(){$("#result_item").hide("slow")},2000)    
+    setTimeout(function(){
+        $('#infoCompra').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show:false
+        });                    
+    },200);
+</script>
+<style>
+.producto:hover{
+    background-color: ;
+    cursor: pointer;
+    color: blue;
+}
+</style>
+<div id="layoutAuthentication" style="">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header" style="background-color:blue;color:white;"><h3 class="text-center font-weight-light my-4">Registrar Compras</h3></div>
+                                <div class="card-body">                                    
+                                        <div style="text-align:center">                                                                                        
+                                        </div> 
+                                        <h2 style="color:gray">Generales</h2>                                                                        
+                                        <div class="form-row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selecttipodocumento">Tipo de Documento de Compra:</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selecttipodocumento" name="tipo_documento">
+                                                        <option value="nota">Nota de Compra</option>
+                                                        <option value="factura">Factura</option>
+                                                    </select>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputIdentificadorCompra">Factura o Nota de Compra:</label>
+                                                    <input class="form-control py-4" id="inputIdentificadorCompra" name="identificador" maxlength="13" type="text" placeholder="Identificador de Compra" required/>
+                                                </div>
+                                            </div>                                            
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputFechaCompra">Fecha de Compra:</label>
+                                                    <input class="form-control py-4" id="inputFechaCompra" name="fecha_compra" maxlength="13" type="date" placeholder="Fecha de Compra" required/>
+                                                </div>
+                                            </div>                                            
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputTotalCompra">Total de Compra:</label>
+                                                    <input class="form-control py-4 numeric" id="inputTotalCompra" name="total_compra" maxlength="13" type="text" placeholder="$ 0.00" required/>
+                                                </div>
+                                            </div>                                            
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectorigenpago">Forma de Pago:</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectorigenpago" name="origen_pago">
+                                                        <option value="caja">Caja Chica</option>
+                                                        <option value="turno">Turno de Venta</option>
+                                                        <option value="cuenta">Cuenta Bancaria</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>                                            
+                                        </div> 
+                                        <h2 style="color:gray">Proveedor</h2>                                                                        
+                                        <div class="form-row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNombre">Elegir:</label>
+                                                    <?php if($this->proveedores!=null):?>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectProveedorCompra" name="proveedores_id" onchange="loadAsociadosCompras()">
+                                                        <?php foreach($this->proveedores as $proveedor):?>                                                    
+                                                            <option value="<?php echo $proveedor->id?>"><?php echo $proveedor->rfc." - ".$proveedor->nombre;?></option>
+                                                        <?php endforeach;?>    
+                                                    </select>
+                                                    <?php endif;?>
+                                                </div>
+                                            </div>                                            
+                                        </div>    
+                                        
+                                        <!-- <div class="form-row">
+                                        <div class="col-md-11">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNombreProducto">Nombre o Identificador de Producto</label>
+                                                    <input class="form-control py-4" id="inputNombreProducto" onkeyup="buscaProducto()" name="nombre_producto" type="text" placeholder="Nombre o Identificador de Producto" />
+                                                    <div style="z-index:99;max-width:100%;background-color:#F8FFFF;position:absolute;padding:10px;display:none" id="lista_productos">                                                   
+                                                    </div>
+                                                </div>
+                                        </div> 
+                                        <div class="col-md-1">
+                                                <div class="form-group">
+                                                     <label class="small mb-2" for="">Agregar</label> 
+                                                    <br/>                                                    
+                                                    <button class="btn btn-success" id="buttonAgregar" disabled onclick="agregarProductoAsociado($('#inputNombreProducto').val())"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                        </div>                                          
+                                        </div> -->
+                                        <h2 style="color:gray">Productos Asociados</h2>                                                                                                                
+                                        <div class="form-row">
+                                        <div class="col-md-11">
+                                            <table class="table" style="width:100%">
+                                                <thead>
+                                                    <tr style="text-align:center">
+                                                        <th>
+                                                            id
+                                                        </th>
+                                                        <th>
+                                                            Producto
+                                                        </th>
+                                                        <th>
+                                                            existencias
+                                                        </th>
+                                                        <th>
+                                                            Cantidad Adquirida
+                                                        </th>
+                                                    </tr>
+                                                </thead> 
+                                                <tbody id="productos_asociadoscompras">
+
+                                                </tbody>                                           
+                                            </table>
+                                        </div>
+                                        </div>
+                                        <!-- <h2 style="color:gray">Laboral</h2>
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectArea">Área de empleo*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectArea" name="area_trabajo">
+                                                        <option value="mesero">Mesero</option>
+                                                        <option value="cocina">Cocina</option>
+                                                        <option value="barra">Barra</option>
+                                                        <option value="administrador">Administrador</option>
+                                                    </select>
+                                                </div>                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectTurno">Turno*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectTurno" name="turno">
+                                                        <option value="matutino">Matutino</option>
+                                                        <option value="vespertino">Vespertino</option>
+                                                        <option value="mixto">Mixto</option>                                                        
+                                                    </select>
+                                                </div>                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputCodigo">Clave Acceso*</label>
+                                                    <input class="form-control py-4" id="inputCodigo" name="codigo_acceso" type="text" placeholder="Clave Acceso" required/>
+                                                </div>
+                                        </div>
+                                        </div> -->                                            
+                                        <div class="form-group mt-4 mb-0" style="text-align:right"><a href="<?php echo $this->path?>/Compras/listado"><button  type="button" class="btn btn-secondary">Cancelar</button></a>&nbsp;&nbsp;&nbsp;<button onclick="almacenaCompra()" class="btn btn-primary" type="submit" >Almacenar</button></div>                                    
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small"><a href="login.html"></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>            
+    </div>
+    <script>
+        setTimeout(function(){$("#collapseCompras").addClass("show");},1)
+    </script>
+<div class="modal fade" id="infoCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:blue;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Almacenamiento de Compras</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body" id="modal-bodyCompra">                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>

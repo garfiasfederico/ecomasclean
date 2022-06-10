@@ -1,0 +1,152 @@
+<?php if(isset($this->resultado)):?>
+
+<?php if($this->resultado):?>
+<script>
+    setTimeout(function(){$("#modal-bodyAsociar").html('<div id="result_item" class="alert alert-success" style=""><i class="fa fa-check"></i> Asociaciones almacenadas Satisfactoriamente!</div>')},200);
+</script>
+<?php else:?>
+<script>
+    setTimeout(function(){$("#modal-bodyAsociar").html('<div id="result_item" class="alert alert-warning" style=""><i class="fa fa-close"></i> Ocurrió un error, intente más tarde!</div>')},200);
+</script>
+<?php endif;?>
+<script>
+    // setTimeout(function(){$("#result_item").show("slow")},200)
+    // setTimeout(function(){$("#result_item").hide("slow")},2000)
+    setTimeout(function(){$("#infoAsociar").modal("show")},300)
+</script>
+<?php endif;?>
+<style>
+.producto:hover{
+    background-color: ;
+    cursor: pointer;
+    color: blue;
+}
+</style>
+<div id="layoutAuthentication" style="">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header" style="background-color:white;color:black;"><h3 class="text-center font-weight-light my-4">Asociar Productos al Proveedor</h3></div>
+                                <div class="card-body">                                    
+                                        <div style="text-align:center">                                                                                        
+                                        </div> 
+                                        <h2 style="color:gray">Proveedor</h2>                                                                        
+                                        <div class="form-row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNombre">Elegir:</label>
+                                                    <?php if($this->proveedores!=null):?>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectProveedor" name="proveedores_id" onchange="loadAsociados()">
+                                                        <?php foreach($this->proveedores as $proveedor):?>                                                    
+                                                            <option value="<?php echo $proveedor->id?>"><?php echo $proveedor->rfc." - ".$proveedor->nombre;?></option>
+                                                        <?php endforeach;?>    
+                                                    </select>
+                                                    <?php endif;?>
+                                                </div>
+                                            </div>                                            
+                                        </div>    
+                                        <h2 style="color:gray">Artículos</h2>                                                                                                                
+                                        <div class="form-row">
+                                        <div class="col-md-11">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputNombreProducto">Nombre o Identificador de Artículo</label>
+                                                    <input class="form-control py-4" id="inputNombreProducto" onkeyup="buscaProducto()" name="nombre_producto" type="text" placeholder="Nombre o Identificador de Producto" />
+                                                    <div style="z-index:99;max-width:100%;background-color:#F8FFFF;position:absolute;padding:10px;display:none" id="lista_productos">                                                   
+                                                    </div>
+                                                </div>
+                                        </div> 
+                                        <div class="col-md-1">
+                                                <div class="form-group">
+                                                     <label class="small mb-2" for="">Agregar</label> 
+                                                    <br/>                                                    
+                                                    <button class="btn btn-success" id="buttonAgregar" disabled onclick="agregarProductoAsociado($('#inputNombreProducto').val())"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                        </div>                                          
+                                        </div>
+                                        <div class="form-row">
+                                        <div class="col-md-11">
+                                            <table class="table" style="width:100%">
+                                                <thead>
+                                                    <tr style="text-align:center">
+                                                        <th>
+                                                            id
+                                                        </th>
+                                                        <th>
+                                                            Artículo
+                                                        </th>
+                                                        <th>
+                                                            existencias
+                                                        </th>
+                                                    </tr>
+                                                </thead> 
+                                                <tbody id="productos_asociados">
+
+                                                </tbody>                                           
+                                            </table>
+                                        </div>
+                                        </div>
+                                        <!-- <h2 style="color:gray">Laboral</h2>
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectArea">Área de empleo*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectArea" name="area_trabajo">
+                                                        <option value="mesero">Mesero</option>
+                                                        <option value="cocina">Cocina</option>
+                                                        <option value="barra">Barra</option>
+                                                        <option value="administrador">Administrador</option>
+                                                    </select>
+                                                </div>                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="selectTurno">Turno*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="selectTurno" name="turno">
+                                                        <option value="matutino">Matutino</option>
+                                                        <option value="vespertino">Vespertino</option>
+                                                        <option value="mixto">Mixto</option>                                                        
+                                                    </select>
+                                                </div>                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputCodigo">Clave Acceso*</label>
+                                                    <input class="form-control py-4" id="inputCodigo" name="codigo_acceso" type="text" placeholder="Clave Acceso" required/>
+                                                </div>
+                                        </div>
+                                        </div> -->                                            
+                                        <div class="form-group mt-4 mb-0" style="text-align:right"><a href="<?php echo $this->path?>/Proveedores/listado"><button  type="button" class="btn btn-secondary">Cancelar</button></a>&nbsp;&nbsp;&nbsp;<button onclick="almacenaAsociados()" class="btn btn-primary">Almacenar</button></div>                                    
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small"><a href="login.html"></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>            
+    </div>
+    <script>
+        setTimeout(function(){$("#collapseProveedores").addClass("show");},1)
+    </script>
+<div class="modal fade" id="infoAsociar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:white;color:black;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Resultado de Almacenamiento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyAsociar">                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>

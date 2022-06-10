@@ -1,0 +1,50 @@
+<style>
+    .texto{
+        height: 50px;        
+        font-size:1.5em
+    }
+</style>
+<div id="login">
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+    <div class="login_wrapper" style="">
+        <div class="animate form login_form" style="border: solid 3px #f0f0f0; padding:10px; background-color: white">
+            <section class="login_content" >
+                <center>
+                    <img style="width:250px;"src="<?php echo $this->path?>/images/logo.png">
+                </center>
+                <form action="<?php echo $this->path?>/Login/index" method="POST" autocomplete="false">                    
+                    <h2>Acceso al Sistema </h2>
+                    <hr/>
+                    <div>
+                        <input  type="text" class="form-control texto" name="username" placeholder="Usuario" required="" />
+                    </div>
+                    <div>
+                        <input autocomplete="false" type="password" name="password" class="form-control texto" placeholder="Contraseña" required="" />
+                    </div>
+                    <div style="text-align: right">
+<!--                        <input type="submit" value="Acceder"/>-->
+                        <button type="submit" class="btn btn-success" style="background-color:#4e9b62;border: solid 1px white;width:100px;height:40px;">Acceder</button>
+<!--                        <a class="reset_pass" href="#">Lost your password?</a>-->
+                    </div>
+                    <div id="errorlogin" style="color: red; font-weight: bold"><?php echo $this->mensaje?></div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+<!--                        <p class="change_link">New to site?
+                            <a href="#signup" class="to_register"> Create Account </a>
+                        </p>-->
+
+                        <div class="clearfix"></div>
+                        <br />                        
+                    </div>
+                </form>
+            </section>
+        </div>      
+    </div>
+</div>
+<script>
+    setTimeout(function(){$("#errorlogin").hide('slow')},2000);
+</script>
+

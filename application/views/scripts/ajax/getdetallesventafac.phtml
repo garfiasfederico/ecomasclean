@@ -1,0 +1,40 @@
+<?php if($this->detalles!=null): $granTotal=0;?>
+<?php foreach($this->detalles as $detalle):        
+    $cantidad = $detalle->cantidad;
+    $descuento = $detalle->descuento;
+    $iva = $detalle->iva;
+    $precio = $detalle->precio+$descuento;
+    $ivaIncluido = $detalle->iva_monto ;   
+    $granTotal += $detalle->total;
+    ?>
+    <tr>        
+        <td><?php echo $detalle->venta_items_id?></td>
+        <td><?php echo $detalle->nombre?></td>
+        <td><?php echo $detalle->unidad?></td>
+        <td style="text-align:right">$ <?php echo number_format($precio,2)?></td>
+        <td style="text-align:right"><?php echo number_format($detalle->cantidad,2)?></td>
+        <td style="text-align:right">$ <?php echo number_format($descuento,2);?></td>
+        <td style="text-align:right">$ <?php echo number_format($ivaIncluido,2)?></td>
+        <td style="text-align:right">$ <?php echo number_format($granTotal,2)?></td>        
+    </tr>
+<?php endforeach;?>
+<tr>
+    <td colspan="7" style="text-align:right">
+        TOTAL 
+    </td>
+    <td colspan="1" style="text-align:right">
+        <b><?php echo number_format($granTotal,2)?></b> 
+    </td>
+</tr>
+<script>
+    $("#receptorContent").show("slow");
+    $("#usoContent").show("slow");
+
+</script>
+<?php else:?>
+<div class="alert alert-info">No existe la Venta Buscada.</div>
+<script>
+    $("#receptorContent").hide("slow");
+    $("#usoContent").hide("slow");
+</script>
+<?php endif;?>

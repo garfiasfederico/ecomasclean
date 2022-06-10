@@ -1,0 +1,107 @@
+<?php if($this->turno!=null):?>
+<div id="layoutAuthentication" style="">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header" style="background-color:#138496;color:white;"><h3 class="text-center font-weight-light my-4">Turno Activo: <span id="turnos_id"><?php echo $this->turno;?></span></h3></div>
+                                <div class="card-body">                                    
+                                        <div style="text-align:center">                                                                                        
+                                        </div> 
+                                        <h2 style="color:gray">Saldo Final</h2>                                                                        
+                                        <div class="form-row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                   <center><h1> <div style="text-align:center"> <span id="saldo_final"><?php echo number_format($this->infoTurno->saldo_final,2)?></span></div></h1></center>
+                                                </div>
+                                            </div>                                            
+                                        </div>    
+                                        <div class="form-row">
+                                        <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputMonto">Monto de Retiro:</label>
+                                                    <input class="form-control py-4" style="font-size:2em;" id="inputMonto" name="monto" maxlength="13" type="text" placeholder=" 0.00" required/>
+                                                </div>                                                
+                                        </div>                                        
+                                        </div>
+                                        <div class="form-row">
+                                        <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputMotivo">Motivo:</label>
+                                                    <input class="form-control py-4" style="font-size:2em;" id="inputMotivo" name="motivo"  type="text" required/>
+                                                </div>                                                
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group" style="">
+                                                <br/>
+                                                <button  style="height:61px;" type="button" class="btn btn-success" id="button_retiro" onclick="addRetiro()">Retirar</button>                                                    
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <table class="table">
+                                                <thead style="background-color:#33B5FF;color:black;">
+                                                    <tr>
+                                                        <th>id</th>
+                                                        <th>Fecha</th>
+                                                        <th>Monto Retirado</th>
+                                                        <th>Motivo de Retiro</th>
+                                                        <th></th>
+                                                    </tr>                                                
+                                                </thead>
+                                                <tbody id="rowsretiro">   
+                                                 <?php if($this->retiros):?>
+                                                    <?php foreach($this->retiros as $retiro):?>
+                                                        <tr id="retiro<?php echo $retiro->id?>">
+                                                            <td><?php echo $retiro->id?></td>
+                                                            <td><?php echo date("Y-m-d",strtotime($retiro->fecha))?></td>
+                                                            <td>$ <?php echo number_format($retiro->monto,2)?></td>
+                                                            <td> <?php echo $retiro->motivo?></td>
+                                                            <td><button class="btn btn-warning" id="buttonretiro<?php echo $retiro->id?>"onclick="cancelaRetiro(<?php echo $retiro->id?>,<?php echo $retiro->monto?>)"><i class="fa fa-times"></i></button></td>
+                                                        </tr>
+                                                    <?php endforeach;?>
+                                                 <?php endif;?>   
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        </div>                                                                                                                                                                                                       
+                                        <!-- <div class="form-group mt-4 mb-0" style="text-align:right"><a href="<?php echo $this->path?>/Clientes/listado"><button  type="button" class="btn btn-secondary">Cancelar</button></a>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary">Almacenar Cliente</button></div>                                     -->
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small"><a href="login.html"></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>            
+    </div>    
+<?php endif;?>
+<div class="modal fade" id="infoRetiro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:gray;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Mensaje de Retiro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyRetiro">                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+
+<script>
+        setTimeout(function(){$("#collapseCaja").addClass("show");},1)
+</script>

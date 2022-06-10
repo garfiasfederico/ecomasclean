@@ -1,0 +1,14 @@
+<?php if($this->asociados!=null):?>
+<?php foreach($this->asociados as $asociado):?>
+    <tr id="rowasociado<?php echo $asociado->items_id?>">
+            <td style="text-align:center" class="items_id"><?php echo $asociado->items_id?></td>            
+            <td>
+            <?php echo $asociado->nombre?>
+            </td>
+            <td style="text-align:center">
+            <?php echo $asociado->existencias?>
+            </td>
+            <td style="text-align:center"><input class="cantidades" style="width:80px;text-align:center"type="text" value="1"/></td>'+
+        </tr>';
+<?php endforeach;?>
+<?php endif;?>

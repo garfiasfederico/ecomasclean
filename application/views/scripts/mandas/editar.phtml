@@ -1,0 +1,122 @@
+<script>
+function isLoaded()
+{ 
+  var pdfFrame = window.frames["pdf"];  
+  if(pdfFrame.location!="about:blank")
+  {
+    pdfFrame.focus();
+    pdfFrame.print();
+  }
+}
+</script>
+<style>
+    .item{
+        width: 200px;
+        height: 200px;
+    }
+</style>
+<center>
+<div style="width:97%;text-align:center;background-color:white; overflow:scroll" id="contenedor_mandas">  
+<div style="width:100%;padding:10px; text-align:right">
+<?php $manda_estado = $this->infoManda->estado;  $desactiva=false;  if($manda_estado=="cerrada" || $manda_estado=="cancelada") $desactiva=true;?>
+                    <span><form clss="form" style="position:fixed; left:50px;" action="<?php echo $this->path?>/Mandas/editar" method="POST"><input type="hidden" name="mandas_id" value="<?php echo $this->mandas_id?>"><button <?php echo ($desactiva)?" disabled ":"";?>class="btn btn-dark" aria-pressed="true" style=" width:80px; height:80px;" onclick="location.reload();"><i style="font-size:30pt" class="fa fa-refresh"></i></button></form></span>
+                    <span id="estatus_mandas"></span>
+                    <span><button <?php echo ($desactiva)?" disabled ":"";?> class="btn btn-dark" aria-pressed="true" style=" width:80px; height:80px;" onclick="cerrarManda()"><i style="font-size:30pt" class="fa fa-check-circle"></i></button></span>
+                    <!--<span><button class="btn btn-dark" aria-pressed="true" style=" width:80px; height:80px;"><i style="font-size:30pt" class="fa fa-trash"></i></button></span>                    -->                    
+                    <span><a href="<?php echo $this->path?>/Mandas/imprimirmanda?mandas_id=<?php echo $this->mandas_id?>" target="_blank"><button class="btn btn-dark" aria-pressed="true" style=" width:80px; height:80px;"><i style="font-size:30pt" class="fa fa-print"></i></button></a></span>
+                    <span>                    
+                        <button <?php echo ($desactiva)?" disabled ":"";?> class="btn btn-dark" type="submit" style=" width:80px; height:80px;" onclick="actualizaManda()"><i style="font-size:30pt" class="fa fa-save"></i></button>                                            
+                    </span>
+                    <span><a href="<?php echo $this->path?>/Mandas/Panel"><button class="btn btn-dark" style=" width: 80px; height:80px;" ><i style="font-size:30pt" class="fa fa-arrow-left"></i></button></a></span>
+    </div>
+    <input type="hidden" value="<?php echo $this->mandas_id?>" id="mandas_id"/>
+    <h1 style="background-color:black;color:red ">Editar Pedido, Comanda: <?php echo $this->mandas_id?> Estado: <span id="status_manda"><?php echo $this->infoManda->estado?></span></h1>
+    <table style="width:100%">
+        <tr>
+            <td style="width:40%; border:dotted 1px gray;text-align:center;">  
+                <table style="width:100%">
+                <tr>
+                    <td>
+                            <div style="text-align:left;padding-left:15px;font-size:1.2em;">Mesa:
+                                <select class="select" style="text-align:center" id="mesa"> 
+                                    <option value="0">Elija</option>
+                                    <?php for($x=1;$x<=15;$x++):?>
+                                        <option <?php if($this->infoManda->mesa == $x) echo "selected "?> value="<?php echo $x?>"><?php echo $x?></option>
+                                    <?php endfor;?>
+                                    <option <?php if($this->infoManda->mesa == "99") echo "selected "?> value="99">Domicilio</option>
+                                </select>
+                            </div>
+                    </td>
+                    <td style="text-align:center;">
+                            <span>TOTAL: <span><b id="total"></b></span></span>
+                    </td>
+                    <td>
+                            <span>ITEMS: <span><b id="items_count"></b></span></span>
+                    </td>
+                </tr>
+                </table>                              
+                    <hr>
+                <div style="height:500px; overflow:scroll" id="content_manda">
+                <table style="width:100%;font-size:1.1em;" id="table_manda"> 
+                <?php $contador=0; 
+                      $ban=true; 
+                      foreach($this->items as $item): 
+                        $contador++;                         
+                        switch($item->estado){
+                            case 1:
+                                 $color="#F9F7F6";
+                                break; 
+                            case 2:
+                                $color="#F4FFD3";
+                                break; 
+                            case 3:
+                                $color="#FFE0AD";
+                                break; 
+                            case 4:
+                                $color="#D6CEFF";
+                                break; 
+
+                        }    
+                                
+                ?>
+                    <tr id="<?php echo $item->manda_items_id?>" class="<?php if($item->estado==1||$item->estado==2) echo "item_manda_guardada activo"?>" item_id="<?php echo $item->items_id?>" style="height:60px; background-color:<?php echo $color?>;border:solid 1px #D5D5D5;font-size:1em ">
+                        <td style="text-align:left;padding-left:10px;">
+                            <?php echo $item->nombre?>
+                        </td>                       
+                        <td>
+                            1
+                        </td>                     
+                        <td>
+                        $ <span id="precio<?php echo $item->manda_items_id?>" class="<?php if($item->estado==1||$item->estado==2) echo "precio_guardado"?>"><?php echo number_format($item->precio,2)?></span>
+                        </td>
+                        <td>
+                        <?php if($item->estado==1):?>
+                           <button id="button<?php echo $item->manda_items_id?>" onclick="cancelaItemManda(<?php echo $item->manda_items_id?>)" class="btn btn-warning"><i style="font-size:10pt" id="icono<?php echo $item->manda_items_id?>" class="fa fa-remove"></i></button>
+                           <?endif?>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+                </table>
+                </div>
+            </td>
+            <td style="width: 60%;border:dotted 1px gray;">                                          
+                <center>
+                <br/>
+                <div>
+                    <button onclick=" getItemsByCategoria(1);" class="btn btn-info" style="width:200px;font-size:1.3em">Bebidas</button>
+                    <button onclick=" getItemsByCategoria(2);" class="btn btn-info" style="width:200px;font-size:1.3em">Alimentos</button>
+                    <button onclick=" getItemsByCategoria(3);" class="btn btn-info" style="width:200px;font-size:1.3em">Otros</button>                    
+                </div>
+                <div id="list_items" style="width:100%;padding:25px;text-align:center;height:550px;overflow:scroll">                
+                </div>          
+                </center>               
+            </td>
+        </tr>
+    </table>
+    <script>
+        actualizaNumItems();
+    </script>
+    
+</div>
+<center>
+<iframe style="display:none" onload="isLoaded();" id="pdf" name="pdf" src="" width="200" height="200"></iframe>

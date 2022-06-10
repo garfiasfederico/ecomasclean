@@ -1,0 +1,64 @@
+<style>
+    .item{
+        width: 200px;
+        height: 200px;
+    }
+</style>
+<center>
+<div style="width:97%;text-align:center;background-color:white; overflow:scroll" id="contenedor_mandas">  
+<div style="width:100%;padding:10px; text-align:right">
+                    <span id="estatus_mandas"></span>                    
+                    <span>                    
+                        <button class="btn btn-dark" type="submit" style=" width:80px; height:80px;" onclick="iniciarManda()"><i style="font-size:30pt" class="fa fa-save"></i></button>                                            
+                    </span>
+                    <span><a href="<?php echo $this->path?>/Mandas/Panel"><button class="btn btn-dark" style=" width: 80px; height:80px;" ><i style="font-size:30pt" class="fa fa-arrow-left"></i></button></a></span>
+</div>  
+    <h1 style="background-color:black;color:red ">Nuevo Pedido </h1>
+    <table style="width:100%">
+        <tr>
+            <td style="width:40%; border:dotted 1px gray;text-align:center;">  
+                <table style="width:100%">
+                <tr>
+                    <td style="width:30%">
+                            <div style="text-align:left;padding-left:15px;font-size:1.2em;">Mesa:
+                                <select class="select" style="text-align:center" id="mesa"> 
+                                    <option value="0">Elija</option>
+                                    <?php for($x=1;$x<=15;$x++):?>
+                                        <option value="<?php echo $x?>"><?php echo $x?></option>
+                                    <?php endfor;?>
+                                    <option <?php if($this->infoManda->mesa == "99") echo "selected "?> value="99">Domicilio</option>
+                                </select>
+                            </div>
+                    </td>
+                    <td style="text-align:center;">
+                            <span>TOTAL: <span><b id="total"></b></span></span>
+                    </td>
+                    <td style="text-align:center;">
+                            <span>ITEMS: <span><b id="items_count"></b></span></span>
+                    </td>
+                </tr>
+                </table>                              
+                
+                
+                    <hr>
+                <div style="height:550px; overflow:scroll" id="content_manda">
+                <table style="width:100%;font-size:1.1em;" id="table_manda">                    
+                </table>
+                </div>
+            </td>
+            <td style="width: 60%;border:dotted 1px gray;">                                          
+                <center>
+                <br/>
+                <div>
+                    <button onclick=" getItemsByCategoria(1);" class="btn btn-info" style="width:200px;font-size:1.3em">Bebidas</button>
+                    <button onclick=" getItemsByCategoria(2);" class="btn btn-info" style="width:200px;font-size:1.3em">Alimentos</button>
+                    <button onclick=" getItemsByCategoria(3);" class="btn btn-info" style="width:200px;font-size:1.3em">Otros</button>                    
+                </div>
+                <div id="list_items" style="width:100%;padding:25px;text-align:center;height:550px;overflow:scroll">                
+                </div>          
+                </center>               
+            </td>
+        </tr>
+    </table>        
+</div>
+<center>

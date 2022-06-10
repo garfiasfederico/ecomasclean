@@ -1,0 +1,50 @@
+<!--<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaViDOYmj5ZSkqudQmZ0gVFQpS1Ap-SLo&callback=initMap">
+</script>
+<script>
+    class Localizacion{
+        constructor(callback){
+            if(navigator.geolocation){
+                //Obtenemos Ubicación
+                navigator.geolocation.getCurrentPosition((position)=>{
+                    this.latitude = position.coords.latitude;
+                    this.longitude = position.coords.longitude;
+                    callback();                    
+                });
+            }else{
+                alert("Tu navegador no soporta Geolocalización :(");
+            }
+        }
+    }    
+
+
+    function initMap(){
+        var ubicacion = new Localizacion(()=>{
+            const options = {
+                center:{
+                    lat:ubicacion.latitude,
+                    lng:ubicacion.longitude
+                },
+                zoom: 18                
+            };
+            var map = document.getElementById("map");
+                const mapa = new google.maps.Map(map,options); 
+        });
+    }
+
+    var ubicacion = new Localizacion();    
+</script>
+<style>
+    #map{
+        width: 500px;
+        height: 500px;
+    }
+</style>
+<div id="map">-->
+
+<a href="https://goo.gl/maps/V9rR1DGMYTuoW3YE7" target="blank_"><i class="fa fa-map-marker"></i> Ubicacion</a>
+
+
+
+
+

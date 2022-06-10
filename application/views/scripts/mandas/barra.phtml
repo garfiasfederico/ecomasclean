@@ -1,0 +1,51 @@
+<div style="width:100%;padding:10px; text-align:center; background-color:white" id="contenedor_barra">
+<h1 style="background-color:black;color:white ">Comandas Despacho de Barra y Otros</h1>
+    <span><button class="btn btn-dark" aria-pressed="true" style=" width:80px; height:80px;" onclick="location.reload();"><i style="font-size:30pt" class="fa fa-refresh"></i></button></form></span>
+</div>
+<?php if($this->mandas!=null): $ModelMandaItems = new Model_Mandaitems();?>
+<div style="height:600px; overflow:scroll;background-color:white; font-size:14pt; white-space: nowrap;" >
+    <table>
+        <tr id="ordenes_cocina">
+        <?php foreach($this->mandas as $manda): $las_mandas_id=$manda->id; $items = $ModelMandaItems->getItemsActivos($manda->id,1); if($items!=null): ?>
+            <td style="text-align:center; border: dotted 1px gray;padding:20px;vertical-align:top" >
+                <div style="background-color:black;color:white"><span style="font-size:15pt">Manda: <?php echo $manda->id?> Mesero: <?php echo $manda->empleado?></span></div>
+                <div style="height:450px;overflow:scroll;">
+                <table style="width:100%;">
+                <?php foreach($items as $item) :?>
+                    
+                    <?php $back = ""; 
+                    switch($item->estado){
+                        case 1:
+                            $back="#F1F1F1";
+                            break;
+                        case 2:
+                            $back="#EAFFD6";
+                            break;
+                        case 4:
+                            $back="#BFE1FF";
+                            break;                        
+                        }?>
+                    <tr id="mandaitemsid<?php echo $item->manda_items_id?>" style="background-color:<?php echo $back?>">
+                        <td>
+                            <?php echo date("H:i:s",strtotime($item->fecha_registro))?>
+                        </td>
+                        <td style="padding:5px;text-align:left">
+                            <?php echo $item->nombre?>
+                        </td>
+                        <td style="padding:5px;">                            
+                            <button onclick="setTerminado(<?php echo $item->manda_items_id?>)" class="btn btn-success"><i id="terminado<?php echo $item->manda_items_id?>" style="font-size:1em" class="fa fa-check"></i></button>&nbsp;&nbsp;
+                            <button onclick="setPendiente(<?php echo $item->manda_items_id?>)" class="btn btn-secondary"><i id="pendiente<?php echo $item->manda_items_id?>" style="font-size:1em" class="fa fa-hand-stop-o"></i></button</td>
+                    </tr>                    
+                    <?php endforeach;?>
+                </table>
+                </div>
+            </td>
+            <?php endif;?>
+            <?php endforeach;?>                                                            
+        </tr>
+    </table>
+    <input type="hidden" id="last_mandas_id" value="<?php echo $las_mandas_id?>">        
+</div>
+<?php else:?>
+<div style="text-align:center" class="alert alert-info">No existen Mandas Activas!</div>
+<?php endif;?>

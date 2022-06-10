@@ -1,0 +1,13 @@
+<?php if($this->clientes!=null):?>
+    <?php foreach($this->clientes as $cliente):?>
+        <span style="cursor:pointer" class="itemcliente" onclick="$('#inputRFC').val('<?php echo $cliente->rfc?>'); $('#inputNombre').val('<?php echo $cliente->nombre?>'); $('#list_clientes').html(''); $('#list_clientes').hide('slow'); "><?php echo $cliente->rfc." - ".$cliente->nombre?></span>
+        <br/>
+    <?php endforeach;?>
+    <script>
+        $("#list_clientes").show("slow");
+    </script>
+<?php else:?>
+<script>
+    $("#list_clientes").hide("slow");
+</script>
+<?php endif;?>

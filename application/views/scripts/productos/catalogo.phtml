@@ -1,0 +1,73 @@
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Catálogo de Artículos
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es">
+                                        <thead>
+                                            <tr style="background-color:black;color:white;">
+                                                <th>Id</th>
+                                                <th>Identificador</th>
+                                                <th>Artículo</th>
+                                                <th>Tipo</th>
+                                                <th>Costo</th>
+                                                <th>Precio Menudeo</th>
+                                                <th>Precio Mayoreo</th>
+                                                <th>Existencias</th>
+                                                <th>Avatar</th>
+                                                <th>Acciones</th>
+
+                                            </tr>
+                                        </thead>
+                                        <!--<tfoot>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Position</th>
+                                                <th>Office</th>
+                                                <th>Age</th>
+                                                <th>Start date</th>
+                                                <th>Salary</th>
+                                            </tr>
+                                        </tfoot>-->
+                                        <tbody>
+                                            <?php $bandera=true; if($this->productos!=null):?>
+                                                  <?php foreach($this->productos as $producto):?> 
+                                                    <tr class="<?php echo $bandera?"sombreado":"";?>">
+                                                        <td><?php echo $producto->id?></td>
+                                                        <td><?php echo $producto->identificador?></td>
+                                                        <td><?php echo $producto->nombre?></td>
+                                                        <td><?php echo $producto->categoria?></td>
+                                                        <td style="text-align:right"><?php echo "$ ".number_format($producto->costo,2)?></td>
+                                                        <td style="text-align:right"><?php echo "$ ".number_format($producto->precio_publico,2)?></td>
+                                                        <td style="text-align:right"><?php echo "$ ".number_format($producto->precio_mayoreo,2)?></td>
+                                                        <td style="text-align:right"><?php echo $producto->existencias?></td>
+                                                        <?php if($producto->avatar != ""):?>
+                                                            <td style="text-align:center"><img style="width:50px;"src="<?php echo $this->path."/images/items/".$producto->avatar?>"></td>   
+                                                        <?php else:?>
+                                                            <td style="text-align:center"><img style="width:50px;"src="<?php echo $this->path."/images/items/generic.png"?>"></td>   
+                                                        <?php endif?>
+                                                        <td style="text-align:center">
+                                                            <form style="display:inline;" action="<?php echo $this->path?>/Productos/editar" method="POST"><input type="hidden" name="items_id" value="<?php echo $producto->id?>"><button type="submit" class="btn btn-info"><i class="fa fa-edit"></i></button></form>
+                                                            <form style="display:inline;" action="<?php echo $this->path?>/Productos/eliminar" method="POST"><input type="hidden" name="items_id" value="<?php echo $producto->id?>"><button type="submit" class="btn btn-warning"><i class="fa fa-trash "></i></button></form>
+                                                        </td>
+                                                    </tr>                                                                                                
+                                                  <?php $bandera=!$bandera; endforeach;?> 
+                                            <?php endif;?>
+                                            
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            setTimeout(function(){$("#collapseLayouts").addClass("show");},1)
+                        </script>

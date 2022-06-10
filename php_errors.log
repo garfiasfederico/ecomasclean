@@ -1,0 +1,20 @@
+[02-Dec-2019 12:47:18 America/Mexico_City] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)' in /home/mido/library/Zend/Db/Adapter/Pdo/Abstract.php:129
+Stack trace:
+#0 /home/mido/library/Zend/Db/Adapter/Pdo/Abstract.php(129): PDO->__construct('mysql:host=loca...', 'root', 'f3d3r1k087', Array)
+#1 /home/mido/library/Zend/Db/Adapter/Pdo/Mysql.php(111): Zend_Db_Adapter_Pdo_Abstract->_connect()
+#2 /home/mido/library/Zend/Db/Adapter/Abstract.php(460): Zend_Db_Adapter_Pdo_Mysql->_connect()
+#3 /home/mido/library/Zend/Db/Adapter/Pdo/Abstract.php(238): Zend_Db_Adapter_Abstract->query('DESCRIBE `temap...', Array)
+#4 /home/mido/library/Zend/Db/Adapter/Pdo/Mysql.php(171): Zend_Db_Adapter_Pdo_Abstract->query('DESCRIBE `temap...')
+#5 /home/mido/library/Zend/Db/Table/Abstract.php(836): Zend_Db_Adapter_Pdo_Mysql->describeTable('temaped', NULL)
+#6 /home/mido/library/Zend/Db/Table/Abstract.php(858): Zend_Db_Table_Abstract->_setupMetadata()
+#7 /home/mido/library/Zend/ in /home/mido/library/Zend/Controller/Plugin/Broker.php on line 336
+[02-Dec-2019 16:54:14 America/Mexico_City] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)' in /home/mido/library/Zend/Db/Adapter/Pdo/Abstract.php:129
+Stack trace:
+#0 /home/mido/library/Zend/Db/Adapter/Pdo/Abstract.php(129): PDO->__construct('mysql:host=loca...', 'root', 'f3d3r1k087', Array)
+#1 /home/mido/library/Zend/Db/Adapter/Pdo/Mysql.php(111): Zend_Db_Adapter_Pdo_Abstract->_connect()
+#2 /home/mido/library/Zend/Db/Adapter/Abstract.php(460): Zend_Db_Adapter_Pdo_Mysql->_connect()
+#3 /home/mido/library/Zend/Db/Adapter/Pdo/Abstract.php(238): Zend_Db_Adapter_Abstract->query('DESCRIBE `temap...', Array)
+#4 /home/mido/library/Zend/Db/Adapter/Pdo/Mysql.php(171): Zend_Db_Adapter_Pdo_Abstract->query('DESCRIBE `temap...')
+#5 /home/mido/library/Zend/Db/Table/Abstract.php(836): Zend_Db_Adapter_Pdo_Mysql->describeTable('temaped', NULL)
+#6 /home/mido/library/Zend/Db/Table/Abstract.php(858): Zend_Db_Table_Abstract->_setupMetadata()
+#7 /home/mido/library/Zend/ in /home/mido/library/Zend/Controller/Plugin/Broker.php on line 336

@@ -1,0 +1,8 @@
+<?php if($this->productos != null):?>
+<?php foreach($this->productos as $producto):?>
+    <div class="producto" onclick="$('#inputNombreProducto').val('<?php echo $producto->id?>-<?php echo $producto->identificador?>-<?php echo $producto->nombre?>-<?php echo $producto->existencias?>'); $('#lista_productos').html('');$('#lista_productos').hide('slow'); $('#buttonAgregar').prop('disabled',false);"><i class="fa fa-check" style="color:green"></i> <?php echo $producto->identificador?> - <?php echo $producto->nombre?></div>    
+<?php endforeach;?>
+<?php else:?>
+<div>No existen registros!</div>
+<?php endif;?>
+

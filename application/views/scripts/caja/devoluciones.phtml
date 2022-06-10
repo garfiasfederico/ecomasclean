@@ -1,0 +1,110 @@
+<div id="layoutAuthentication" style="">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header" style="background-color:#138496;color:white;"><h3 class="text-center font-weight-light my-4">Devoluciones</h3></div>
+                                <div class="card-body">                                    
+                                        <div style="text-align:center">                                                                                        
+                                        </div> 
+                                        <h2 style="color:gray">Venta</h2>                                                                        
+                                        <div class="form-row">                                            
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputTicket">Ticket de Venta*:</label>
+                                                    <input class="form-control py-4" id="inputTicket" name="ticket" maxlength="13" type="text" placeholder="Ticket de venta" onkeyup="if(event.keyCode==13)getDetalleVenta()" required/>
+                                                </div>
+                                            </div>                                            
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for=""></label>
+                                                    <br/>                                                    
+                                                    <button type="button" class="btn btn-success" onclick="getDetalleVenta()"><i class="fa fa-search" ></i></button>
+                                                </div>
+                                            </div>                                            
+                                        </div>                                                                                       
+                                        <h2 id="labelDetalleVenta" style="display:;color:gray;">Detalles de Venta</h2>                                                                        
+                                        <div class="form-row" id="contenedorDetalleVenta">
+                                            <div class="col-md-12" id="detalles_venta">
+                                            <table class="table " style="font-size:.7em;">
+                                            <thead>
+                                                <tr style="text-align:center">                                                    
+                                                    <th>Id</th>
+                                                    <th>Producto</th>
+                                                    <th>Unidad</th>
+                                                    <th>Precio</th>
+                                                    <th>Can.</th>
+                                                    <th>Desc.</th>
+                                                    <th>Total</th>
+                                                    <th>Cantidad a Devolver</th>
+                                                    <th>Accion</th>
+                                                </tr>
+                                            <thead>
+                                            <tbody id="detalles">
+                                               
+                                            </tbody>                                            
+                                            </table>
+                                                
+                                            </div>                                            
+                                        </div> 
+                                        <h2 id="labelDetalleMovimientos" style="display:none;color:gray;">Movimientos</h2>                                                                        
+                                        <div class="form-row" id="contenedorDetalleMovimientos" style="display:none">
+                                            <div class="col-md-12" id="detalles_venta">
+                                            <table class="table table-bordered table-hover" style="font-size:.8em;">
+                                            <thead>
+                                                <tr style="text-align:center">                                                    
+                                                    <th>Id</th>
+                                                    <th>Producto</th>
+                                                    <th>Unidad</th>
+                                                    <th>Precio</th>                                                    
+                                                    <th>Total</th>
+                                                    <th>Aplicación</th>
+                                                    <th>Info</th>
+                                                    <th>Accion</th>
+                                                </tr>
+                                            <thead>
+                                            <tbody id="movimientos_dev">
+                                               
+                                            </tbody>                                            
+                                            </table>
+                                                
+                                            </div>                                            
+                                        </div> 
+                                                                                                                                    
+                                        
+                                        <div class="form-group mt-4 mb-0" style="text-align:right"><a href="<?php echo $this->path?>/Caja/devoluciones"><button  type="button" class="btn btn-secondary">Cancelar</button></a>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary">Guardar</button></div>                                    
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small"><a href="login.html"></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>            
+    </div>
+    <script>
+        setTimeout(function(){$("#collapseCaja").addClass("show");},1)
+    </script>
+
+
+<div class="modal fade" id="detalleDev" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:#138496;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Registro de Movimientos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyDetalleDev">                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>

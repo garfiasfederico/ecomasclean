@@ -1,0 +1,52 @@
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Facturas Emitidas
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es">
+                                        <thead>
+                                            <tr style="background-color:#FF58AE;color:white;">
+                                                <th>Id</th>
+                                                <th>Fecha de Registro</th>                                                
+                                                <th>Ticket de Venta</th>
+                                                <th>UUID</th>
+                                                <th>Receptor</th>                                                
+                                                <th>uso de CFDI</th>                                                
+                                                <th>Descarga</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                            
+                                        <?php if($this->listado != null):?>                                       
+                                            <?php foreach($this->listado as $factura):?>
+                                                <tr style="background-color:<?php echo $factura->status==1?"white":"#FFE0B7"?>" id="rowfactura<?php echo $factura->id?>">
+                                                    <td><?php echo $factura->id?></td>
+                                                    <td><?php echo $factura->fecha_registro?></td>
+                                                    <td><?php echo $factura->ventas_id?></td>
+                                                    <td><?php echo $factura->uuid?></td>
+                                                    <td><?php echo $factura->rfc_receptor." - ".$factura->nombre_receptor?></td> 
+                                                    <td><?php echo $factura->usoCFDI?></td>                                                                                                        
+                                                    <td style="text-align:center">
+                                                    <?php $fecha = date("Y_m_d",strtotime($factura->fecha_registro));?>
+                                                            <a href="<?php echo $this->path."/comprobantes/".$fecha."/".$factura->uuid.".xml"?>" target="_blank" title="XML"><button class="btn btn-success"><i class="fa fa-code"></i></button></a>
+                                                            <a href="<?php echo $this->path."/comprobantes/".$fecha."/".$factura->uuid.".pdf"?>" target="_blank" title="PDF"><button class="btn btn-success"><i class="fa fa-file-pdf"></i></button></a>
+                                                            <a href="<?php echo $this->path."/comprobantes/".$fecha."/".$factura->uuid.".png"?>" target="_blank" title="CBB"><button class="btn btn-success"><i class="fa fa-qrcode"></i></button></a>
+                                                    </td>
+                                                </tr>  
+                                            <?php endforeach;?>
+                                        <?php endif;?>                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            setTimeout(function(){$("#collapseFacturacion").addClass("show");},1)
+                        </script>

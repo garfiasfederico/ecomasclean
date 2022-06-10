@@ -1,0 +1,5 @@
+<?php if($this->resultado):?>
+    <div class="alert alert-success"><i class="fa fa-check"></i> El usuario: <?php echo $this->cuenta?> ha sido Creado Satisfactoriamente!</div>
+<?php else:?>
+    <div class="alert alert-warning"><i class="fa fa-error"></i> El usuario: <?php echo $this->cuenta?> no pudo almacenarse, favor de intentar mas tarde!</div>
+<?php endif;?>

@@ -1,0 +1,37 @@
+
+Item 3 Con Existencias: 864 Se actualizo con -1 quedando inventario: 863
+Item 5 Con Existencias: 150 Se actualizo con -1 quedando inventario: 149
+Item 3 Con Existencias: 863 Se actualizo con -10 quedando inventario: 853
+Item 5 Con Existencias: 149 Se actualizo con -10 quedando inventario: 139
+Compra: 25, Item 3 Con Existencias: 853 Se actualizo con -1 quedando inventario: 852
+Compra: 25, Item 5 Con Existencias: 139 Se actualizo con -1 quedando inventario: 138
+Compra: 22, Item 5 Con Existencias: 138 Se actualizo con -1 quedando inventario: 137
+Compra: 22, Item 1 Con Existencias: 743 Se actualizo con -1 quedando inventario: 742
+Compra: 22, Item 4 Con Existencias: 24 Se actualizo con -1 quedando inventario: 23
+Compra: 23, Item 5 Con Existencias: 137 Se actualizo con -1 quedando inventario: 136
+Compra: 23, Item 1 Con Existencias: 742 Se actualizo con -1 quedando inventario: 741
+Compra: 23, Item 4 Con Existencias: 23 Se actualizo con -1 quedando inventario: 22
+Compra: 24, Item 3 Con Existencias: 852 Se actualizo con -10 quedando inventario: 842
+Compra: 24, Item 5 Con Existencias: 136 Se actualizo con -10 quedando inventario: 126
+Compra: 26, Item 5 Con Existencias: 131 Se actualizo con -5 quedando inventario: 126
+Compra: 26, Item 1 Con Existencias: 747 Se actualizo con -6 quedando inventario: 741
+Compra: 26, Item 4 Con Existencias: 29 Se actualizo con -7 quedando inventario: 22
+Compra: 27, Item 5 Con Existencias: 231 Se actualizo con -100 quedando inventario: 131
+Compra: 27, Item 1 Con Existencias: 834 Se actualizo con -100 quedando inventario: 734
+Compra: 27, Item 4 Con Existencias: 126 Se actualizo con -100 quedando inventario: 26
+Compra: 28, Item 5 Con Existencias: 131 Se actualizo con -1 quedando inventario: 130
+Compra: 28, Item 1 Con Existencias: 734 Se actualizo con -1 quedando inventario: 733
+Compra: 28, Item 4 Con Existencias: 26 Se actualizo con -1 quedando inventario: 25
+Compra: 29, Item 5 Con Existencias: 130 Se actualizo con -1 quedando inventario: 129
+Compra: 29, Item 1 Con Existencias: 733 Se actualizo con -1 quedando inventario: 732
+Compra: 29, Item 4 Con Existencias: 25 Se actualizo con -1 quedando inventario: 24
+Compra: 30, Item 5 Con Existencias: 129 Se actualizo con -1 quedando inventario: 128
+Compra: 30, Item 1 Con Existencias: 732 Se actualizo con -1 quedando inventario: 731
+Compra: 30, Item 4 Con Existencias: 24 Se actualizo con -1 quedando inventario: 23
+Compra: 31, Item 5 Con Existencias: 128 Se actualizo con -1 quedando inventario: 127
+Compra: 31, Item 1 Con Existencias: 731 Se actualizo con -1 quedando inventario: 730
+Compra: 31, Item 4 Con Existencias: 23 Se actualizo con -1 quedando inventario: 22
+Compra: 32, Item 5 Con Existencias: 127 Se actualizo con -1 quedando inventario: 126
+Compra: 32, Item 1 Con Existencias: 730 Se actualizo con -1 quedando inventario: 729
+Compra: 32, Item 4 Con Existencias: 22 Se actualizo con -1 quedando inventario: 21
+Compra: 1, Item 1 Con Existencias: 1199 Se actualizo con -200 quedando inventario: 999

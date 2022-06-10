@@ -1,0 +1,175 @@
+<?php if(isset($this->mensaje)):?>
+
+<script>
+setTimeout(function(){$("#modal-bodyMensajeTurno").html("<?php echo $this->mensaje?>");},200);
+setTimeout(function(){$("#mensajeTurno").modal("show")},300);
+setTimeout(function(){$("#mensajeTurno").modal("hide")},3000);
+</script>
+<?php endif;?>
+
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Turnos Registrados
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es">
+                                        <thead>
+                                            <tr style="background-color:#138496;color:white;">
+                                                <th>Id</th>
+                                                <th>Fecha</th>                                                
+                                                <th>Estado</th>
+                                                <th>Nombre Empleado</th>
+                                                <th>Saldo Inicial</th>
+                                                <th>Saldo Final</th>                                                                                                
+                                                <th>Saldo Final Manual</th>                                                                                                
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                            
+                                        <?php if($this->turnos != null):?>                                       
+                                            <?php foreach($this->turnos as $turno):
+                                                $estado = "";
+                                                switch($turno->estado){
+                                                    case 1:
+                                                        $estado = "abierto";
+                                                        break;
+                                                    case 2:
+                                                        $estado = "cerrado";
+                                                        break;
+                                                    case 3:
+                                                        $estado = "cancelado";
+                                                        break;
+                                                }
+                                                
+                                                
+                                                
+                                                ?>
+                                                <tr style="background-color:<?php echo $turno->estado==1?"white":"#F1F1F1"?>" id="turno<?php echo $turno->id?>">
+                                                    <td><?php echo $turno->id?></td>
+                                                    <td><?php echo date("m-d-Y",strtotime($turno->fecha))?></td>
+                                                    <td><?php echo $estado?></td>
+                                                    <td><?php echo $turno->empleado?></td>
+                                                    <td style="text-align:right"><?php echo "$ ".number_format($turno->saldo_inicial,2)?></td>                                                    
+                                                    <td style="text-align:right"><?php echo "$ ".number_format($turno->saldo_final,2)?></td>                                                                                                    
+                                                    <td style="text-align:right"><?php echo "$ ".number_format($turno->saldo_final_manual,2)?></td>                                                                                                    
+                                                    <td style="text-align:center"><?php if($turno->estado=="1"):?>
+                                                        <button empleado="<?php echo $turno->empleado?>" fecha="<?php echo $turno->fecha?>" saldo_inicial="<?php echo number_format($turno->saldo_inicial,2)?>" saldo_final="<?php echo number_format($turno->saldo_final,2)?>" turnos_id="<?php echo $turno->id?>" title="Cerrar Turno" type="button" class="btn btn-light" onclick="cierraTurno(this)"><img style="width:30px;" src="<?php echo $this->path?>/images/close_door.png">
+                                                        </button><?php endif;?>
+                                                        <form style="display:inline" target="_blank" action="<?php echo $this->path?>/Caja/imprimeturno">
+                                                        <input type="hidden" name="turno" value="<?php echo $turno->id?>">
+                                                        <button type="submit" class="btn btn-success">
+                                                            <i class="fa fa-print" style="font-size:1.5em;"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                        
+                                                </tr>  
+                                            <?php endforeach;?>
+                                        <?php endif;?>                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            setTimeout(function(){$("#collapseCaja").addClass("show");},1)
+                            function cierraTurno(element){
+                                $("#inputNombre").val($(element).attr("empleado"));
+                                $("#inputFecha").val($(element).attr("fecha"));
+                                $("#inputSaldo").val($(element).attr("saldo_inicial"));
+                                $("#inputSaldoFinal").val($(element).attr("saldo_final"));
+                                $("#inputSaldoFinalManual").val($(element).attr("saldo_final"));
+                                $("#turnos_id").val($(element).attr("turnos_id"));
+                                $("#turno").html($(element).attr("turnos_id"));
+                                $("#cerrarTurno").modal("show");
+                                setTimeout(function(){$("#inputSaldoFinalManual").focus();},500);
+                            }
+                        </script>
+                        <form action="<?php echo $this->path?>/Caja/turnos" method="POST">                        
+<div class="modal fade" id="cerrarTurno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:#138496;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Cerrar Turno <span id="turno"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyTurno">
+            <div class="form-row">
+                <div class="col-md-8">
+                    <div class="form-group" style="font-size:2em;">
+                        <label class="small mb-1" for="inputNombre">Cajero:</label>
+                        <input type="hidden" name="turnos_id" id="turnos_id" >
+                        <input type="hidden" name="usuarios_id" value="<?php echo $this->usuarios_id?>">
+                        <input class="form-control py-4" id="inputNombre" name="cajero" maxlength="20" type="text" placeholder="" value="<?php echo $this->usuario;?>" disabled/>
+                    </div>
+                </div>  
+                <div class="col-md-4" style="font-size:2em;">
+                    <div class="form-group">
+                        <label class="small mb-1" for="inputFecha">Fecha:</label>
+                        <input class="form-control py-4" id="inputFecha" name="fecha" maxlength="20" type="text" placeholder="" value="<?php echo date("d/m/Y")?>" disabled/>
+                    </div>
+                </div>  
+                </div>
+                <div class="form-row" style="font-size:2em;">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="small mb-1" for="inputSaldo">Saldo Inicial:</label>
+                        <input class="form-control py-4" id="inputSaldo" name="saldo_inicial" maxlength="20" type="text" style="text-align:center;font-size:2em;" placeholder="" value="0.00" onfocus="$(this).select()"  disabled/>
+                    </div>
+                </div>              
+            </div> 
+            <div class="form-row" style="font-size:2em;">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="small mb-1" for="inputSaldoFinal">Saldo Final Automático:</label>
+                        <input class="form-control py-4" id="inputSaldoFinal" name="saldo_final" maxlength="20" type="text" style="text-align:center;font-size:2em;" placeholder="" value="0.00" onfocus="$(this).select()" disabled />
+                    </div>
+                </div>              
+            </div> 
+            <div class="form-row" style="font-size:2em;">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="small mb-1" for="inputSaldoFinalManual">Saldo Final Manual:</label>
+                        <input class="form-control py-4" id="inputSaldoFinalManual" name="saldo_final_manual" maxlength="20" type="text" style="text-align:center;font-size:2em;" placeholder="" value="" onfocus="$(this).select()" />
+                    </div>
+                </div>              
+            </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Cerrar Turno</button>
+                
+            </div>
+            </div>
+        </div>
+        </div>
+</form>
+
+
+<div class="modal fade" id="mensajeTurno" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:#138496;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Mensaje Turno <span id="turno"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyMensajeTurno">
+            </div>            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
+            </div>
+            </div>
+        </div>
+        </div>
