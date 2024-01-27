@@ -38,12 +38,16 @@ class Reporte_Ticketventa {
         $infoVenta = $ModelVentas->getInfoVenta($ventas_id);
         $items = $ModelVentaItems->getItemsDespachados($ventas_id);
 
-        $largoBase = "95";
+        $largoBase = "110";
         $largo = 0;
         if($items!=null){
                 $factor = $items->count();
                 $largo = $factor*3;
         }
+        
+        //Obtenemos información de pago por cupón en caso de que hubiere.
+        $modelCupones = new Model_Movimientoscupon();
+        $montoUtilizadocupones = $modelCupones->getmontopagado($ventas_id);
         
 
 
@@ -143,6 +147,22 @@ if($items!=null){
         else
                 $total = 0;
 
+        if($montoUtilizadocupones!=null){
+           $montoUtilizadocupones = number_format($montoUtilizadocupones,2);
+           $cuponutilizado = <<<EOD
+                        <tr>
+                        <td style="text-align:right;width:60%">                        
+                                CUPON:
+                        </td>
+                        <td style="text-align:right;width:40%;">
+                        <b>$ $montoUtilizadocupones</b>
+                        </td>                        
+                </tr> 
+        EOD;
+        }
+        else
+                $cuponutilizado="";
+
         require (dirname(getcwd()) . '/library/NumeroALetras.php');        
         $formatter = new NumeroALetras();
         $formatter->conector = 'Y';
@@ -214,6 +234,7 @@ if($items!=null){
                         <b>$ $pago</b>
                         </td>                        
                 </tr>
+                $cuponutilizado
                 <tr>
                         <td style="text-align:right;width:60%">                        
                                 CAMBIO:
@@ -271,6 +292,7 @@ $style = array(
 // ---------------------------------------------------------
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
+        ob_clean();
         $pdf->Output('Venta'.$ventas_id.'.pdf', 'I');
 
 //============================================================+

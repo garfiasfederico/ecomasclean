@@ -1,0 +1,24 @@
+<?php if ($this->abonos != null) : ?>
+    <?php foreach ($this->abonos as $abono) : ?>
+        <tr id="rowabono<?php echo $abono->id ?>" abonos_id="<?php echo $abono->id ?>">
+            <td style="display:none"><input type="text" value="<?php echo $abono->id ?>" /></td>
+            <td><?php echo $abono->fecha_abono ?></td>
+            <td><?php echo $abono->turnos_id ?></td>
+            <td class="abonor">
+                <?php echo "$ " . number_format($abono->abono, 2) ?>
+            </td>
+            <td>
+                <?php echo $abono->forma ?>
+            </td>
+            <td><button class="btn btn-danger" onclick="deleteAbono('rowabono<?php echo $abono->id?>')"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    <?php endforeach; ?>
+<?php else : ?>
+    <tr id="emptyabonos">
+            <td colspan="6">
+                <center style="color: gray;">
+                    No existen Abonos Registrados!
+                </center>
+            </td>            
+        </tr>
+<?php endif; ?>

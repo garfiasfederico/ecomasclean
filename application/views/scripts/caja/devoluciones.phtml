@@ -5,7 +5,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-12">
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                <div class="card-header" style="background-color:#138496;color:white;"><h3 class="text-center font-weight-light my-4">Devoluciones</h3></div>
+                                <div class="card-header" style="background-color:#138496;color:white;"><h3 class="text-center font-weight-light my-4">Devoluciones: Turno Activo <?php echo $this->turno?> </h3></div>
                                 <div class="card-body">                                    
                                         <div style="text-align:center">                                                                                        
                                         </div> 
@@ -74,7 +74,7 @@
                                         </div> 
                                                                                                                                     
                                         
-                                        <div class="form-group mt-4 mb-0" style="text-align:right"><a href="<?php echo $this->path?>/Caja/devoluciones"><button  type="button" class="btn btn-secondary">Cancelar</button></a>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary">Guardar</button></div>                                    
+                                        <div class="form-group mt-4 mb-0" style="text-align:right"><a href="<?php echo $this->path?>/Caja/devoluciones"><button  type="button" class="btn btn-primary"><i clas="fa"></i>Cancelar</button></a></div>                                    
                                 </div>
                                 <div class="card-footer text-center">
                                     <div class="small"><a href="login.html"></a></div>
@@ -95,14 +95,14 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header" style="background-color:#138496;color:white;">
-                <h5 class="modal-title" id="exampleModalLongTitle" >Registro de Movimientos</h5>
+                <h5 class="modal-title" id="modal-titleDetalleDev" >Registro de Movimientos</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body" id="modal-bodyDetalleDev">                
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" id="modal-footerDetalleDev">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                
             </div>
             </div>

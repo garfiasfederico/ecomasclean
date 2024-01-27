@@ -15,7 +15,12 @@ class ClientesController extends Zend_Controller_Action {
     }
 
     public function indexAction() {    
-        
+        $modelGiros = new Model_Giros();
+        $modelRegimenes = new Model_Regimenes();
+
+        $this->view->giros=$modelGiros->getGiros();
+        $this->view->regimenes = $modelRegimenes->getRegimenes();
+
         if($this->getRequest()->isPOST()){
             $params = $this->getRequest()->getParams();
             $ModelDireccion = new Model_Direccion();
@@ -60,6 +65,10 @@ class ClientesController extends Zend_Controller_Action {
     }
 
     public function editarAction(){
+        $modelGiros = new Model_Giros();
+        $modelRegimenes = new Model_Regimenes();
+        $this->view->regimenes = $modelRegimenes->getRegimenes();
+        $this->view->giros=$modelGiros->getGiros();
         if($this->getRequest()->isPOST()){
             $clientes_id = $this->getRequest()->getParam("clientes_id");
             $ModelCliente = new Model_Cliente();

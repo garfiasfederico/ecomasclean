@@ -1,0 +1,236 @@
+<script>
+    setTimeout(function() {
+        $("#collapseCaja").addClass("show");
+    }, 100)
+</script>
+
+<div id="layoutAuthentication" style="">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header" style="background-color:#138496;color:white;">
+                                <h3 class="text-center font-weight-light my-4">Cotizaciones </h3>
+                            </div>
+                            <div class="card-body">
+                                <input type="hidden" value="<?php echo $this->tieneturno?$this->turno:"0"?>" name="turnos_id" id="turnos_id">
+                                <div id="tempo-venta"></div>
+                                <div class="col-md-12">
+                                    <div style="text-align:right"><button class="btn btn-info" onclick="showCotizaciones()"><i class="fa fa-list" aria-hidden="true"></i> Mostrar Cotizaciones</button></div>
+                                    <h2>Nueva Cotización</h2>
+                                    <div class="form-row">
+                                    <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="small mb-1" for="vigencia">Vigencia (dias):</label>
+                                        <input type="number" class="form-control input-sm" id="vigencia" size="5" value="1" style="width:80px;" min="1" step="1" />
+                                    </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="small mb-1" for="inputNombre">Seleccione Cliente:</label>
+                                        <select class="form-control custom-select custom-select-lg mb-3" id="cliente" name="cliente">
+                                            <option selected value="0">Seleccione</option>
+                                            <?php foreach ($this->clientes as $cliente) : ?>
+                                                <option value="<?php echo $cliente->id ?>"><?php echo $cliente->nombre ?></option>
+                                            <?php endforeach; ?>
+                                            <option value="-1">General</option>
+                                        </select>
+                                    </div>
+                                            </div>
+                                    </div>
+
+                                    <h3>Artículos</h3>
+                                    <hr/>
+                                    <div style="width:100%;height:70;background-color:white;text-align:right;">
+                                        <div style="width:98%;padding:10px;background-color:#F5F5F5;">
+                                            <table style="width:100%">
+                                                <tr>
+                                                    <td style="text-align:left;">
+                                                        <b>Identificador:</b>
+                                                        <div class="input-group" style="width:100%">
+                                                            <div class="form-outline">
+                                                                <input type="search" style="width:400px;height:50px;" id="input_producto" class="form-control" onkeyup="if(event.keyCode==13){ addProductoc();}else loadProductosc(this.value);" />
+                                                                <div style="z-index:99;max-width:100%;background-color:#F8FFFF;position:absolute;padding:10px;display:none;font-size:14pt;" id="lista_productos_v">
+                                                                </div>
+                                                            </div>
+                                                            <button type="button" class="btn btn-primary" title="Búsqueda de Artículos">
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+
+                                                            <b>&nbsp;&nbsp;Can:&nbsp;</b>
+                                                            <div>
+                                                                <input type="number" class="form-control input-sm" id="cant" size="5" value="1" style="width:80px;" min="0.01" step=".01" />
+                                                            </div>
+                                                            <span id="loading_producto" style="display:none"><i style="font-size:1.5em;color:green" class="fa fa-spinner fa-spin fa-3x fa-fw"></i></span>
+                                                        </div>
+
+                                        </div>
+                                        </td>
+                                        <td style="text-align:right">
+                                            <!--<button class="btn btn-success" style="width:60px;height:60px;" onclick="modalVenta();" title="Cerrar Venta"><i style="font-size:1.5em" class="fa fa-check-circle"></i><b>F3</b></button>-->
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-warning" style="width:60px;height:60px;" onclick="limpiaCotizacion();" title="Limpiar listado de productos agregados"><i style="font-size:1.5em" class="fa fa-eraser"></i></button>
+                                        </td>
+                                        </tr>
+                                        </table>
+                                    </div>
+                                    <div class="card-body" style="height:30vh;overflow:scroll;" id="productos_content">
+                                        <table class="" id="tableVenta" width="100%" cellspacing="0" lang="es">
+                                            <thead>
+                                                <tr style="background-color:#138496;color:white;text-align:center;font-size:1em;">
+                                                    <th>Identificador</th>
+                                                    <th>Nombre</th>
+                                                    <th>Unidad</th>
+                                                    <th>Precio por Unidad</th>
+                                                    <th style="display:none">Precio Unitario</th>
+                                                    <th style="display:none">tasa IVA</th>
+                                                    <th>Cantidad</th>
+                                                    <th style="display:none">Subtotal</th>
+                                                    <th style="display:none">IVA</th>
+                                                    <th>Total</th>
+                                                    <th style="display:none">Descuento</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="body_productos" style="font-size:.8em;">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div style="width:100%;background-color:#EFFFEE;padding-right:40px;border:solid 1px green;position:;bottom: 50px;">
+                                        <table style="width:100%;font-size:1em;">
+                                            <tr>
+                                                <td rowspan="6" style="text-align:center;vertical-align:middle;">
+                                                    <table style="width:100%;" cellpadding="5">
+                                                        <tr>
+                                                            <td style="text-align:left;width:20%">
+                                                                Precio Cotización:
+                                                            </td>
+                                                            <td style="text-align:left">
+                                                                <select class="form-control select" id="precio_de_venta" style="font-size:1.3em;text-align:center">
+                                                                    <option value="menudeo" selected>General</option>
+                                                                    <!--<option value="mayoreo">Mayoreo</option>-->
+                                                                    <option value="distribuidor">Distribuidor o Comercializadora</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:20%">Subtotal:</td>
+                                                <td style="width:15%;"><b><span id="subtotal">0.00</span></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Descuento:</td>
+                                                <td><span id="descuento"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>IVA:</td>
+                                                <td><span id="iva">0.00</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total:</td>
+                                                <td><b><span id="gran_total" style="font-size:1em;">0.00</span></b></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <hr/>
+                                    <div align="center">
+                                        <table>
+                                            <tr>
+                                                <td style="width:10%"><b>Comentarios:</b></td>
+                                                <td style="width:80%;text-align:center"><textarea cols="70" placeholder="Agrega Comentarios" id="comentarios"></textarea></td>
+                                                <td><button class="btn btn-success" style="width:200px;height:60px;" onclick="almacenaCotizacion();" title="Cerrar Venta" id="btnGeneraCotizacion">Generar Cotización</button></td>
+                                            </tr>
+                                        </table>
+                                        
+                                    </div>
+
+                                </div>
+                                <div class="modal fade" id="infoNolocalizado" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered " role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#138496;color:white;">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Búsqueda de Artículo</h5>
+                                                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                                                <!-- <span aria-hidden="true">&times;</span> -->
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="modal-bodyNolocalizado">
+                                                <div class="alert alert-warning">
+                                                    Artículo no Localizado.
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="infoRemoveproducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered " role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#138496;color:white;">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Descartar Artículo</h5>
+                                                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                                                <!-- <span aria-hidden="true">&times;</span> -->
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="modal-bodyRemoveProducto">
+                                                <div class="alert alert-warning">
+                                                    ¿Desea Descartar este artículo?
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-primary" id="btnEliminar" data-dismiss="modal">Eliminar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="info" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered " role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#138496;color:white;">
+                                                <h5 class="modal-title" id="info">Mensaje Cotización</h5>
+                                                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                                                <!-- <span aria-hidden="true">&times;</span> -->
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="infoBody">
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="listCotizaciones" tabindex="-1" role="dialog" aria-labelledby="info" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#138496;color:white;">
+                                                <h5 class="modal-title" id="info">Cotizaciones Realizadas</h5>
+                                                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                                                <!-- <span aria-hidden="true">&times;</span> -->
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="listBody" style="text-align:center">
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

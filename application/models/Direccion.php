@@ -51,8 +51,7 @@ class Model_Direccion Extends Zend_Db_Table{
             "municipio"=>$data["municipio"],
             "estado"=>$data["estado"],
             "cp"=>$data["cp"],
-            "referencia"=>$data["referencia"]
-
+            "referencia"=>$data["referencia"],
         );        
         try{
             $this->update($data_,"id = ".$data["direcciones_id"]);

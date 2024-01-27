@@ -25,13 +25,13 @@ class Model_Venta Extends Zend_Db_Table{
             "turnos_id"=>$data["turnos_id"],
             "estado"=>$data["estado"],
             "descuento"=>$data["descuento"],
-            "iva"=>$data["iva"],
-            "ieps"=>$data["ieps"],
+            "iva"=>$data["iva"],            
             "subtotal"=>$data["subtotal"],
             "total"=>$data["total"],
             "forma_pago"=>$data["forma_pago"],
             "pago"=>$data["pago"],
-            "cambio"=>$data["cambio"]
+            "cambio"=>$data["cambio"],
+            "clientes_id"=>$data["clientes_id"]
         ); 
         $this->getAdapter()->beginTransaction();       
         try{
@@ -42,7 +42,7 @@ class Model_Venta Extends Zend_Db_Table{
             $this->getAdapter()->commit();
             return $ventas_id;
         }catch(Exception $e){  
-            $this->getAdapter()->rollBack();                
+            $this->getAdapter()->rollBack();               
             return null;
         }                
     }
@@ -78,7 +78,8 @@ class Model_Venta Extends Zend_Db_Table{
         $select->setIntegrityCheck(false);
         $select->joinInner("turnos","turnos.id = ventas.turnos_id",array("usuarios_id"));
         $select->joinInner("usuarios","usuarios_id = usuarios.id",array("empleados_id"));
-        $select->joinInner("empleados","empleados.id = empleados_id",array("empleado"=>"concat(nombre,' ',apellido_paterno,' ',apellido_materno)"));
+        $select->joinInner("empleados","empleados.id = empleados_id",array("empleado"=>"concat(empleados.nombre,' ',apellido_paterno,' ',apellido_materno)"));
+        $select->joinLeft("clientes","clientes.id = ventas.clientes_id",array("cliente"=>"clientes.nombre"));
         $select->where("ventas.id=".$ventas_id);
         $result = $this->fetchRow($select);
         if(!empty($result))

@@ -144,9 +144,11 @@
                                     <a class="nav-link" href="<?php echo $path?>/Caja"><i class="fa fa-shopping-bag" style="color:green"> </i>&nbsp;Ventas</a> 
                                     <a class="nav-link" href="<?php echo $path?>/Caja/Devoluciones"><i class="fa fa-share" style="color:green"> </i>&nbsp;Devoluciones</a> 
                                     <a class="nav-link" href="<?php echo $path?>/Caja/retiros"><i class="fa fa-reply" style="color:green"> </i>&nbsp;Retiros</a> 
+                                    <a class="nav-link" href="<?php echo $path?>/Caja/creditos"><i class="fa fa-dollar-sign" style="color:green"> </i>&nbsp;Créditos</a> 
 
                                     <a class="nav-link" href="<?php echo $path?>/Caja/turnos"><i class="fa fa-check-circle" style="color:green"> </i>&nbsp;Cortes</a>
-                                    <a class="nav-link" href="<?php echo $path?>/Caja/listado"><i class="fa fa-list" style="color:green"> </i>&nbsp;Listado</a>
+                                    <a class="nav-link" href="<?php echo $path?>/Caja/listado"><i class="fa fa-list" style="color:green"> </i>&nbsp;Tickets</a>
+                                    <a class="nav-link" href="<?php echo $path?>/Caja/cotizacion"><i class="fa fa-file" style="color:green"> </i>&nbsp;Cotizaciones</a>
                                 </nav>
                             </div>
                             <?php if($varsSessions->rol=="ADMINISTRADOR"):?>
@@ -288,6 +290,32 @@
             </div>
         </div>
         </div>
+
+        <div class="modal fade" id="modalGiro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:purple;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Registrar Giro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyCliente">  
+                <label for="newGiro">Nuevo Giro</label>
+                <input type="text" id="newGiro" class="form-control py-4"/>   
+                <div id="msgresultgiro"></div>           
+            </div>
+            <div class="modal-footer">
+                    <div id="loading_giros" style="display:none">
+                        <i style='font-size:1em' class='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+                    </div>
+                    <button type="button" class="btn btn-primary"  onclick="addGiro()">Almacenar</button>                
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                                                
+            </div>
+            </div>
+        </div>
+        </div>
+
 
     </body>
 </html>

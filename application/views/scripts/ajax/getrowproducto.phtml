@@ -1,20 +1,54 @@
 <?php if($this->rowItem!=null):?> 
-    <script>
+    <script>  
+    
+        //obtenemos cantidad del producto en caso de que ya haya sido añadido a la venta        
+
+
+        id= <?php echo $this->rowItem->id?>;
+        preciodeventa = $("#precio_de_venta option:selected").val();
         if($("#rowproducto<?php echo $this->rowItem->id?>").length>0){
+            precio=null;
             cantidad = parseFloat($("#cantidad<?php echo $this->rowItem->id?>").val());
-            cantidad = cantidad+1;
+            if(cantidad+<?php echo $this->cantidad?> > <?php echo $this->rowItem->existencias?>)
+                $("#modalInexistencias").modal("show");
+            else{
+            cantidad = cantidad+<?php echo $this->cantidad?>;
+            if(cantidad>3.99 && preciodeventa=="menudeo"){
+                precio = <?php echo $this->rowItem->precio_mayoreo;?>;
+                iva = <?php echo $this->rowItem->iva?>;
+                if(iva>0)
+                    preciofinal = precio / (1+iva);
+                $("#precio"+id).html(preciofinal);
+                $("#precio_unidad"+id).html(precio.toFixed(2));                
+            }
+            
+
             $("#cantidad<?php echo $this->rowItem->id?>").val(cantidad);
             //$("#total<?php echo $this->rowItem->id?>").html(cantidad * <?php echo $this->rowItem->precio_publico?>);
             setTotalrow(<?php echo $this->rowItem->id?>);
             //actualizaVenta();
+            }
         }
         else{
+            if(<?php echo $this->rowItem->existencias?> < <?php echo $this->cantidad?>)
+                $("#modalInexistencias").modal("show");
+            else{
             preciodeventa = $("#precio_de_venta option:selected").val();
             preciofinal = 0;
             precio = 0;
+            
             if(preciodeventa=="menudeo"){
-                preciofinal = <?php echo $this->rowItem->precio_publico;?>;
-                precio = <?php echo $this->rowItem->precio_publico;?>;
+                if(<?php echo $this->cantidad?>>3.99){                    
+                    preciofinal = <?php echo $this->rowItem->precio_mayoreo;?>;
+                    precio = <?php echo $this->rowItem->precio_mayoreo;?>;
+                }else{
+                    preciofinal = <?php echo $this->rowItem->precio_publico;?>;
+                    precio = <?php echo $this->rowItem->precio_publico;?>;
+                }     
+                          
+
+
+
             }
             else{ 
                 if(preciodeventa=="mayore"){
@@ -30,7 +64,7 @@
             if(iva>0){
                 preciofinal = preciofinal / (1+iva);                
             }
-            cantidad = 1;
+            cantidad = <?php echo $this->cantidad;?>;
             subtotal = preciofinal * cantidad;
             iva_monto = subtotal * iva;
             total = subtotal + iva_monto;   
@@ -38,21 +72,23 @@
 
             row = '<tr style="font-size:1.3em;background-color:"  id="rowproducto<?php echo $this->rowItem->id?>">'+
                 '<td style="text-align:center;display:none" class="items" ><?php echo $this->rowItem->id;?></td>'+
-                '<td style="text-align:center"><?php echo $this->rowItem->identificador;?></td>'+
+                '<td style="text-align:center"><?php echo $this->rowItem->clave;?></td>'+
                 '<td style="text-align:left"><?php echo $this->rowItem->nombre;?></td>'+
                 '<td style="text-align:center"><?php echo $this->rowItem->unidad_descripcion?></td>'+
-                '<td style="text-align:center">'+precio.toFixed(2)+'</td>'+
+                '<td style="text-align:center" id="precio_unidad<?php echo $this->rowItem->id?>">'+precio.toFixed(2)+'</td>'+
                 '<td style="text-align:right;display:none">$ <span class="precios" id="precio<?php echo $this->rowItem->id?>">'+preciofinal.toFixed(2)+'</span></td>'+
                 '<td style="text-align:right;display:none"> <span class="ivas" id="iva<?php echo $this->rowItem->id?>">'+(iva*100).toFixed(2)+'</span>%</td>'+
-                '<td style="text-align:center"><input class="cantidades numeric" id="cantidad<?php echo $this->rowItem->id?>" onkeyup="setTotalrow(<?php echo $this->rowItem->id?>)" style="width:80px;text-align:center" type="text" class="input" value="1"/></td>'+
+                '<td style="text-align:center"><input disabled class="cantidades numeric" id="cantidad<?php echo $this->rowItem->id?>" onkeyup="setTotalrow(<?php echo $this->rowItem->id?>)" style="width:80px;text-align:center" type="text" class="input" value="<?php echo $this->cantidad?>"/></td>'+
                 '<td style="text-align:right;display:none">$ <span id="subtotal<?php echo $this->rowItem->id?>" class="subtotales">'+(subtotal).toFixed(2)+'</span></td>'+
                 '<td style="text-align:right;display:none">$ <span id="ivamonto<?php echo $this->rowItem->id?>" class="ivamontos">'+(iva_monto).toFixed(2)+'</span></td>'+
                 '<td style="text-align:right">$ <span id="total<?php echo $this->rowItem->id?>" class="totales">'+(total).toFixed(2)+'</span></td>'+
-                '<td style="text-align:right">$ <span><input type="text" id="descuento<?php echo $this->rowItem->id?>" class="descuentos" value="0.00" style="width:80px;text-align:right" onkeyup="setTotalrow(<?php echo $this->rowItem->id?>)"/></span></td>'+
-                '<td style="text-align:center"><button class="btn btn-warning" onclick="$(\'#btnEliminar\').attr(\'onclick\',\'removeProducto(<?php echo $this->rowItem->id?>)\'); $(\'#infoRemoveproducto\').modal(\'show\');  "><i class="fa fa-trash"></i></button></td>'+
-            '</tr>';
-            $("#body_productos").append(row);            
-            
+                '<td style="text-align:right;display:none">$ <span><input type="text" id="descuento<?php echo $this->rowItem->id?>" class="descuentos" value="0.00" style="width:80px;text-align:right" onkeyup="setTotalrow(<?php echo $this->rowItem->id?>)"/></span></td>'+
+                '<td style="text-align:center"><button title="Eliminar producto del Listado" class="btn btn-warning" onclick="$(\'#btnEliminar\').attr(\'onclick\',\'removeProducto(<?php echo $this->rowItem->id?>)\'); $(\'#infoRemoveproducto\').modal(\'show\');  "><i class="fa fa-trash"></i></button></td>'+
+            '</tr>';            
+            $("#body_productos").append(row);
+            $("#precio_de_venta").prop("disabled",true);    
+            }        
+        
         }    
     </script>   
 <?php else:?>

@@ -18,7 +18,7 @@
 
 
 
-        <tr style="text-align:center">                                                    
+        <tr style="text-align:center" id="movimiento<?php echo $movimiento->id?>">                                                    
             <td><?php echo $movimiento->id?></td>
             <td><?php echo $movimiento->nombre?></td>
             <td><?php echo $movimiento->unidad?></td>
@@ -29,7 +29,8 @@
                 <?php if($movimiento->tipo=="C"):
                     //Obtenemos la información del CUPON generado
                     $ModelCupon = new Model_Cuponesdev();
-                    $codigo = $ModelCupon->getCodigo($movimiento->id);                    
+                    $codigo = $ModelCupon->getCodigo($movimiento->ventas_id);                    
+                    $saldofinal = $ModelCupon->getSaldoFinal($codigo);
                     $saldoinicial = $ModelCupon->getSaldoInicial($codigo);
                     ?>
                 <button class="btn btn-info" style="width:30px;height:30px; vertical-align:middle;" onclick="$('#descmov<?php echo $movimiento->id?>').toggle('fast')"><i style="font-size:1em;color:white" class="fa fa-info"></i></button>
@@ -46,7 +47,7 @@
                             <tr>
                                 <td><b><?php echo $codigo?></b></td>
                                 <td><?php echo "$ ".number_format($saldoinicial,2)?></td>
-                                <td><?php echo "$ ".number_format($saldoinicial,2)?></td>
+                                <td><?php echo "$ ".number_format($saldofinal,2)?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -55,7 +56,7 @@
             </td>
             <td><?php echo $mov?></td>
 
-            <td><button class="btn btn-warning">Cancelar</button></td>
+            <td><button class="btn btn-warning" onclick="confirmaEliminarMovimiento(<?php echo $movimiento->id.',\''.$movimiento->tipo.'\''?>)" id="btnmovimiento<?php echo $movimiento->id?>">Cancelar</button></td>
         </tr>
     <?php endforeach;?>
     <script>

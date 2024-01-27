@@ -70,7 +70,7 @@ setTimeout(function(){$("#infoItem").modal("show")},300)
                                                         <label class="small mb-1" for="inputUnidad">Unidad*</label>
                                                         <select class="form-control custom-select custom-select-lg mb-3" id="selectUnidad" name="unidad">
                                                         <?php foreach($this->unidades as $unidad):?>
-                                                                <option <?php if($this->infoItem->unidad == $unidad->clave) echo "selected " ?> style="background-color: red;" value="<?php echo $unidad->clave?>"><?php echo $unidad->descripcion?></option>
+                                                                <option <?php if($this->infoItem->unidad == $unidad->clave) echo "selected " ?> style="background-color: white;" value="<?php echo $unidad->clave?>"><?php echo $unidad->descripcion?></option>
                                                         <?php endforeach;?>    
                                                         </select>                                                            
                                                     </div>
@@ -103,15 +103,56 @@ setTimeout(function(){$("#infoItem").modal("show")},300)
                                                 </div>                                              
                                             </div>      
                                             <div class="form-row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label class="small mb-1" for="inputExistencias">Existencias*</label>
                                                         <input class="form-control py-4 numeric" id="inputExistencias" name="existencias" type="text" placeholder="1" required value="<?php echo $this->infoItem->existencias?>"/>
                                                     </div>
-                                            </div> 
+                                            </div>
+                                            <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputExistencias">Linea*</label>
+                                                        <select class="form-control custom-select custom-select-lg mb-3" id="selectLinea" name="linea">
+                                                            <?php if($this->lineas!=null):?>
+                                                                <option style="background-color: white;" value="0">Selecciona...</option>
+                                                            <?php foreach($this->lineas as $linea):?>
+                                                                <option style="background-color: white;" <?php if($this->infoItem->linea == $linea->id) echo "selected " ?> value="<?php echo $linea->id?>"><?php echo $linea->descripcion?></option>
+                                                            <?php endforeach;?>
+                                                            <?php endif;?>
+                                                        </select>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="subcategorias_id">Sub Linea*</label>
+                                                        <select class="form-control custom-select custom-select-lg mb-3" id="subcategorias_id" name="subcategorias_id">
+                                                            <?php if($this->subcategorias!=null):?>
+                                                                <option style="background-color: white;" value="0">Selecciona...</option>
+                                                            <?php foreach($this->subcategorias as $subcategoria):?>
+                                                                <option style="background-color: white;" <?php if($this->infoItem->subcategorias_id == $subcategoria->id) echo "selected " ?> value="<?php echo $subcategoria->id?>"><?php echo $subcategoria->descripcion?></option>
+                                                            <?php endforeach;?>
+                                                            <?php endif;?>
+                                                        </select>
+                                                    </div>
+                                                </div>  
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="marcas_id">Marca*</label>
+                                                        <select class="form-control custom-select custom-select-lg mb-3" id="marcas_id" name="marcas_id">
+                                                            <?php if($this->marcas!=null):?>
+                                                                <option style="background-color: white;" value="0">Selecciona...</option>
+                                                            <?php foreach($this->marcas as $marca):?>
+                                                                <option style="background-color: white;" <?php if($this->infoItem->marcas_id == $marca->id) echo "selected " ?> value="<?php echo $marca->id?>"><?php echo $marca->descripcion?></option>
+                                                            <?php endforeach;?>
+                                                            <?php endif;?>
+                                                        </select>
+                                                    </div>
+                                                </div> 
+                                            </div>  
+                                            <div class="form-row">
                                             <div class="col-md-6">                                                
                                                     <div class="form-group">
-                                                        <label class="small mb-1" for="selectCategoria">Categoria*</label>
+                                                        <label class="small mb-1" for="selectCategoria">Categoria SAT*</label>
                                                         <select class="form-control custom-select custom-select-lg mb-3" id="selectCategoria" name="categoria">
                                                             <?php if($this->categorias!=null):?>
                                                             <?php foreach($this->categorias as $categoria):?>
@@ -121,8 +162,7 @@ setTimeout(function(){$("#infoItem").modal("show")},300)
                                                         </select>
                                                     </div>
                                                 </div>
-                                                
-                                            </div>     
+                                            </div>   
                                             <h2 style="color:gray">Impuestos</h2>  
                                             <div class="form-row">
                                                 <div class="col-md-1">

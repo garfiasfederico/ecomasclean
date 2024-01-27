@@ -12,6 +12,9 @@ class Reporte_Reporteinventario {
         $ModelItems = new Model_Item();
         $items = $ModelItems->getProductos();
         $rows = "";
+        $costototal = 0;
+        $costototalmayoreo = 0;
+        $costototalmenudeo = 0; 
 
         $bandera=false;
         foreach($items as $producto){

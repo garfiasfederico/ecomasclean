@@ -121,26 +121,26 @@ INSERT INTO catalogo_claves_sat (clave,descripcion,nivel) VALUES
 ("52101511","Tapetes de caucho o vinilo","1"),
 ("52101507","Tapetes de baño","1");
 
-INSERT INTO catalogo_unidades_sat (clave,descripcion) VALUES
-("H87","Pieza"),
-("BB","Caja"),
-("LTR","Litro"),
-("PR","Par"),
-("MTR","Metro"),
-("KGM","Kilo"),
-("XPK","Paquete"),
-("X3H","Bidón"),
-("A76","Galón"),
-("XEC","Bolsa o Bulto");
+INSERT INTO catalogo_unidades_sat (clave,descripcion,abrev) VALUES
+("H87","Pieza","PZA"),
+("BB","Caja","CJA"),
+("LTR","Litro","LT"),
+("PR","Par","PAR"),
+("MTR","Metro","MT"),
+("KGM","Kilo","KG"),
+("XPK","Paquete","PQT"),
+("X3H","Bidón","BIDON"),
+("A76","Galón","GALON"),
+("XEC","Bolsa o Bulto","BULTO");
 
 INSERT INTO direcciones VALUES(1,"Prolongación 16 de Septiembre","203","","Barrio San José","Zimatlán","Zimatlán de Álvarez","71200","Oaxaca","Frente a Secundaria 49");
 INSERT INTO empleados (nombre,apellido_paterno,apellido_materno,curp,direcciones_id) VALUES ("Administrador","Admin","Admin","ADMINISTRADOR18123",1);
 INSERT INTO categorias values
-(1,"Automotriz"),
-(2,"Lavanderia"),
-(3,"Hogar"),
-(4,"Corporales"),
-(5,"Especiales");
+(1,"DESPACHADORES"),
+(2,"JARCERÍA"),
+(3,"LÍQUIDOS"),
+(4,"MARCA AUTORIZADA"),
+(5,"PAPEL");
 
 INSERT INTO roles (descripcion) VALUES 
 ("ADMINISTRADOR"),
@@ -149,3 +149,4 @@ INSERT INTO roles (descripcion) VALUES
 
 INSERT INTO usuarios (cuenta,password,empleados_id) VALUES  ("Administrador",sha1("admin"),1);
 INSERT INTO usuario_roles VALUES (1,1);
+

@@ -77,7 +77,8 @@ CREATE TABLE IF NOT EXISTS catalogo_claves_sat  (
 CREATE TABLE IF NOT EXISTS catalogo_unidades_sat(
                             id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                             clave VARCHAR(3),
-                            descripcion VARCHAR(15)
+                            descripcion VARCHAR(15),
+                            abrev VARCHAR(15)
 )Engine=InnoDB;
 
 
@@ -85,7 +86,7 @@ CREATE TABLE IF NOT EXISTS items(
                     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
                     identificador VARCHAR(50),
                     clave VARCHAR(30),
-                    nombre VARCHAR(30),
+                    nombre VARCHAR(100),
                     alias VARCHAR(15),
                     unidad VARCHAR(10),
                     costo FLOAT(2),
@@ -95,8 +96,9 @@ CREATE TABLE IF NOT EXISTS items(
                     existencias DOUBLE UNSIGNED DEFAULT 0,
                     avatar VARCHAR(50),
                     categorias_id VARCHAR(10),
+                    linea VARCHAR (15),
                     status BOOLEAN DEFAULT TRUE,
-                    iva FLOAT(2)                                    
+                    iva FLOAT(2) DEFAULT .16                                    
 )ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS turnos(
@@ -168,7 +170,7 @@ CREATE TABLE IF NOT EXISTS clientes(
                     celular_contacto VARCHAR(10),
                     correo_electronico_contacto VARCHAR(50),
                     confactura BOOLEAN DEFAULT FALSE,
-                    contacto BOOLEAN DEFAULT FALSE,
+                    contacto BOOLEAN DEFAULT FALSE,                
                     CONSTRAINT fkdireccion_c FOREIGN KEY(direcciones_id) REFERENCES direcciones(id)
 )ENGINE=InnoDB;
 
@@ -198,7 +200,7 @@ CREATE TABLE IF NOT EXISTS retiros(
                     turnos_id BIGINT UNSIGNED,
                     fecha TIMESTAMP DEFAULT NOW(),
                     monto FLOAT(2),
-                    motivo VARCHAR(200),
+                    motivo TEXT,
                     nuevo_saldo FLOAT(2),
                     status BOOLEAN DEFAULT TRUE,
                     CONSTRAINT fkturnos_r FOREIGN KEY(turnos_id) REFERENCES turnos(id) ON DELETE CASCADE ON UPDATE CASCADE

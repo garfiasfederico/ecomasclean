@@ -47,7 +47,11 @@ class Model_Item Extends Zend_Db_Table{
             "precio_mayoreo" => $data["precio_mayoreo"],
             "precio_distribuidor" => $data["precio_distribuidor"],
             "iva" => $data["iva"],            
-            "unidad" => $data["unidad"]
+            "unidad" => $data["unidad"],
+            "linea" => $data["linea"],
+            "subcategorias_id" => $data["subcategorias_id"],
+            "marcas_id" => $data["marcas_id"]
+
         );
 
         if($this->insert($data_i))
@@ -60,7 +64,8 @@ class Model_Item Extends Zend_Db_Table{
         $select = $this->select();
         $select->from($this->_name);
         $select->setIntegrityCheck(false);
-        $select->joinInner("catalogo_claves_sat","catalogo_claves_sat.clave = items.categorias_id",array("categoria"=>"descripcion"));
+        $select->joinLeft("catalogo_claves_sat","catalogo_claves_sat.clave = items.categorias_id",array("categoria"=>"descripcion"));
+        $select->joinLeft("catalogo_unidades_sat","catalogo_unidades_sat.clave = items.unidad",array("unidad_medida"=>"descripcion"));
         $select->where("status=1");
         $result = $this->fetchAll($select);
         if(!empty($result)){
@@ -109,7 +114,7 @@ class Model_Item Extends Zend_Db_Table{
         $select->from($this->_name,array("*"));
         $select->setIntegrityCheck(false);
         $select->joinInner("catalogo_unidades_sat","catalogo_unidades_sat.clave=items.unidad",array("unidad_descripcion"=>"catalogo_unidades_sat.descripcion"));
-        $select->where("identificador like '".$identificador."'");
+        $select->where("items.clave like '".$identificador."'");        
         $result = $this->fetchRow($select);        
         if(!empty($result))
             return $result;
@@ -148,7 +153,7 @@ class Model_Item Extends Zend_Db_Table{
     public function getProductosByBusqueda($busqueda,$limit=null){
         $select = $this->select();
         $select->from($this->_name,array("*"));
-        $select->where("identificador like '%".$busqueda."%' OR nombre like '%".$busqueda."%'");
+        $select->where("clave like '%".$busqueda."%' OR nombre like '%".$busqueda."%'");
         $select->where("status=1");
         if($limit!=null)
             $select->limit($limit);

@@ -36,6 +36,16 @@ class Reporte_Reporteturno {
         $ModelVentaItems = new Model_Ventaitems();
         $ModelTurno = new Model_Turno();
         $ModelRetiros = new Model_Retiro();
+        $ModelVentaCreditos = new Model_VentaCreditos();
+
+        $totalAbonos = 0;
+
+        $abonos = $ModelVentaCreditos->getAbonosByTurno($turnos_id);
+        if($abonos!=null){
+                foreach($abonos as $abono){
+                        $totalAbonos += $abono->abono;
+                }
+        }
 
 
         $infoTurno = $ModelTurno->getInfoTurno($turnos_id);
@@ -44,6 +54,7 @@ class Reporte_Reporteturno {
         $saldo_final_manual = number_format($infoTurno->saldo_final_manual,2);
         $estado = $infoTurno->estado =="1"?"Abierto":"Cerrado";
         $fecha = date("Y-d-m",strtotime($infoTurno->fecha));
+        $retiros = $ModelRetiros->getRetiros($turnos_id);
         $html = '
         <style>
         .encabezado_turno th{
@@ -74,12 +85,12 @@ class Reporte_Reporteturno {
 
         </style>
                 <h2 style="color:gray;">Información del Turno '.$infoTurno->id.'</h2>
-                <table style="font-size:8pt;" border="1">
+                <table style="font-size:8pt;"  cellpadding="5" border="1">
                         <thead>
                                 <tr class="encabezado_turno">
                                         <th style="width:12%;">Fecha</th>
                                         <th style="width:12%;">Estado</th>
-                                        <th style="width:31%;" >Empleado</th>
+                                        <th style="width:31%;" >Encargado de Turno</th>
                                         <th style="width:15%;">Saldo Incial</th>
                                         <th style="width:15%;">Saldo Final</th>
                                         <th style="width:15%;">Saldo F. M.</th> 
@@ -112,7 +123,7 @@ class Reporte_Reporteturno {
 
                         $html.='
                                 <h3 style="color:gray;">Venta'. $venta->id.'</h3>
-                                <table style="font-size:8pt;" border="1">
+                                <table style="font-size:8pt;" border="1" cellpadding="5">
                                 <thead>
                                         <tr class="encabezado_venta">
                                                 <th style="width:10%;">Id</th>
@@ -170,7 +181,7 @@ class Reporte_Reporteturno {
 
 
                            $html .= '
-                           <table style="font-size:8pt;" border="1">
+                           <table style="font-size:8pt;" border="1" cellpadding="5">
                                 <thead>
                                         <tr class="encabezado_items">
                                                 <th style="width:10%;">Id</th>
@@ -192,6 +203,69 @@ class Reporte_Reporteturno {
 
         }
 
+        //obtenemos los registros de disposición de cupones en las ventas
+        $modelMovimientosCupon = new Model_Movimientoscupon();
+        $movimientosCupones = $modelMovimientosCupon->getDisposicionesCuponByTurno($turnos_id);
+        $sumCup = 0;
+        if($movimientosCupones!=null){
+                $html.='<h3 style="color:gray;">Disposición de cupones</h3>
+                        <table cellpadding="5" style="font-size:8pt;width:250" border="1">
+                <thead>
+                        <tr class="encabezado_items">
+                                <th style="width:85px;">Cupón</th>
+                                <th style="width:80px">Venta</th>
+                                <th style="width:85px;">Monto</th>                        
+                        </tr>
+                </thead>';
+
+                foreach($movimientosCupones as $cupon){
+                        $sumCup+=$cupon->monto;
+                        $html.='        
+                        <tr>    
+                                <td style="text-align:center;">'.$cupon->codigo_cupon.'</td>
+                                <td>'.$cupon->ventas_id.'</td>
+                                <td style="text-align:right">$ '.number_format($cupon->monto,2).'</td>
+                        </tr>';        
+                }
+                $html.='        
+                        <tr>    
+                                <td colspan="2" style="text-align:right;">Total en Cupones</td>                        
+                                <td style="text-align:right"><b>$ '.number_format($sumCup,2).'</b></td>
+                        </tr>';
+                $html.="</table>";
+
+        }
+        
+
+
+        //Aqui hacemos la integración de los retiros hechos en el turno
+        if($retiros!=null){        
+                $html.='<h3 style="color:gray;">Retiros registrados en este turno</h3>
+                        <table cellpadding="5" style="font-size:8pt;width:1000" border="1">
+                        <tr class="encabezado_items">
+                                <th style="width:40px;">No.</th>
+                                <th>Motivo del Retiro</th>
+                                <th style="width:80px;">Monto</th>                        
+                        </tr>';
+                $con=1;
+                $sum=0;
+                foreach($retiros as $retiro){
+                        $sum+=$retiro->monto;
+                        $html.='        
+                        <tr>    
+                                <td style="text-align:center;">'.$con++.'</td>
+                                <td>'.$retiro->motivo.'</td>
+                                <td style="text-align:right">$ '.number_format($retiro->monto,2).'</td>
+                        </tr>';
+                }
+                $html.='        
+                        <tr>    
+                                <td colspan="2" style="text-align:right;">Total en retiros</td>                        
+                                <td style="text-align:right"><b>$ '.number_format($sum,2).'</b></td>
+                        </tr>';
+
+                $html.="</table>";
+        }
 
         $efectivo = $ModelVentas->getResumenByForma($turnos_id,"efectivo");
         $tarjeta = $ModelVentas->getResumenByForma($turnos_id,"tarjeta");
@@ -207,6 +281,8 @@ class Reporte_Reporteturno {
                 $total += $transferencia->total;
 
         $total += $infoTurno->saldo_inicial;
+
+        $total += $totalAbonos;
         
         if($retiros!=null)
         $total -= $retiros;
@@ -220,7 +296,7 @@ class Reporte_Reporteturno {
         $html .= '
         <h3>Resumen de Ingresos</h3>
         <div>
-                <table style="width:60%;border:dotter 1px gray;">
+                <table style="width:60%;border:dotter 1px gray;" cellpadding="5">
                 <tr>
                                 <td style="background-color:#138496;color:white">Saldo Inicial:</td>
                                 <td style="width:5%">$</td>
@@ -229,7 +305,7 @@ class Reporte_Reporteturno {
                         <tr>
                                 <td style="background-color:#138496;color:white">Efectivo:</td>
                                 <td style="width:5%">$</td>
-                                <td style="text-align:right;border:dotter 1px gray;"><b>'. ($efectivo!=null?number_format($efectivo->total,2):"0.00").'</b></td>
+                                <td style="text-align:right;border:dotter 1px gray;"><b>'. ($efectivo!=null?number_format($efectivo->total-$sumCup,2):"0.00").'</b></td>
                         </tr>
                         <tr>
                                 <td style="background-color:#138496;color:white">Tarjeta:</td>
@@ -242,6 +318,16 @@ class Reporte_Reporteturno {
                                 <td style="text-align:right;border:dotter 1px gray;"><b>'. ($transferencia!=null?number_format($transferencia->total,2):"0.00").'</b></td>
                         </tr>
                         <tr>
+                                <td style="background-color:#138496;color:white">Abonos en el turno:</td>
+                                <td style="width:5%">$</td>
+                                <td style="text-align:right;border:dotter 1px gray;"><b>'. ($totalAbonos!=null?number_format($totalAbonos,2):"0.00").'</b></td>
+                        </tr>
+                        <tr>
+                                <td style="background-color:#138496;color:white">Cupones:</td>
+                                <td style="width:5%">$</td>
+                                <td style="text-align:right;border:dotter 1px gray;"><b>'.number_format($sumCup,2).'</b></td>
+                        </tr>
+                        <tr>
                                 <td style="background-color:gray;color:white">Retiros:</td>
                                 <td style="width:5%">$</td>
                                 <td style="text-align:right;border:dotter 1px gray;"><b>'. ($retiros!=null?number_format($retiros,2):"0.00").'</b></td>
@@ -250,7 +336,7 @@ class Reporte_Reporteturno {
                                 <td style="background-color:#138496;color:white">Total:</td>
                                 <td style="width:5%">$</td>
                                 <td style="text-align:right;border:dotter 1px gray;"><b style="">'. number_format($total,2).'</b></td>
-                                <td><b>('.$TotalLetra.')</b></td>
+                                <td style="font-size:.6em"><b>('.$TotalLetra.')</b></td>
                         </tr>
                 </table>
         </div>';

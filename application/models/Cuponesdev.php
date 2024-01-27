@@ -24,10 +24,12 @@ class Model_Cuponesdev Extends Zend_Db_Table{
     public function almacena($data){
         $data_ = array(
             "movimientos_id"=>$data["movimientos_id"],
-            "monto"=>$data["monto"],
+            "saldo_inicial"=>$data["monto"],
+            "saldo_final"=>$data["monto"],
             "codigo"=>$data["codigo"],
             "estado"=>$data["estado"],
-            "vigencia"=>$data["vigencia"]            
+            "vigencia"=>$data["vigencia"],  
+            "ventas_id"=>$data["ventas_id"]         
         );
 
         try{            
@@ -41,10 +43,10 @@ class Model_Cuponesdev Extends Zend_Db_Table{
         }
     }
 
-    public function getCodigo($movimientos_id){
+    public function getCodigo($ventas_id){
         $select = $this->select();
         $select->from($this->_name,array("codigo"));
-        $select->where("movimientos_id=".$movimientos_id);
+        $select->where("ventas_id=".$ventas_id);
         $result = $this->fetchRow($select);
         if(!empty($result))
             return $result->codigo;
@@ -52,15 +54,51 @@ class Model_Cuponesdev Extends Zend_Db_Table{
             return null;
     }
     
+    public function getSaldoFinal($codigo){
+        $select = $this->select();
+        $select->from($this->_name,array("saldo_final","codigo"));        
+        $select->where("codigo='".$codigo."'");        
+        $result = $this->fetchRow($select);
+        if(!empty($result))
+            return $result->saldo_final;
+        else
+            return null;
+    }
+
     public function getSaldoInicial($codigo){
         $select = $this->select();
-        $select->from($this->_name,array("saldo_inicial"=>"sum(monto)","codigo"));        
-        $select->where("codigo='".$codigo."'");
-        $select->group("codigo");
+        $select->from($this->_name,array("saldo_inicial","codigo"));        
+        $select->where("codigo='".$codigo."'");        
         $result = $this->fetchRow($select);
         if(!empty($result))
             return $result->saldo_inicial;
         else
             return null;
+    }
+    
+
+    public function updateSaldo($codigo,$saldo){        
+        $data = array(
+            "saldo_final"=>$saldo
+        );        
+        try{
+            $this->update($data,"codigo='".$codigo."'");
+            return true;
+        }catch(Exception $e){
+            die($e);
+        }
+        
+
+    }
+
+    public function hayCupon($ventas_id){
+        $select = $this->select();
+        $select->from($this->_name,array("codigo","saldo_final"));
+        $select->where("ventas_id = ".$ventas_id);
+        $result = $this->fetchRow($select);
+        if(!empty($result))
+            return $result;
+        else
+            null;
     }
 }

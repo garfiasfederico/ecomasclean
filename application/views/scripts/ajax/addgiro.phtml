@@ -1,0 +1,7 @@
+<?php if ($this->result):?>
+<?php foreach($this->giros as $giro):?>
+    <option value="<?php echo $giro->clave?>"><?php echo $giro->descripcion?></option>
+<?php endforeach;?>
+<?php else:?>   
+<?php echo 0;?>
+<?php endif;?>

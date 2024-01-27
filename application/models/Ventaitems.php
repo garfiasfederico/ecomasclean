@@ -158,6 +158,22 @@ class Model_Ventaitems Extends Zend_Db_Table{
         else
             return null;
     }
+
+
+    public function getCanItemsByVenta($ventas_id,$items_id){
+        $select = $this->select();
+        $select->from($this->_name,array("cantidad"));
+        $select->where("ventas_id = ".$ventas_id);
+        $select->where("items_id = ".$items_id);
+        $result = $this->fetchRow($select);
+        if(!empty($result))
+            return $result->cantidad;
+        else
+            return null;
+
+
+
+    }
     
     
     

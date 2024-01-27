@@ -1,0 +1,53 @@
+<?php if ($this->detalles != null) : ?>
+    <hr/>
+    <table style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Cliente:</th>
+                <td><?php echo $this->ventaInfo->clientes_id!=0?$this->ventaInfo->cliente:"Público en general" ?></td>
+                <th>Forma de Pago</th>
+                <td><?php echo $this->ventaInfo->forma_pago ?></td>
+                <th>Total</th>
+                <td id="totalVenta"><?php echo "$ " . number_format($this->ventaInfo->total, 2) ?></td>
+                <td>
+                    <?php echo $this->ventaInfo->forma_pago=="credito"?"<button class='btn btn-success' onclick='abonar(".$this->ventaInfo->id.")'>Abonos</button>":""?>
+                </td>
+            </tr>
+        </thead>
+    </table>
+    <hr/>
+    <h2 style="color:gray">Productos</h2>
+    <table class="table " style="font-size:.7em;">
+        <thead>
+            <tr style="text-align:center">
+                <th>Id</th>
+                <th>Producto</th>
+                <th>Unidad</th>
+                <th>Precio</th>
+                <th>Can.</th>
+                <th>Desc.</th>
+                <th>Total</th>
+            </tr>
+            <thead>
+            <tbody id="detalles">
+                <?php foreach ($this->detalles as $detalle) : ?>
+                    <tr>
+                        <td><?php echo $detalle->venta_items_id ?></td>
+                        <td><?php echo $detalle->nombre ?></td>
+                        <td><?php echo $detalle->unidad ?></td>
+                        <td style="text-align:right">$ <?php echo number_format($detalle->precio * (1 + $detalle->iva), 2) ?></td>
+                        <td style="text-align:center"><?php echo $detalle->cantidad ?></td>
+                        <td style="text-align:center">$<?php echo number_format($detalle->descuento, 2) ?></td>
+                        <td style="text-align:right">$ <?php echo number_format($detalle->total, 2) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+    </table>
+    <script>
+        $(document).ready(function() {
+            refreshnumeric();
+        });
+    </script>
+<?php else : ?>
+    <div class="alert alert-info">No existe la Venta Buscada.</div>
+<?php endif; ?>

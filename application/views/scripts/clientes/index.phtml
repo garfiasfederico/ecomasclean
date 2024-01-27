@@ -44,8 +44,8 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="inputCorreo">Ubicación*</label>
-                                                    <input class="form-control py-4" id="ubicacion" name="ubicacion" type="text" placeholder="Link Google Maps" required/>
+                                                    <label class="small mb-1" for="inputCorreo">Ubicación</label>
+                                                    <input class="form-control py-4" id="ubicacion" name="ubicacion" type="text" placeholder="Link Google Maps" />
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -72,33 +72,31 @@
                                                         <input class="form-control py-4" id="inputCorreo" name="correo_electronico" type="text" placeholder="Correo electrónico" />
                                                     </div>
                                             </div>                                        
-                                            <div class="col-md-12">
+                                            <div class="col-md-8">
                                                 <div class="form-group">
                                                     <label class="small mb-1" for="selectgiro">Giro de la Empresa*</label>
                                                     <select class="form-control custom-select custom-select-lg mb-3" id="giro_comercio" name="giro_comercio">
-                                                        <option value="comercializadora">Comercializadora</option>
-                                                        <option value="distribuidor">Distribuidor</option>
-                                                        <option value="veterinaria">Veterinaria</option>
-                                                        <option value="educativa">Institución Educativa</option>
-                                                        <option value="gobierno">Gobierno</option>
-                                                        <option value="municipios">Municipios</option>
-                                                        <option value="oficinas">Oficinas</option>
-                                                        <option value="lavaautos">Lava Autos</option>
-                                                        <option value="restaurante">Restaurante</option>
-                                                        <option value="hospital">Hospital</option>
-                                                        <option value="clinica">Clínica</option>
-                                                        <option value="bar">Bares</option>
-                                                        <option value="gymnasio">Gymnasio</option>
-                                                        <option value="iglesia">Iglesia</option>
-                                                        <option value="hogar" selected>Hogar</option>
-                                                        <option value="salon">Salón de Fiestas</option>
+                                                    <option value="0">Seleccione.</option>
+                                                        <?php foreach($this->giros as $giro):?>                                                        
+                                                            <option value="<?php echo $giro->clave?>"><?php echo $giro->descripcion?></option>
+                                                        <?php endforeach;?>
                                                     </select>
                                                 </div>
-                                            </div>    
+                                            </div>
+                                            <div class="col-md-3 d-flex align-items-center justify-content-left container">
+                                                <div class="form-group">    
+                                                    <button class="btn" style="border:none;background-color:transparent" onclick="$('#modalGiro').modal('show'); $('#msgresultgiro').html('');$('#newGiro').val('');return false;"><i class="fas fa-plus" style="color:green;font-size:1.5em;"></i></button>
+                                                </div>
+                                            </div>        
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="inputnotas">Perfil del Cliente*</label>
-                                                    <textarea class="form-control py-4" id="inputnotas" name="notas" placeholder="Preferencias" required></textarea>
+                                                    <label class="small mb-1" for="tipo_cliente">Tipo Cliente*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="tipo_cliente" name="tipo_cliente" required>
+                                                        <option value="0" selected>Seleccione.</option>
+                                                        <option value="Distribuidor">Distribuidor</option>
+                                                        <option value="General">General</option>
+                                                        <option value="Comercializadora">Comercializadora</option>
+                                                    </select>
                                                 </div>
                                         </div>                                        
                                         <div class="col-md-2">
@@ -164,9 +162,21 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="small mb-1" for="input_nombrecomercial">Razón Social*</label>
-                                                    <input class="form-control py-4" id="input_nombrecomercial" name="nombre_comercial" maxlength="200" type="text" placeholder="Nombre Comercial" />
+                                                    <input class="form-control py-4" id="input_nombrecomercial" name="nombre_comercial" maxlength="200" type="text" placeholder="Nombre Comercial"/>
+                                                </div>
+                                            </div>  
+                                            <div  class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="input_nombrecomercial">Régimen Fiscal*</label>
+                                                    <select class="form-control custom-select custom-select-lg mb-3" id="regimen_fiscal" name="regimen_fiscal" required>
+                                                        <option value="0" selected>Seleccione</option>
+                                                        <?php foreach ($this->regimenes as $regimen):?>
+                                                            <option value="<?php echo $regimen->id?>"><?php echo $regimen->clave."-".$regimen->descripcion?></option>
+                                                        <?php endforeach;?>
+                                                    </select>                                                     
                                                 </div>
                                             </div>                                            
+
                                         </div>                                                                                                                                                                                                                           
                                         <h2 style="color:gray">Domicilio Fiscal</h2>                                      
                                         <div class="form-row">
@@ -266,10 +276,7 @@
                 </div>
             </main>
         </div>            
-    </div>
-    <script>
-        setTimeout(function(){$("#collapseClientes").addClass("show");},1)
-    </script>
+    </div>    
 <div class="modal fade" id="infoCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -287,3 +294,40 @@
             </div>
         </div>
         </div>
+
+        <div class="modal fade" id="modalGiro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header" style="background-color:purple;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle" >Registrar Giro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyCliente">  
+                <label for="newGiro">Nuevo Giro</label>
+                <input type="text" id="newGiro" class="form-control py-4"/>   
+                <div id="msgresultgiro"></div>           
+            </div>
+            <div class="modal-footer">
+                    <div id="loading_giros" style="display:none">
+                        <i style='font-size:1em' class='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+                    </div>
+                    <button type="button" class="btn btn-primary"  onclick="addGiro()">Almacenar</button>                
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                                                
+            </div>
+            </div>
+        </div>
+        </div>
+        <script>
+        setTimeout(function(){$("#collapseClientes").addClass("show");},1)
+        setTimeout(function(){
+            $('#modalGiro').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: false                    
+        });        
+        });        
+        
+        
+    </script>

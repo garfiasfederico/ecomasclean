@@ -15,7 +15,7 @@
         <td style="text-align:right"><?php echo number_format($detalle->cantidad,2)?></td>
         <td style="text-align:right">$ <?php echo number_format($descuento,2);?></td>
         <td style="text-align:right">$ <?php echo number_format($ivaIncluido,2)?></td>
-        <td style="text-align:right">$ <?php echo number_format($granTotal,2)?></td>        
+        <td style="text-align:right">$ <?php echo number_format($detalle->total,2)?></td>        
     </tr>
 <?php endforeach;?>
 <tr>

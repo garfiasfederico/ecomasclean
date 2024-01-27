@@ -59,7 +59,11 @@
                                                             <td><?php echo date("Y-m-d",strtotime($retiro->fecha))?></td>
                                                             <td>$ <?php echo number_format($retiro->monto,2)?></td>
                                                             <td> <?php echo $retiro->motivo?></td>
-                                                            <td><button class="btn btn-warning" id="buttonretiro<?php echo $retiro->id?>"onclick="cancelaRetiro(<?php echo $retiro->id?>,<?php echo $retiro->monto?>)"><i class="fa fa-times"></i></button></td>
+                                                            <?php if($retiro->tipo=='M'):?>
+                                                                <td><button class="btn btn-warning" id="buttonretiro<?php echo $retiro->id?>"onclick="cancelaRetiro(<?php echo $retiro->id?>,<?php echo $retiro->monto?>)"><i class="fa fa-times"></i></button></td>
+                                                            <?php else:?>
+                                                                <td></td>
+                                                            <?php endif;?>
                                                         </tr>
                                                     <?php endforeach;?>
                                                  <?php endif;?>   

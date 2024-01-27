@@ -25,7 +25,9 @@ class Model_Retiro Extends Zend_Db_Table{
             "turnos_id"=>$data["turnos_id"],
             "monto"=>$data["monto_retiro"],            
             "nuevo_saldo"=>$data["saldo_nuevo"],
-            "motivo"=>$data["motivo"]            
+            "motivo"=>$data["motivo"], 
+            "tipo"=>$data["tipo"] 
+
         );
 
         try{            
@@ -101,6 +103,17 @@ class Model_Retiro Extends Zend_Db_Table{
         }
 
 
+    }
+
+    public function getIdByTipo($tipo){
+        $select = $this->select();
+        $select->from($this->_name,array("id"));
+        $select->where("tipo = '".$tipo."'");        
+        $result = $this->fetchRow($select);
+        if(!empty($result))
+            return $result->id;
+        else
+            return null;
     }
 
     

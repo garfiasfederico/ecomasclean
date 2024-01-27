@@ -77,6 +77,22 @@ class VentasController extends Zend_Controller_Action
                   );
                   $bandera.=$Modeloventaitems->almacenar($dataItem)."_";
               }
+              //Verificamos si existe 
+              if($this->getRequest()->getParam("codigo_cupon")){
+                $monto_cupon = $this->getRequest()->getParam("monto_cupon");
+                if($monto_cupon>0){
+                  $data_cupon= array(
+                    "codigo_cupon"=> $this->getRequest()->getParam("codigo_cupon"),
+                    "monto" => $monto_cupon,
+                    "ventas_id" => $ventas_id
+                  );
+                  $modelMovimientosCupon = new Model_Movimientoscupon();
+                  $mov_cupones_id = $modelMovimientosCupon->almacena($data_cupon);
+                  $bandera.="_resultado-cupon: ".$mov_cupones_id;
+              }
+
+              }
+
           }
 
           fwrite($this->file,$bandera."\n");

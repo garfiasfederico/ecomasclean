@@ -139,6 +139,17 @@ class Model_Turno Extends Zend_Db_Table{
             return false;
         }
     }
+
+    public function getSaldoFinalByTurno($turnos_id){
+        $select = $this->select();
+        $select->from($this->_name,array("saldo_final"));
+        $select->where("id = ".$turnos_id);
+        $result = $this->fetchRow($select);
+        if(!empty($result))
+            return $result->saldo_final;
+        else
+            return null;
+    }
     
     
     

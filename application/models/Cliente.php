@@ -43,7 +43,7 @@ class Model_Cliente Extends Zend_Db_Table{
             "direcciones_id"=>$data["direcciones_id"],
             "ubicacion"=>$data["ubicacion"],
             "nombre_comercial"=>$data["nombre_comercial"],
-            "notas"=>$data["notas"],
+            "tipo_cliente"=>$data["tipo_cliente"],
             "giro_comercio"=>$data["giro_comercio"],
             "direccion_entrega"=>$data["direccion_entrega"],
             "nombre_contacto"=>$data["nombre_contacto"],
@@ -51,7 +51,8 @@ class Model_Cliente Extends Zend_Db_Table{
             "celular_contacto"=>$data["celular_contacto"],
             "correo_electronico_contacto"=>$data["correo_electronico_contacto"],
             "confactura"=>($data["confactura"]=="on"?"1":"0"),
-            "contacto"=>($data["contacto"]=="on"?"1":"0")
+            "contacto"=>($data["contacto"]=="on"?"1":"0"),
+            "regimenes_id"=>$data["regimen_fiscal"]
 
         );
 
@@ -107,7 +108,7 @@ class Model_Cliente Extends Zend_Db_Table{
             "correo_electronico"=>$data["correo_electronico"],
             "ubicacion"=>$data["ubicacion"],
             "nombre_comercial"=>$data["nombre_comercial"],
-            "notas"=>$data["notas"],
+            "tipo_cliente"=>$data["tipo_cliente"],
             "giro_comercio"=>$data["giro_comercio"],
             "direccion_entrega"=>$data["direccion_entrega"],
             "nombre_contacto"=>$data["nombre_contacto"],
@@ -115,7 +116,8 @@ class Model_Cliente Extends Zend_Db_Table{
             "celular_contacto"=>$data["celular_contacto"],
             "correo_electronico_contacto"=>$data["correo_electronico_contacto"],
             "confactura"=>($data["confactura"]=="on"?"1":"0"),
-            "contacto"=>($data["contacto"]=="on"?"1":"0")
+            "contacto"=>($data["contacto"]=="on"?"1":"0"),
+            "regimenes_id"=>$data["regimen_fiscal"]
         );
         try{
             

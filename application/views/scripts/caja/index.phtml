@@ -1,259 +1,365 @@
-<?php if(!$this->tieneturno):?>
-<script>
-    setTimeout(function(){
-        $('#infoCaja').modal({
-            backdrop: 'static',
-            keyboard: false
-                        
-        });        
-        $("#infoCaja").modal("show")
-    },200);
-</script>
-<?php endif;?>
-<input type="hidden" value="<?php echo $this->tieneturno?$this->turno:"0"?>" name="turnos_id" id="turnos_id">
+<?php if (!$this->tieneturno) : ?>
+    <script>
+        setTimeout(function() {
+            $('#infoCaja').modal({
+                backdrop: 'static',
+                keyboard: false
+
+            });
+            $("#infoCaja").modal("show")
+        }, 200);
+    </script>
+<?php endif; ?>
+<input type="hidden" value="<?php echo $this->tieneturno ? $this->turno : "0" ?>" name="turnos_id" id="turnos_id">
+<input type="hidden" name="clientes_id" id="clientes_id" value="0">
 <div id="tempo-venta"></div>
-<center><h1 style="color:gray;">Turno: <?php echo $this->turno?> Activo</h1></center>
+<center>
+    <h1 style="color:gray;">Turno: <?php echo $this->turno ?> Activo</h1>
+</center>
 <div style="width:100%;height:95vh;background-color:white;text-align:right;overflow:scroll;">
-<div style="width:98%;padding:10px;background-color:#F5F5F5;">
-    <table style="width:100%" >
-    <tr>
-        <td style="text-align:left">
-                <b>Identificador:</b>
-                <div class="input-group" style="width:100%">
-                <div class="form-outline">                    
-                    <input type="search" style="width:400px;height:50px;" id="input_producto" class="form-control" onkeyup="if(event.keyCode==13){ addProducto();}else loadProductos(this.value);" /> 
-                    <div style="z-index:99;max-width:600px;;background-color:#F8FFFF;position:absolute;padding:10px;display:none;font-size:14pt;" id="lista_productos_v">
-                    </div>                    
-                </div>
-                <button type="button" class="btn btn-primary">
-                    <i class="fas fa-search"></i>
-                </button>
-                <span id="loading_producto" style="display:none"><i style="font-size:1.5em;color:green"class="fa fa-spinner fa-spin fa-3x fa-fw"></i></span>
-        </div>
-        </td>
-        <td style="text-align:right">
-            <button class="btn btn-success" style="width:60px;height:60px;" onclick="modalVenta();" ><i style="font-size:1.5em" class="fa fa-check-circle"></i><b>F3</b></button>                        
-            &nbsp;&nbsp;&nbsp;
-            <button class="btn btn-warning" style="width:60px;height:60px;" onclick="limpiarVenta();"><i style="font-size:1.5em" class="fa fa-eraser"></i></button>            
-        </td>
-    </tr>
-    </table>
-</div>
-<div class="card-body" style="height:60vh;overflow:scroll;" id="productos_content">                                
-    <table class="" id="tableVenta" width="100%" cellspacing="0" lang="es">
-        <thead>
-            <tr style="background-color:#138496;color:white;text-align:center;font-size:1.3em;">
-                <th>Identificador</th>
-                <th>Nombre</th>                                                
-                <th>Unidad</th>
-                <th>Precio por Unidad</th>
-                <th style="display:none">Precio Unitario</th>
-                <th style="display:none">tasa IVA</th>
-                <th>Cantidad</th>
-                <th style="display:none">Subtotal</th>
-                <th style="display:none">IVA</th>
-                <th>Total</th>          
-                <th>Descuento</th>                                      
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="body_productos">                                                                                                                
-        </tbody>
-    </table>
-</div>  
-<div style="width:90%;background-color:#EFFFEE;padding-right:40px;border:solid 1px green;position:;bottom: 50px;">
-<table style="width:100%;font-size:1.5em;"  >
-     <tr>
-         <td rowspan="6"  style="text-align:center;vertical-align:middle;">
-         <table style="width:100%;" >
+    <div style="width:98%;padding:10px;background-color:#F5F5F5;">
+        <table style="width:100%">
             <tr>
-                <td style="text-align:right ">
-                    Precio de Venta:
+                <td style="text-align:left;">
+                    <b>Identificador:</b>
+                    <div class="input-group" style="width:100%">
+                        <div class="form-outline">
+                            <input type="search" style="width:400px;height:50px;" id="input_producto" class="form-control" onkeyup="if(event.keyCode==13){ addProducto();}else loadProductos(this.value);" />
+                            <div style="z-index:99;max-width:100%;background-color:#F8FFFF;position:absolute;padding:10px;display:none;font-size:14pt;" id="lista_productos_v">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" title="Búsqueda de Artículos">
+                            <i class="fas fa-search"></i>
+                        </button>
+
+                        <b>&nbsp;&nbsp;Can:&nbsp;</b>
+                        <div>
+                            <input type="number" class="form-control input-sm" id="cant" size="5" value="1" style="width:80px;" min="0.01" step=".01" />
+                        </div>
+                        <span id="loading_producto" style="display:none"><i style="font-size:1.5em;color:green" class="fa fa-spinner fa-spin fa-3x fa-fw"></i></span>
+                    </div>
+
+
                 </td>
-                <td>
-                    <select class="form-control select" id="precio_de_venta" style="font-size:1.3em;text-align:center">
-                        <option value="menudeo" selected>Menudeo</option>
-                        <option value="mayoreo">Mayoreo</option>
-                        <option value="distribuidor">Distribuidor</option>
-                    </select>
+                <td style="text-align:right">
+                    <button class="btn btn-primary" style="width:100px;height:60px;" onclick="modalCotizacion();" title="Introduce Cotización"><i style="font-size:1.5em" class="fa fa-file"></i><b>Cotización</b></button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-primary" style="width:80px;height:60px;" onclick="modalCliente();" title="Selecciona Cliente"><i style="font-size:1.5em" class="fa fa-user-circle"></i><b>Cliente</b></button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-success" style="width:60px;height:60px;" onclick="modalVenta();" title="Cerrar Venta"><i style="font-size:1.5em" class="fa fa-check-circle"></i><b>F3</b></button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-warning" style="width:60px;height:60px;" onclick="limpiarVenta();" title="Limpiar listado de productos agregados"><i style="font-size:1.5em" class="fa fa-eraser"></i></button>
                 </td>
             </tr>
-         </table>            
-        </td> 
-    </tr> 
-    <tr>
-        <td style="width:20%">Subtotal:</td>
-        <td style="width:15%;">$ <b><span id="subtotal">0.00</span></b></td>
-    </tr>
-    <tr>
-        <td>Descuento:</td>
-        <td>$ <span id="descuento"></span></td>
-    </tr>
-    <tr>
-        <td>IVA:</td>
-        <td>$ <span id="iva">0.00</span></td>
-    </tr>    
-    <tr>
-        <td>Total:</td>
-        <td>$ <b><span id="gran_total" style="font-size:1em;">0.00</span></b></td>
-    </tr>
-</table>
-</div>                          
+        </table>
+    </div>
+    <center>
+        <div style="width: 80%;font-size:1.5;text-align:center;height:5px">
+            <span>Cliente: </span> <b><span id="clienteNombre">Público en general</span></b>
+        </div>
+    </center>
+    <div class="card-body" style="height:60vh;overflow:scroll;" id="productos_content">
+        <table class="" id="tableVenta" width="100%" cellspacing="0" lang="es">
+            <thead>
+                <tr style="background-color:#138496;color:white;text-align:center;font-size:1.3em;">
+                    <th>Identificador</th>
+                    <th>Nombre</th>
+                    <th>Unidad</th>
+                    <th>Precio por Unidad</th>
+                    <th style="display:none">Precio Unitario</th>
+                    <th style="display:none">tasa IVA</th>
+                    <th>Cantidad</th>
+                    <th style="display:none">Subtotal</th>
+                    <th style="display:none">IVA</th>
+                    <th>Total</th>
+                    <th style="display:none">Descuento</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="body_productos">
+            </tbody>
+        </table>
+    </div>
+    <div style="width:90%;background-color:#EFFFEE;padding-right:40px;border:solid 1px green;position:;bottom: 50px;">
+        <table style="width:100%;font-size:1.5em;">
+            <tr>
+                <td rowspan="6" style="text-align:center;vertical-align:middle;">
+                    <table style="width:100%;" cellpadding="5">
+                        <tr>
+                            <td style="text-align:left;width:20%">
+                                Tipo de Venta:
+                            </td>
+                            <td style="text-align:left">
+                                <select class="form-control select" id="precio_de_venta" style="font-size:1em;text-align:center">
+                                    <option value="menudeo" selected>General</option>
+                                    <!--<option value="mayoreo">Mayoreo</option>-->
+                                    <option value="distribuidor">Distribuidor o Comercializadora</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:20%">Subtotal:</td>
+                <td style="width:15%;"><b><span id="subtotal">0.00</span></b></td>
+            </tr>
+            <tr>
+                <td>Descuento:</td>
+                <td><span id="descuento"></span></td>
+            </tr>
+            <tr>
+                <td>IVA:</td>
+                <td><span id="iva">0.00</span></td>
+            </tr>
+            <tr>
+                <td>Total:</td>
+                <td><b><span id="gran_total" style="font-size:1em;">0.00</span></b></td>
+            </tr>
+        </table>
+    </div>
 
 </div>
 <script>
-        setTimeout(function(){$("#collapseCaja").addClass("show");},1)
+    setTimeout(function() {
+        $("#collapseCaja").addClass("show");
+    }, 1)
 </script>
-<form action="<?php echo $this->path?>/Caja" method="POST">
-<div class="modal fade" id="infoCaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<form action="<?php echo $this->path ?>/Caja" method="POST">
+    <div class="modal fade" id="infoCaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered " role="document">
             <div class="modal-content">
-            <div class="modal-header" style="background-color:#138496;color:white;">
-                <h5 class="modal-title" id="exampleModalLongTitle" >Abrir Turno de Caja</h5>
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-                <!-- <span aria-hidden="true">&times;</span> -->
-                </button>
-            </div>
-            <div class="modal-body" id="modal-bodyCaja">
-            <div class="form-row">
-                <div class="col-md-8">
-                    <div class="form-group" style="font-size:2em;">
-                        <label class="small mb-1" for="inputNombre">Cajero:</label>
-                        <input type="hidden" name="usuarios_id" value="<?php echo $this->usuarios_id?>">
-                        <input class="form-control py-4" id="inputNombre" name="cajero" maxlength="20" type="text" placeholder="" value="<?php echo $this->usuario;?>" disabled/>
-                    </div>
-                </div>  
-                <div class="col-md-4" style="font-size:2em;">
-                    <div class="form-group">
-                        <label class="small mb-1" for="inputFecha">Fecha:</label>
-                        <input class="form-control py-4" id="inputFecha" name="fecha" maxlength="20" type="text" placeholder="" value="<?php echo date("d/m/Y")?>" disabled/>
-                    </div>
-                </div>  
+                <div class="modal-header" style="background-color:#138496;color:white;">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Abrir Turno de Caja</h5>
+                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                    <!-- <span aria-hidden="true">&times;</span> -->
+                    </button>
                 </div>
-                <div class="form-row" style="font-size:2em;">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="small mb-1" for="inputSaldo">Saldo Inicial:</label>
-                        <input class="form-control py-4" id="inputSaldo" name="saldo_inicial" maxlength="20" type="text" style="text-align:center;font-size:2em;" placeholder="" value="0.00" onfocus="$(this).select()" />
+                <div class="modal-body" id="modal-bodyCaja">
+                    <div class="form-row">
+                        <div class="col-md-8">
+                            <div class="form-group" style="font-size:2em;">
+                                <label class="small mb-1" for="inputNombre">Cajero:</label>
+                                <input type="hidden" name="usuarios_id" value="<?php echo $this->usuarios_id ?>">
+                                <input class="form-control py-4" id="inputNombre" name="cajero" maxlength="20" type="text" placeholder="" value="<?php echo $this->usuario; ?>" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="font-size:2em;">
+                            <div class="form-group">
+                                <label class="small mb-1" for="inputFecha">Fecha:</label>
+                                <input class="form-control py-4" id="inputFecha" name="fecha" maxlength="20" type="text" placeholder="" value="<?php echo date("d/m/Y") ?>" disabled />
+                            </div>
+                        </div>
                     </div>
-                </div>              
-            </div> 
-            </div>
-            <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                 -->
-                <a href="<?php echo $this->rol=="ADMINISTRADOR"?$this->path."/Administrador":$this->path."/Caja/turnos"?>"><button type="button" class="btn btn-secondary">Cancelar</button></a>
-                <button type="submit" class="btn btn-primary">Abrir Turno</button>
-                
-            </div>
+                    <div class="form-row" style="font-size:2em;">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="small mb-1" for="inputSaldo">Saldo Inicial:</label>
+                                <input class="form-control py-4" id="inputSaldo" name="saldo_inicial" maxlength="20" type="text" style="text-align:center;font-size:2em;" placeholder="" value="0.00" onfocus="$(this).select()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                 -->
+                    <a href="<?php echo $this->rol == "ADMINISTRADOR" ? $this->path . "/Administrador" : $this->path . "/Caja/turnos" ?>"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+                    <button type="submit" class="btn btn-primary">Abrir Turno</button>
+
+                </div>
             </div>
         </div>
-        </div>
+    </div>
 </form>
 
 <div class="modal fade" id="infoVenta" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered " role="document">
-            <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
             <div class="modal-header" style="background-color:#138496;color:white;">
-                <h5 class="modal-title" id="exampleModalLongTitle" >Concluir Venta</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Concluir Venta</h5>
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
                 <!-- <span aria-hidden="true">&times;</span> -->
                 </button>
             </div>
-            <div class="modal-body" id="modal-bodyVenta">    
-            <div class="form-row">
-                <div class="col-md-6">
-                    <div class="form-group" style="font-size:2em;">
-                        <label class="small mb-1" for="inputTotal">Total:</label>                                                
-                        <input class="form-control py-4" id="inputTotal" name="total"  type="text" style="text-align:center;font-size:1em;" placeholder=""  disabled/>
+            <div class="modal-body" id="modal-bodyVenta">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group" style="font-size:2em;">
+                            <label class="small mb-1" for="inputTotal">Total:</label>
+                            <input class="form-control py-4" id="inputTotal" name="total" type="text" style="text-align:center;font-size:1em;" placeholder="" disabled />
+                        </div>
                     </div>
-                </div>                                 
-                <div class="col-md-6">
-                    <div class="form-group" style="font-size:2em;">
-                        <label class="small mb-1" for="inputSaldo">Forma de Pago:</label>
-                        <select class="form-control select" id="tipoPago" name="tipoPago"  style="text-align:center;font-size:1em;">
-                        <option value="efectivo">Efectivo</option>
-                        <option value="tarjeta">Tarjeta</option>
-                        <option value="transferencia">Transferencia</option>
-                        </select>
+                    <div class="col-md-6">
+                        <div class="form-group" style="font-size:2em;">
+                            <label class="small mb-1" for="inputSaldo">Forma de Pago:</label>
+                            <select class="form-control select" id="tipoPago" name="tipoPago" style="text-align:center;font-size:1em;" onchange="setPago()">
+                                <option value="efectivo">Efectivo</option>
+                                <option value="tarjeta">Tarjeta</option>
+                                <option value="transferencia">Transferencia</option>
+                                <option value="credito">Credito</option>
+                            </select>
+                        </div>
                     </div>
-                </div>              
-            </div>  
-            <div class="form-row">
-                <div class="col-md-12">
-                    <div class="form-group" style="font-size:2em;">
-                        <label class="small mb-1" for="inputPago">Pago:</label>                                                
-                        <input class="form-control py-4" id="inputPago" name="pago"  type="text" style="text-align:center;font-size:2em;" onfocus="$(this).select();" onkeyup="setCambio()" placeholder=""/>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group" style="font-size:2em;">
+                            <label class="small mb-1" for="inputPago">Pago:</label>
+                            <input class="form-control py-4" id="inputPago" name="pago" type="text" style="text-align:center;font-size:2em;" onfocus="$(this).select();" onkeyup="setCambio()" placeholder="" />
+                        </div>
                     </div>
-                </div>                 
-            </div>
-            <div class="form-row">
-                <div class="col-md-12">
-                    <div class="form-group" style="font-size:2em;">
-                        <label class="small mb-1" for="inputCambio">Cambio:</label>                                                
-                        <input class="form-control py-4" id="inputCambio" name="cambio"  type="text" style="text-align:center;font-size:2em;" placeholder="" readonly/>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group" style="font-size:2em;">
+                            <label class="small mb-1" for="inputCambio">Cambio:</label>
+                            <input class="form-control py-4" id="inputCambio" name="cambio" type="text" style="text-align:center;font-size:2em;" placeholder="" readonly />
+                        </div>
                     </div>
-                </div>                 
-            </div>
-            <div class="form-row">
-                <div class="col-md-12">
-                    <div class="form-group" style="font-size:2em;">
-                        <label class="small mb-1" for="inputCambio"><input type="checkbox" class="checkbox" onclick="$(this).prop('checked')?showCuponArea(true):showCuponArea(false)"/> Cupón:</label>                                                
-                        <input class="form-control py-4 numeric" id="inputCupon" name="cupon"  type="text" maxlength="5" style="text-align:center;font-size:1.5em;display:none;color:gray;" placeholder="" onkeyup="findCupon($(this).val())" />
-                        <div id="resultCupon" style="display:none">
-                        <span style='font-size:.5em;color:gray'>Ingresa el Número de Cupón.</span>
-                        </div>    
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group" style="font-size:2em;">
+                            <label class="small mb-1" for="inputCambio"><input type="checkbox" id="checkCupon" class="checkbox" onclick="$(this).prop('checked')?showCuponArea(true):showCuponArea(false)" /> Cupón:</label>
+                            <input class="form-control py-4 numeric" id="inputCupon" name="cupon" type="text" maxlength="10" style="text-align:center;font-size:1.5em;display:none;color:gray;" placeholder="" onkeyup="findCupon($(this).val())" />
+                            <div id="resultCupon" style="display:none">
+                                <span style='font-size:.5em;color:gray'>Ingresa el Número de Cupón.</span>
+                            </div>
+                        </div>
                     </div>
-                </div>                 
-            </div>           
+                </div>
             </div>
             <div class="modal-footer" id="pie_venta">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                                
-                <button type="submit" class="btn btn-primary" onclick="almacenaVenta();">Registrar Venta</button>                
-            </div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" onclick="almacenaVenta();">Registrar Venta</button>
             </div>
         </div>
-        </div>
+    </div>
+</div>
 
-        <div class="modal fade" id="infoNolocalizado" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered " role="document">
-            <div class="modal-content">
+<div class="modal fade" id="infoNolocalizado" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
             <div class="modal-header" style="background-color:#138496;color:white;">
-                <h5 class="modal-title" id="exampleModalLongTitle" >Busqueda de Producto</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Busqueda de Producto</h5>
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
                 <!-- <span aria-hidden="true">&times;</span> -->
                 </button>
             </div>
-            <div class="modal-body" id="modal-bodyNolocalizado">    
+            <div class="modal-body" id="modal-bodyNolocalizado">
                 <div class="alert alert-warning">
                     Artículo no Localizado.
-                </div>           
+                </div>
             </div>
-            <div class="modal-footer" >
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>                                                
-            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
-        </div>
+    </div>
+</div>
 
 
-        <div class="modal fade" id="infoRemoveproducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered " role="document">
-            <div class="modal-content">
+<div class="modal fade" id="infoRemoveproducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
             <div class="modal-header" style="background-color:#138496;color:white;">
-                <h5 class="modal-title" id="exampleModalLongTitle" >Busqueda de Producto</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Busqueda de Producto</h5>
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
                 <!-- <span aria-hidden="true">&times;</span> -->
                 </button>
             </div>
-            <div class="modal-body" id="modal-bodyRemoveProducto">    
+            <div class="modal-body" id="modal-bodyRemoveProducto">
                 <div class="alert alert-warning">
                     ¿Desea Eliminar este producto?
-                </div>           
+                </div>
             </div>
-            <div class="modal-footer" >
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>                                                
-                <button type="button" class="btn btn-primary" id="btnEliminar" data-dismiss="modal">Eliminar</button>                                                
-            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnEliminar" data-dismiss="modal">Eliminar</button>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCotizacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#138496;color:white;">
+                <h5 class="modal-title" id="exampleModalLongTitle">Cotizaciones</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyCotizacion">
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group" style="font-size:2em;">
+                            <label class="small mb-1" for="inputCotizacion">Folio de la Cotización:</label>
+                            <input class="form-control py-4 numeric" id="inputCotizacion" name="cotizacion" type="text" style="text-align:center;font-size:2em;" onfocus="$(this).select();" onkeyup="getDataCotizacion();" placeholder="" />
+                        </div>
+                        <div id="resultCotizacion" style="height: 30px;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnCotizacion" style="display:none">Cotización a venta</button>
+            </div>
         </div>
+    </div>
+</div>
+<div class="modal fade" id="modalInexistencias" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#138496;color:white;">
+                <h5 class="modal-title">Existencias</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    No hay suficiente existencia de este artículo.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#138496;color:white;">
+                <h5 class="modal-title">Cliente</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+                <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="small mb-1" for="cliente">Cliente: </label>
+                            <select class="form-control" name="cliente" id="cliente">
+                                <option value="0">Público en general</option>
+                                <?php if ($this->clientes != null) :
+                                    foreach ($this->clientes as $cliente) : ?>
+                                        <option value="<?php echo $cliente->id ?>"><?php echo $cliente->nombre ?></option>
+                                <?php endforeach;
+                                endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="setCliente()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

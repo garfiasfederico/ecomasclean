@@ -19,10 +19,20 @@ class ProductosController extends Zend_Controller_Action
     {        
       $ModelClaves = new Model_Claves();
       $ModelUnidades = new Model_Unidades();
+      $ModelCategorias = new Model_Categoria();
+      $ModelSubcategorias = new Model_Subcategoria();
+      $ModelMarcas = new Model_Marcas();
       $categorias = $ModelClaves->getClaves();
       $unidades = $ModelUnidades->getUnidades();
+      $lineas = $ModelCategorias->getCategorias();
+      $subcategorias = $ModelSubcategorias->getSubcategorias();
+      $marcas = $ModelMarcas->getMarcas();
       $this->view->categorias = $categorias;
       $this->view->unidades = $unidades;
+      $this->view->lineas = $lineas;
+      $this->view->subcategorias = $subcategorias;
+      $this->view->marcas = $marcas;
+
 
       if($this->getRequest()->isPOST()){
       /*  $categoria = $this->getRequest()->getParam("categoria");
@@ -89,11 +99,20 @@ class ProductosController extends Zend_Controller_Action
       if($this->getRequest()->isPOST()){
         $ModelClaves = new Model_Claves();
       $ModelUnidades = new Model_Unidades();
+      $ModelCategorias = new Model_Categoria();
+      $ModelSubcategorias = new Model_Subcategoria();
+      $ModelMarcas = new Model_Marcas();
       $categorias = $ModelClaves->getClaves();
+      $lineas = $ModelCategorias->getCategorias();
       $unidades = $ModelUnidades->getUnidades();
+      $subcategorias = $ModelSubcategorias->getSubcategorias();
+      $marcas = $ModelMarcas->getMarcas();
       $this->view->categorias = $categorias;
       $this->view->unidades = $unidades;
-      
+      $this->view->lineas = $lineas;
+      $this->view->subcategorias = $subcategorias;
+      $this->view->marcas = $marcas;
+
         $items_id = $this->getRequest()->getParam("items_id");
         $ModelItems = new Model_Item();
         
@@ -152,6 +171,9 @@ class ProductosController extends Zend_Controller_Action
           $iva = $this->getRequest()->getParam("iva");          
           $unidad = $this->getRequest()->getParam("unidad");
           $precio_distribuidor = $this->getRequest()->getParam("precio_distribuidor");
+          $linea = $this->getRequest()->getParam("linea");
+          $subcategoria = $this->getRequest()->getParam("subcategorias_id");
+          $marcas_id = $this->getRequest()->getParam("marcas_id");
 
           $dataUpdate = array(
             "id"=>$items_id,
@@ -166,7 +188,11 @@ class ProductosController extends Zend_Controller_Action
             "precio_mayoreo"=>$precio_mayoreo,
             "iva"=>$iva,            
             "unidad"=>$unidad,
-            "precio_distribuidor"=>$precio_distribuidor
+            "precio_distribuidor"=>$precio_distribuidor,
+            "linea"=>$linea,
+            "subcategorias_id"=>$subcategoria,
+            "marcas_id" => $marcas_id
+
           );
 
           if($avatar!=""){

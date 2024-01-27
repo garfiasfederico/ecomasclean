@@ -1,0 +1,55 @@
+<?php if($this->listacotizaciones!=null):?>
+<style>
+    .sombreado{
+        background-color: #F9F7F7;        
+    }
+</style>
+<div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                Cotizaciones Registradas
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive" >
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0" lang="es" >
+                                        <thead>
+                                            <tr style="background-color:#138496;color:white;">     
+                                                <th>Folio</th>                                                                                           
+                                                <th>Fecha de creación</th>   
+                                                <th>Cliente</th>   
+                                                <th>Subtotal</th>                                                                                                
+                                                <th>IVA</th>                                                                                                                                                
+                                                <th>Total</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                            
+                                        <?php if($this->listacotizaciones != null):?>                                       
+                                            <?php foreach($this->listacotizaciones  as $cotizacion):?>
+                                                <tr>
+                                                    <td class="sorting_asc"><?php echo $cotizacion->folio?></td>
+                                                    <td><?php echo date("d-m-Y",strtotime($cotizacion->fecha_creacion))?></td>  
+                                                    <td><?php echo $cotizacion->cliente?></td>  
+                                                    <td><?php echo "$ ".number_format($cotizacion->subtotal,2)?></td>                                                    
+                                                    <td><?php echo "$ ".number_format($cotizacion->iva,2)?></td>                                                                                                    
+                                                    <td><?php echo "$ ".number_format($cotizacion->total,2)?></td>                                                                                                        
+                                                    <td style="text-align:center;">
+                                                            <form style="display:inline;" target="_blank" action="<?php echo $this->path?>/Caja/imprimecotizacion" method="POST"><input type="hidden" name="ctz" value="<?php echo $cotizacion->id?>"><button title="Imprimir Cotizacion" type="submit" class="btn btn-info"><i class="fa fa-print"></i></button></form>                                                            
+                                                    </td>
+                                                </tr>  
+                                            <?php endforeach;?>
+                                        <?php endif;?>                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            $(document).ready(function(){
+                                $("#dataTable").dataTable();
+                            });
+                        </script>
+<?php else:?>
+    <div class="alert alert-info">No existen Cotizaciones Registradas</div>
+<?php endif;?>
+ 

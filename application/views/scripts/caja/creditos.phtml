@@ -1,0 +1,327 @@
+<div id="layoutAuthentication" style="">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header" style="background-color:#138496;color:white;">
+                                <h3 class="text-center font-weight-light my-4">Ventas a Crédito <?php echo $this->turno ?> </h3>
+                            </div>
+                            <div class="card-body">
+                                <div style="text-align:center">
+                                </div>
+                                <h2 style="color:gray">Venta</h2>
+                                <div class="form-row">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input type="hidden" value="<?php echo $this->turnos_id ?>" id="turnos_id" />
+                                            <label class="small mb-1" for="inputTicket">Indique el Ticket de Venta hecha a crédito*:</label>
+                                            <input class="form-control py-4" id="inputTicket" name="ticket" maxlength="13" type="text" placeholder="Ticket de venta" onkeyup="if(event.keyCode==13)getDetalleVentaCredito()" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="small mb-1" for=""></label>
+                                            <br />
+                                            <button type="button" class="btn btn-success" onclick="getDetalleVentaCredito()"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h2 id="labelDetalleVenta" style="display:;color:gray;">Detalles de Venta</h2>
+                                <div class="form-row" id="contenedorDetalleVenta">
+                                    <div class="col-md-12" id="detalles_venta">
+                                    </div>
+                                </div>
+                                <h2 id="labelDetalleMovimientos" style="display:none;color:gray;">Movimientos</h2>
+                                <div class="form-row" id="contenedorDetalleMovimientos" style="display:none">
+                                    <div class="col-md-12" id="detalles_venta">
+                                        <table class="table table-bordered table-hover" style="font-size:.8em;">
+                                            <thead>
+                                                <tr style="text-align:center">
+                                                    <th>Id</th>
+                                                    <th>Producto</th>
+                                                    <th>Unidad</th>
+                                                    <th>Precio</th>
+                                                    <th>Total</th>
+                                                    <th>Aplicación</th>
+                                                    <th>Info</th>
+                                                    <th>Accion</th>
+                                                </tr>
+                                                <thead>
+                                                <tbody id="movimientos_dev">
+
+                                                </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group mt-4 mb-0" style="text-align:right">
+                                    <a href="<?php echo $this->path ?>/Caja/creditos"><button type="button" class="btn btn-secondary"><i clas="fa"></i>Cancelar</button></a>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="small"><a href="login.html"></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script>
+    setTimeout(function() {
+        $("#collapseCaja").addClass("show");
+    }, 1)
+</script>
+
+
+<div class="modal fade" id="abonos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#138496;color:white;">
+                <h5 class="modal-title" id="modal-titleDetalleDev">Registro de abonos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-bodyAbonos">
+                <div style="text-align: right;padding:10px;">
+                    <button class="btn btn-success" onclick="agregarAbono()"><i class="fas fa-plus"></i> Agregar Abono</button>
+                </div>
+                <table style="width:100%" class="table">
+                    <thead>
+                        <tr>
+                            <th style="display:none ;">Id</th>
+                            <th>Fecha</th>
+                            <th>Turno</th>
+                            <th>Abono</th>
+                            <th>Forma</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rowsabonos">
+                    </tbody>
+                </table>
+                <table style="width: 100%;">
+                    <tr>
+                        <th>Total de la Venta</th>
+                        <td id="totalVentaA" style="font-size: 1.5em;"></td>
+                        <th>Saldo Abonado</th>
+                        <td id="saldoAbonado" style="font-size: 1.5em;"></td>
+                        <th>Saldo Faltante</th>
+                        <td id="saldoFaltante" style="font-size: 1.5em;"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAlmacenar" onclick="almacenarAbonos()"><i clas="fas fa-save"></i>Almacenar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var contador = -1;
+
+    function getDetalleVentaCredito() {
+        ticket = $("#inputTicket").val();
+        if (ticket.length > 0 && !isNaN(ticket)) {
+            data = {
+                ventas_id: ticket
+            }
+
+            $.ajax({
+                url: $("#path").val() + '/Ajax/getdetallesventacredito',
+                type: 'post',
+                data: data,
+                beforeSend: function() {
+                    $("#detalles").html("<center><i style='font-size:2em;color:green' class='fa fa-spinner fa-spin fa-3x fa-fw'></i></center>");
+                    $("#labelDetalleVenta").show("slow");
+                    $("#contenedorDetalleVenta").show("slow");
+                }
+            }).done(function(msg) {
+                $("#detalles_venta").html(msg);
+                getmovimientosdev(ticket);
+            });
+        }
+    }
+
+    function abonar(ventas_id) {
+        getAbonos(ventas_id);
+        total = $("#totalVenta").html();
+        $("#totalVentaA").html(total);
+        $("#abonos").modal("show");
+    }
+
+    function agregarAbono() {
+
+        contador++;
+        fecha = new Date();
+        fechas = fecha.getFullYear() + "-" + ((fecha.getMonth() + 1) <= 9 ? "0" + (fecha.getMonth() + 1) : (fecha.getMonth() + 1)) + "-" + (fecha.getDate() <= 9 ? "0" + fecha.getDate() : fecha.getDate());
+        turno = $("#turnos_id").val();
+        row = '<tr id="rowabonon' + contador + '">' +
+            '<td style="display:none"><input type="text" value="0"/></td>' +
+            '<td>' + fechas + '</td>' +
+            '<td>' + turno + '</td>' +
+            '<td>' +
+            '<input class="abono" type="number" class="form-control" name="abono[]" onkeyup="refreshSaldos()" style="text-align:right" />' +
+            '</td>' +
+            '<td>' +
+            '<select class="select form-control forma" name="forma[]">' +
+            '<option value="efectivo">Efectivo</option>' +
+            '<option value="bancaria">Tarjeta Bancaria</option>' +
+            '<option value="transferencia">Transferencia</option>' +
+            '</select>' +
+            '</td>' +
+            '<td><button class="btn btn-danger" onclick="deleteAbono(\'rowabonon' + contador + '\')"><i class="fas fa-trash"></i></button></td>' +
+            '</tr>';
+
+        $("#emptyabonos").remove();
+        $("#rowsabonos").append(row);
+        setTimeout(function() {
+            refreshSaldos()
+        }, 200);
+    }
+
+    function deleteAbono(row) {
+        $("#" + row).hide("slow");
+        abonos_id = $("#" + row).attr("abonos_id");
+        if (abonos_id != undefined) {
+            setStatus(abonos_id, 0);
+        } else {
+            setTimeout(function() {
+                $("#" + row).remove();
+                refreshSaldos()
+            }, 1000);
+        }
+
+    }
+
+    function setStatus(abonos_id, status) {
+        $.ajax({
+            url: $("#path").val() + '/Ajax/setstatusabono',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                abonos_id: abonos_id,
+                status: status
+            },
+            beforeSend: function() {
+                $("#btnAlmacenar").html("<i style='font-size:2em;color:green' class='fa fa-spinner fa-spin fa-3x fa-fw'></i>");
+            }
+        }).done(function(msg) {
+
+            $("#btnAlmacenar").html('<i clas="fas fa-save"></i>Almacenar');
+            if (msg.resultado = "ok") {
+                //alert(msg.mensaje);
+                setTimeout(function() {
+                    $("#rowabono" + abonos_id).remove();
+                    refreshSaldos()
+                }, 1000);
+            } else {
+                alert(msg.mensaje);
+            }
+
+        });
+    }
+
+    function almacenarAbonos() {
+        // abonos
+        if (refreshSaldos()) {
+            ticket = $("#inputTicket").val();
+            turnos_id = $("#turnos_id").val();
+            abonos = "";
+            formas = "";
+            valid = true;
+            $(".abono").each(function() {
+                if ($(this).val() == "") {
+                    valid = false;
+                } else {
+                    abonos += parseFloat($(this).val()) + "|";
+                }
+            });
+
+            $(".forma").each(function() {
+                formas += $(this).val() + "|";
+            });
+
+            if (!valid) {
+                alert("Indicar los importes de los abonos registrados");
+            } else {
+                //Aqui mandamos los datos para el almacenamiento de abonos
+                $.ajax({
+                    url: $("#path").val() + '/Ajax/almacenaabono',
+                    type: 'post',
+                    data: {
+                        ventas_id: ticket,
+                        turnos_id: turnos_id,
+                        abonos: abonos,
+                        formas: formas
+                    },
+                    beforeSend: function() {
+                        $("#btnAlmacenar").html("<i style='font-size:2em;color:green' class='fa fa-spinner fa-spin fa-3x fa-fw'></i>");
+                    }
+                }).done(function(msg) {
+                    $("#btnAlmacenar").html('<i clas="fas fa-save"></i>Almacenar');
+                    alert(msg);
+                    getAbonos(ticket);
+
+                });
+            }
+        }else{
+            alert("No es posible registrar un monto superior al monto de la venta a crédito, favor de verificarlo")
+        }
+    }
+
+    function getAbonos(ventas_id) {
+        $.ajax({
+            url: $("#path").val() + '/Ajax/getabonos',
+            type: 'post',
+            data: {
+                ventas_id: ventas_id
+            },
+            beforeSend: function() {
+                $("#btnAlmacenar").html("<i style='font-size:2em;color:green' class='fa fa-spinner fa-spin fa-3x fa-fw'></i>");
+            }
+        }).done(function(msg) {
+            $("#btnAlmacenar").html('<i clas="fas fa-save"></i>Almacenar');
+            $("#rowsabonos").html(msg);
+            setTimeout(function() {
+                refreshSaldos()
+            }, 200);
+        });
+    }
+
+    function refreshSaldos() {
+        const options = {
+            style: "currency",
+            currency: "USD"
+        };
+        const numberFormat = new Intl.NumberFormat("en-US", options);
+        total = parseFloat($("#totalVentaA").html().replace(/[$,]/g, ""));
+        saldoAbonado = 0;
+        $(".abono").each(function() {
+            if (!isNaN(parseFloat($(this).val())))
+                saldoAbonado += parseFloat($(this).val().replace(/[$,]/g, ""));
+        });
+
+        $(".abonor").each(function() {
+            if (!isNaN(parseFloat($(this).html().replace(/[$,]/g, ""))))
+                saldoAbonado += parseFloat($(this).html().replace(/[$,]/g, ""));
+        });
+        saldoPendiente = total - saldoAbonado;
+        $("#saldoAbonado").html(numberFormat.format(saldoAbonado));
+        $("#saldoFaltante").html(numberFormat.format(saldoPendiente));
+        if (saldoPendiente < 0) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+</script>

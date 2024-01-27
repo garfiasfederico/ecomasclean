@@ -36,6 +36,13 @@ class Model_Movimientosdev Extends Zend_Db_Table{
     }
 
     public function almacena($data){
+        //Validamos que no se haya alcanzado el máximo de devoluciones con respecto a la cantidad del producto vendida.
+        $modelVentaItems = new Model_Ventaitems();
+        $cantidadIV = $modelVentaItems->getCanItemsByVenta($data["ventas_id"],$data["items_id"]);
+        $cantidadIM = $this->getMovientosByVentaItem($data["ventas_id"],$data["items_id"]);
+        if(($cantidadIM+$data["cantidad"]) > $cantidadIV)
+            return -2;
+
         $data_ = array(
             "tipo"=>$data["tipo"],
             "ventas_id"=>$data["ventas_id"],
@@ -52,10 +59,29 @@ class Model_Movimientosdev Extends Zend_Db_Table{
         try{            
             if($this->insert($data_))
             $movimientos_id = $this->getAdapter()->lastInsertId();
-            return $movimientos_id;
+            return $movimientos_id;            
 
         }catch(Exception $e){                
             return null;
         }
+    }
+
+    public function getMovientosByVentaItem($ventas_id,$items_id){
+        $select = $this->select();
+        $select->from($this->_name,array("cantidad"=>"sum(cantidad)"));
+        $select->where("ventas_id = ".$ventas_id);
+        $select->where("items_id = ".$items_id);
+        $result = $this->fetchRow($select);
+        if(!empty($result))
+            return $result->cantidad;
+        else
+            return null;
+    }
+
+    public function deletec($movimientos_id){
+    if($this->delete("id = ".$movimientos_id))
+        return true;
+    else
+        return false;
     }
 }
