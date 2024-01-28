@@ -6,7 +6,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                <div class="card-header" style="background-color:#138496;color:white;"><h3>Retiros de Efectivo</h3><h3 class="text-center font-weight-light my-4">Turno Activo: <span id="turnos_id"><?php echo $this->turno;?></span></h3></div>
+                                <div class="card-header" style="background-color:green;color:white;"><h3>Entradas de Efectivo</h3><h3 class="text-center font-weight-light my-4">Turno Activo: <span id="turnos_id"><?php echo $this->turno;?></span></h3></div>
                                 <div class="card-body">                                    
                                         <div style="text-align:center">                                                                                        
                                         </div> 
@@ -21,7 +21,7 @@
                                         <div class="form-row">
                                         <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="inputMonto">Monto de Retiro:</label>
+                                                    <label class="small mb-1" for="inputMonto">Cantidad a Ingresar:</label>
                                                     <input class="form-control py-4" style="font-size:2em;" id="inputMonto" name="monto" maxlength="13" type="text" placeholder=" 0.00" required/>
                                                 </div>                                                
                                         </div>                                        
@@ -29,14 +29,14 @@
                                         <div class="form-row">
                                         <div class="col-md-8">
                                                 <div class="form-group">
-                                                    <label class="small mb-1" for="inputMotivo">Motivo:</label>
+                                                    <label class="small mb-1" for="inputMotivo">Comentarios:</label>
                                                     <input class="form-control py-4" style="font-size:2em;" id="inputMotivo" name="motivo"  type="text" required/>
                                                 </div>                                                
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group" style="">
                                                 <br/>
-                                                <button  style="height:61px;" type="button" class="btn btn-success" id="button_retiro" onclick="addRetiro()">Retirar</button>                                                    
+                                                <button  style="height:61px;" type="button" class="btn btn-success" id="button_entrada" onclick="addEntrada()">Ingresar Efectivo</button>                                                    
                                             </div>
                                         </div>
                                         </div>
@@ -46,30 +46,23 @@
                                                     <tr>
                                                         <th>id</th>
                                                         <th>Fecha</th>
-                                                        <th>Monto Retirado</th>
-                                                        <th>Motivo de Retiro</th>
+                                                        <th>Entrada</th>
+                                                        <th>Comentarios</th>
                                                         <th></th>
                                                     </tr>                                                
                                                 </thead>
-                                                <tbody id="rowsretiro">   
-                                                 <?php if($this->retiros):?>
-                                                    <?php foreach($this->retiros as $retiro):?>
-                                                        <tr id="retiro<?php echo $retiro->id?>">
-                                                            <td><?php echo $retiro->id?></td>
-                                                            <td><?php echo date("Y-m-d",strtotime($retiro->fecha))?></td>
-                                                            <td>$ <?php echo number_format($retiro->monto,2)?></td>
-                                                            <td> <?php echo $retiro->motivo?></td>
-
-                                                            <?php if($retiro->tipo=='M'):?>
-                                                                <td>
-                                                                    <a target="_blank" href="<?php echo $this->path?>/Caja/imprimeretiro?retiro=<?php echo $retiro->id?>"><button class="btn btn-success"><i class="fas fa-print"></i></button></a>
-                                                                    <button class="btn btn-warning" id="buttonretiro<?php echo $retiro->id?>"onclick="cancelaRetiro(<?php echo $retiro->id?>,<?php echo $retiro->monto?>)"><i class="fa fa-times"></i></button>
-                                                                </td>
-                                                            <?php else:?>
-                                                                <td>
-                                                                    <a target="_blank" href="<?php echo $this->path?>/Caja/imprimeretiro?retiro=<?php echo $retiro->id?>"><button class="btn btn-success"><i class="fas fa-print"></i></button></a>
-                                                                </td>
-                                                            <?php endif;?>
+                                                <tbody id="rowsentradas">   
+                                                 <?php if($this->entradas):?>
+                                                    <?php foreach($this->entradas as $entrada):?>
+                                                        <tr id="entrada<?php echo $entrada->id?>">
+                                                            <td><?php echo $entrada->id?></td>
+                                                            <td><?php echo date("Y-m-d",strtotime($entrada->fecha))?></td>
+                                                            <td>$ <?php echo number_format($entrada->monto,2)?></td>
+                                                            <td> <?php echo $entrada->motivo?></td>                                                            
+                                                            <td>
+                                                                <a target="_blank" href="<?php echo $this->path?>/Caja/imprimeentrada?entrada=<?php echo $entrada->id?>"><button class="btn btn-success"><i class="fas fa-print"></i></button></a>
+                                                                <button class="btn btn-warning" id="buttonentrada<?php echo $entrada->id?>"onclick="cancelaEntrada(<?php echo $entrada->id?>,<?php echo $entrada->monto?>)"><i class="fa fa-times"></i></button>
+                                                            </td>
                                                         </tr>
                                                     <?php endforeach;?>
                                                  <?php endif;?>   
@@ -92,7 +85,7 @@
         </div>            
     </div>    
 <?php endif;?>
-<div class="modal fade" id="infoRetiro" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="infoEntrada" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header" style="background-color:gray;color:white;">

@@ -293,6 +293,28 @@ class AjaxController extends Zend_Controller_Action
         }
     }
 
+    public function cancelaentradaAction()
+    {
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $entradas_id = $this->getRequest()->getParam("entradas_id");
+            $ModelEntrada = new Model_Entrada();
+            $resultado = $ModelEntrada->cancelaEntrada($entradas_id);
+            $this->view->resultado = $resultado;
+        }
+    }
+
+    public function efectuaentradaAction()
+    {
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            // $turnos_id = $this->getRequest()->getParam("turnos_id");
+            // $monto_retiro = $this->getRequest()->getParam("monto_retiro");
+            // $saldo_nuevo = $this->getRequest()->getParam("saldo_nuevo");
+            $ModelEntrada = new Model_Entrada();
+            $entradas_id = $ModelEntrada->almacena($this->getRequest()->getParams());
+            $this->view->entradas_id = $entradas_id;
+        }
+    }
+
     public function getdetallesventaAction()
     {
         if ($this->getRequest()->isXmlHttpRequest()) {

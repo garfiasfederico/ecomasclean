@@ -37,6 +37,7 @@ class Reporte_Reporteturno {
         $ModelTurno = new Model_Turno();
         $ModelRetiros = new Model_Retiro();
         $ModelVentaCreditos = new Model_VentaCreditos();
+        $ModelEntradas = new Model_Entrada();
 
         $totalAbonos = 0;
 
@@ -55,6 +56,7 @@ class Reporte_Reporteturno {
         $estado = $infoTurno->estado =="1"?"Abierto":"Cerrado";
         $fecha = date("Y-d-m",strtotime($infoTurno->fecha));
         $retiros = $ModelRetiros->getRetiros($turnos_id);
+        $entradas = $ModelEntradas->getEntradas($turnos_id);
         $html = '
         <style>
         .encabezado_turno th{
@@ -239,6 +241,34 @@ class Reporte_Reporteturno {
 
 
         //Aqui hacemos la integración de los retiros hechos en el turno
+        if($entradas!=null){        
+                $html.='<h3 style="color:green;">Entradas Registradas en este turno</h3>
+                        <table cellpadding="5" style="font-size:8pt;width:1000" border="1">
+                        <tr class="encabezado_items">
+                                <th style="width:40px;">No.</th>
+                                <th>Comentarios</th>
+                                <th style="width:80px;">Monto</th>                        
+                        </tr>';
+                $con=1;
+                $sum=0;
+                foreach($entradas as $entrada){
+                        $sum+=$entrada->monto;
+                        $html.='        
+                        <tr>    
+                                <td style="text-align:center;">'.$con++.'</td>
+                                <td>'.$entrada->motivo.'</td>
+                                <td style="text-align:right">$ '.number_format($entrada->monto,2).'</td>
+                        </tr>';
+                }
+                $html.='        
+                        <tr>    
+                                <td colspan="2" style="text-align:right;">Total en retiros</td>                        
+                                <td style="text-align:right"><b>$ '.number_format($sum,2).'</b></td>
+                        </tr>';
+
+                $html.="</table>";
+        }
+
         if($retiros!=null){        
                 $html.='<h3 style="color:gray;">Retiros registrados en este turno</h3>
                         <table cellpadding="5" style="font-size:8pt;width:1000" border="1">
@@ -267,10 +297,14 @@ class Reporte_Reporteturno {
                 $html.="</table>";
         }
 
+
+
+
         $efectivo = $ModelVentas->getResumenByForma($turnos_id,"efectivo");
         $tarjeta = $ModelVentas->getResumenByForma($turnos_id,"tarjeta");
         $transferencia = $ModelVentas->getResumenByForma($turnos_id,"transferencia");
         $retiros = $ModelRetiros->getSumaRetirnos($turnos_id);
+        $entradas = $ModelEntradas->getSumaEntradas($turnos_id);
         
         $total=0;
         if($efectivo!=null)
@@ -283,10 +317,15 @@ class Reporte_Reporteturno {
         $total += $infoTurno->saldo_inicial;
 
         $total += $totalAbonos;
+
+        if($entradas!=null)
+                $total+=$entradas;
         
         if($retiros!=null)
-        $total -= $retiros;
-
+                $total -= $retiros;
+        
+        if($total<0)
+          $total=0;
 
         require (dirname(getcwd()) . '/library/NumeroALetras.php');        
         $formatter = new NumeroALetras();
@@ -331,6 +370,11 @@ class Reporte_Reporteturno {
                                 <td style="background-color:gray;color:white">Retiros:</td>
                                 <td style="width:5%">$</td>
                                 <td style="text-align:right;border:dotter 1px gray;"><b>'. ($retiros!=null?number_format($retiros,2):"0.00").'</b></td>
+                        </tr>
+                        <tr>
+                                <td style="background-color:green;color:white">Entradas:</td>
+                                <td style="width:5%">$</td>
+                                <td style="text-align:right;border:dotter 1px gray;"><b>'. ($entradas!=null?number_format($entradas,2):"0.00").'</b></td>
                         </tr>
                         <tr>
                                 <td style="background-color:#138496;color:white">Total:</td>

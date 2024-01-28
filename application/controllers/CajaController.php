@@ -219,4 +219,41 @@ class CajaController extends Zend_Controller_Action {
     $this->view->turnos_id = $this->turno;
     
   }
+
+  public function entradasAction(){
+    $ModelTurno = new Model_Turno();
+    $ModelEntradas = new Model_Entrada();
+    $turno = $ModelTurno->getTurnoActivo($this->varSession->usuarios_id);  
+    $infoTurno = null;
+    if($turno!=null)
+      $infoTurno = $ModelTurno->getInfoTurno($turno);    
+
+    if($infoTurno==null)
+      $this->redirect("/Caja");
+
+    $entradas = $ModelEntradas->getEntradas($turno);  
+    $this->view->infoTurno = $infoTurno;
+    $this->view->turno = $turno;
+    $this->view->entradas = $entradas;
+
+  }
+
+  public function imprimeretiroAction(){    
+    $this->_helper->layout()->disableLayout(); 
+    if($this->getRequest()->isGET()){                     
+        $retiros_id = $this->getRequest()->getParam("retiro");
+        require (dirname(getcwd()) . '/public/tcpdf/Reportes/Retiro.php');        
+        $Retiro= new Reporte_Retiro();                
+        $Retiro->create($retiros_id);
+    }
+  }
+  public function imprimeentradaAction(){    
+    $this->_helper->layout()->disableLayout(); 
+    if($this->getRequest()->isGET()){                     
+        $entradas_id = $this->getRequest()->getParam("entrada");
+        require (dirname(getcwd()) . '/public/tcpdf/Reportes/Entrada.php');        
+        $Entrada= new Reporte_Entrada();                
+        $Entrada->create($entradas_id);
+    }
+  }
 }

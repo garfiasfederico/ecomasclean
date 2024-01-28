@@ -1051,7 +1051,7 @@ function addRetiro() {
             saldo = saldo - monto;
             turnos_id = $("#turnos_id").html();
             motivo = $("#inputMotivo").val();
-            data = { turnos_id: turnos_id, monto_retiro: monto, saldo_nuevo: saldo, motivo: motivo };
+            data = { turnos_id: turnos_id, monto_retiro: monto, saldo_nuevo: saldo, motivo: motivo, tipo:'M' };
             $.ajax({
                 url: $("#path").val() + '/Ajax/efectuaretiro',
                 type: 'post',
@@ -1071,7 +1071,8 @@ function addRetiro() {
                         '<td>' + hoy.toLocaleDateString() + '</td>' +
                         '<td>$ ' + monto.toFixed(2) + '</td>' +
                         '<td>' + motivo + '</td>' +
-                        '<td><button class="btn btn-warning" id="buttonretiro' + msg + '"onclick="cancelaRetiro(' + msg + ',' + monto + ')"><i class="fa fa-times"></i></button></td>' +
+                        '<td><a target="_blank" href="'+$("#path").val()+'/Caja/imprimeretiro?retiro='+msg+'"><button class="btn btn-success"><i class="fas fa-print"></i></button></a>'+
+                        '<button class="btn btn-warning" id="buttonretiro' + msg + '"onclick="cancelaRetiro(' + msg + ',' + monto + ')"><i class="fa fa-times"></i></button></td>' +                        
                         '</tr>';
                     $("#rowsretiro").append(row)
                     $("#inputMonto").val("");
@@ -1080,10 +1081,93 @@ function addRetiro() {
                     $("#button_retiro").html("Proceder");
                     $("#button_retiro").prop("disabled", false);
                 }
+                setTimeout(function(){window.open($("#path").val() + "/Caja/imprimeretiro?retiro="+msg);},500);                
+            });            
+        }
+
+    }
+}
+function addEntrada() {
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+    saldo = $("#saldo_final").html().replace(",", "").replace("$", "");
+    saldo = parseFloat(saldo.replace("$", ""));
+    monto = parseFloat($("#inputMonto").val());
+
+
+    if (false){//saldo < monto) {
+        $("#modal-bodyRetiro").html("<div class='alert alert-warning'><i class='fa fa-info'></i> EL monto de Retiro es Superior al Saldo Final en Caja!</div>")
+        $("#infoRetiro").modal("show");
+    }
+    else {
+        if (monto > 0 && !(isNaN(monto))) {
+            saldo = saldo + monto;            
+            turnos_id = $("#turnos_id").html();
+            motivo = $("#inputMotivo").val();
+            data = { turnos_id: turnos_id, monto_entrada: monto, saldo_nuevo: saldo, motivo: motivo };
+            $.ajax({
+                url: $("#path").val() + '/Ajax/efectuaentrada',
+                type: 'post',
+                data: data,
+                beforeSend: function () {
+                    $("#button_entrada").html("<i style='font-size:2em;color:green' class='fa fa-spinner fa-spin fa-3x fa-fw'></i>");
+                    $("#button_entrada").prop("disabled", true);
+                }
+            }).done(function (msg) {
+
+                tiempo = Date.now();
+                hoy = new Date(tiempo);
+                if (!(msg == 'null')) {
+                    $("#saldo_final").html(formatter.format(saldo));
+                    row = '<tr id="entrada' + msg + '">' +
+                        '<td>' + msg + '</td>' +
+                        '<td>' + hoy.toLocaleDateString() + '</td>' +
+                        '<td>$ ' + monto.toFixed(2) + '</td>' +
+                        '<td>' + motivo + '</td>' +
+                        '<td><a target="_blank" href="'+$("#path").val()+'/Caja/imprimeentrada?entrada='+msg+'"><button class="btn btn-success"><i class="fas fa-print"></i></button></a>'+
+                        '<button class="btn btn-warning" id="buttonentrada' + msg + '"onclick="cancelaEntrada(' + msg + ',' + monto + ')"><i class="fa fa-times"></i></button></td>' +
+                        '</tr>';
+                    $("#rowsentradas").append(row)
+                    $("#inputMonto").val("");
+                    $("#inputMotivo").val("");
+
+                    $("#button_entrada").html("Ingresar a Efectivo");
+                    $("#button_entrada").prop("disabled", false);
+                }
+                setTimeout(function(){window.open($("#path").val() + "/Caja/imprimeentrada?entrada="+msg);},500);                
             });
         }
 
     }
+}
+function cancelaEntrada(id, monto) {
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+    saldo = $("#saldo_final").html().replace(",", "");
+    saldo = saldo.replace("$", "");
+    saldo = parseFloat(saldo) - parseFloat(monto);
+    data = { entradas_id: id };
+    $.ajax({
+        url: $("#path").val() + '/Ajax/cancelaentrada',
+        type: 'post',
+        data: data,
+        beforeSend: function () {
+            $("#buttonentrada" + id).html("<i style='font-size:2em;color:green' class='fa fa-spinner fa-spin fa-3x fa-fw'></i>");
+            $("#buttonentrada" + id).prop("disabled", true);
+        }
+    }).done(function (msg) {
+        if (msg) {
+            $("#saldo_final").html(formatter.format(saldo));
+            $("#entrada" + id).hide("slow");
+            setTimeout(function () { $("#entrada" + id).remove(); }, 2000)
+        }
+
+    });
+
 }
 function cancelaRetiro(id, monto) {
     var formatter = new Intl.NumberFormat('en-US', {
