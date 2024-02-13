@@ -442,7 +442,7 @@ class AjaxController extends Zend_Controller_Action
         if ($this->getRequest()->isXmlHttpRequest()) {
             $descripcion = $this->getRequest()->getParam("descripcion");
             $ModelProducto = new Model_Item();
-            $productos = $ModelProducto->getProductosByBusqueda($descripcion, 5);
+            $productos = $ModelProducto->getProductosByBusqueda($descripcion, 10);
             $this->view->productos = $productos;
         }
     }
@@ -451,7 +451,7 @@ class AjaxController extends Zend_Controller_Action
         if ($this->getRequest()->isXmlHttpRequest()) {
             $descripcion = $this->getRequest()->getParam("descripcion");
             $ModelProducto = new Model_Item();
-            $productos = $ModelProducto->getProductosByBusqueda($descripcion, 5);
+            $productos = $ModelProducto->getProductosByBusqueda($descripcion, 10);
             $this->view->productos = $productos;
         }
     }
