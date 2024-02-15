@@ -35,9 +35,14 @@ class Model_Cotizacion Extends Zend_Db_Table{
         ); 
         $this->getAdapter()->beginTransaction();       
         try{
-            $this->insert($dataInsert);
-            $cotizaciones_id = $this->getAdapter()->lastInsertId();                                    
-            $this->setFolio($cotizaciones_id,$turnos_id);
+            if($data["id"]!=''){
+                $this->update($dataInsert,"id =".$data["id"]);
+                $cotizaciones_id = $data["id"];
+            }else{
+                $this->insert($dataInsert);
+                $cotizaciones_id = $this->getAdapter()->lastInsertId();                                    
+                $this->setFolio($cotizaciones_id,$turnos_id);
+            }                        
             $this->getAdapter()->commit();
             return $cotizaciones_id;
         }catch(Exception $e){  

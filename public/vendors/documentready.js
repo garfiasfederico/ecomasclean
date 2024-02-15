@@ -1725,9 +1725,11 @@ function almacenaCotizacion() {
         //Dato de dias de vigencia
         vigencia = $("#vigencia").val();
 
-
+        //enviamos el dato 
+        id = $("#id").val();
 
         data = {
+            id:id,
             turnos_id: turnos_id,
             descuento: descuento,
             iva: iva,
@@ -1787,6 +1789,10 @@ function limpiaCotizacion() {
     $("#precio_de_venta").prop("disabled", false);
     $("#comentarios").val('');
     $("#vigencia").val('1');
+    $("#inputCotizacion").val('');
+    $("#id").val('');
+    $("#cliente").val('0');
+
     actualizaVenta();
 }
 
@@ -1811,9 +1817,9 @@ function modalCotizacion() {
 }
 var artic = null;
 var cotiz = null;
-function getDataCotizacion() {
+function getDataCotizacion(vacia=null) {
     cotizacion = $("#inputCotizacion").val();
-    if (cotizacion.length >= 3) {
+    if (cotizacion.length >= 0) {
         $.ajax({
             url: $("#path").val() + '/Ajax/getcotizacion',
             type: 'post',
@@ -1827,7 +1833,10 @@ function getDataCotizacion() {
                 $("#resultCotizacion").html("<span class='text-success'>" + resul.mensaje + "</span>");
                 $("#btnCotizacion").show("");
                 cotiz = resul.cotizacion;
-                artic = resul.articulos;
+                artic = resul.articulos;                
+                if(vacia!=null){                                                              
+                    vaciaCaCotizacion(cotiz,artic);
+                }
                 $("#btnCotizacion").attr("onclick", "$('#modalCotizacion').modal('hide');vaciaCaVenta(); ");
             }
             else {
@@ -1848,6 +1857,18 @@ function vaciaCaVenta() {
         $("#cant").val(element["cantidad"]);
         $("#input_producto").val(element["clave"]);
         addProducto();
+    });
+}
+
+function vaciaCaCotizacion(cotizacion,articulos) {
+    $("#precio_de_venta").val(cotizacion["tipo_precio"]);
+    $("#cliente").val(cotizacion["clientes_id"]);
+    $("#comentarios").val(cotizacion["comentarios"]);
+    $("#vigencia").val(cotizacion["vigencia"]);
+    articulos.forEach(function (element) {
+        $("#cant").val(element["cantidad"]);
+        $("#input_producto").val(element["clave"]);
+        addProductoc();
     });
 }
 

@@ -11,39 +11,49 @@
  *
  * @author garfiaspro
  */
-class Model_Cotizacionitems Extends Zend_Db_Table{
+class Model_Cotizacionitems extends Zend_Db_Table
+{
     //put your code here
-    protected $_name='cotizacion_detalles';
-    protected $_primary = array("cotizaciones_id","items_id");
-    
-    public function init(){
-        
-    }
-    
-    public function almacenar($data){               
+    protected $_name = 'cotizacion_detalles';
+    protected $_primary = array("cotizaciones_id", "items_id");
 
-        try{
+    public function init()
+    {
+    }
+
+    public function almacenar($data)
+    {
+
+        try {
             $this->insert($data);
             $id = $this->getAdapter()->lastInsertId();
             return $id;
-        }catch(Exception $e){            
+        } catch (Exception $e) {
             return null;
         }
     }
 
-    public function getItemsByCotizacion($cotizaciones_id){
-        $select = $this->select();        
-        $select->from($this->_name,array("*"));
+    public function getItemsByCotizacion($cotizaciones_id)
+    {
+        $select = $this->select();
+        $select->from($this->_name, array("*"));
         $select->setIntegrityCheck(false);
-        $select->joinInner("items","items.id = cotizacion_detalles.items_id",array("nombre","unidad","clave"));    
-        $select->where("cotizaciones_id = ".$cotizaciones_id);        
+        $select->joinInner("items", "items.id = cotizacion_detalles.items_id", array("nombre", "unidad", "clave"));
+        $select->where("cotizaciones_id = " . $cotizaciones_id);
         $result = $this->fetchAll($select);
-        if($result->count()>0)
+        if ($result->count() > 0)
             return $result;
         else
             return null;
+    }
 
-    }   
-    
-
+    public function deleteItemsFromCotizacion($cotizaciones_id)
+    {
+        try {
+            $this->delete("cotizaciones_id =" . $cotizaciones_id);            
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
 }

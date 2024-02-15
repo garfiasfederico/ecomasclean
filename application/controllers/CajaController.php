@@ -139,9 +139,9 @@ class CajaController extends Zend_Controller_Action {
           $dataCotizacion = $this->getRequest()->getParams();          
           $ModelCotizaciones = new Model_Cotizacion();
           $cotizaciones_id = $ModelCotizaciones->almacenar($dataCotizacion);
-          
+//          die($cotizaciones_id);
 
-          //Procedemos a almacenar los items de la manda
+          //Procedemos a almacenar los items de la cotizacion
           $precios = $this->getRequest()->getParam("precios");
           $cantidades = $this->getRequest()->getParam("cantidades");
           $items = $this->getRequest()->getParam("items");
@@ -169,6 +169,7 @@ class CajaController extends Zend_Controller_Action {
           $bandera="".$cotizaciones_id." |";
           if($cotizaciones_id!=null){
               $ModelCotizacionItems = new Model_Cotizacionitems();
+              $ModelCotizacionItems->deleteItemsFromCotizacion($cotizaciones_id);
               for($x=0; $x<count($precios_)-1;$x++){
                   $dataItem = array(
                       "cotizaciones_id"=>$cotizaciones_id,
