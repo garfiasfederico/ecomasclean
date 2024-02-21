@@ -11,6 +11,9 @@ class EmpleadosController extends Zend_Controller_Action {
         $this->varSession = new Zend_Session_Namespace("users");
         if(!isset($this->varSession->usuarios_id))
         $this->redirect("/Login");
+        if($this->varSession->rol!="ADMINISTRADOR"){
+            $this->redirect("/Index/deny");
+          }
 
     }
 

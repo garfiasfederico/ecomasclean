@@ -148,7 +148,7 @@ class Model_Ventaitems Extends Zend_Db_Table{
         $select->from($this->_name,array("sumatoria"=>"sum(cantidad)","items_id"));
         $select->setIntegrityCheck(false);
         $select->joinInner("items","items.id = venta_items.items_id",array("nombre","unidad","existencias","categorias_id","avatar"));
-        $select->joinInner("categorias","categorias.id = items.categorias_id",array("descripcion"));
+        $select->joinLeft("categorias","categorias.id = items.categorias_id",array("descripcion"));
         $select->group("items_id");
         $select->order("sumatoria DESC");
         $select->limit($limit);        

@@ -72,6 +72,11 @@ class LoginController extends Zend_Controller_Action
           if($infoUsuario->rol=="CAJERO")
             $this->_redirect("/Caja");
 
+        if($infoUsuario->rol=="AUXILIAR")
+            $this->_redirect("/Index");
+
+
+
           
           
           //$info_usuario = $modelUsuarios->getInfoUsuario($this->dataUser->Id);

@@ -18,8 +18,12 @@ class IndexController extends Zend_Controller_Action {
     }
 
     public function indexAction() {
+        $this->view->usuario = $this->varSession->usuario;
         
-        
+    }
+
+    public function denyAction(){
+        $this->_helper->layout->setLayout("administracion");
     }
 
     

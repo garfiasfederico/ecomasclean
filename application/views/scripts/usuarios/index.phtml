@@ -18,7 +18,7 @@
                                                 <th>Rol</th>
                                                 <th>Empleado Titular</th>
                                                 <th>Activo</th>
-                                                <th>Estatus</th>                                                
+                                                <th>Estatus</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>             
@@ -31,7 +31,7 @@
                                                     <td><?php echo $usuario->rol?></td>
                                                     <td><?php echo $usuario->nombre_empleado?></td>
                                                     <td style="text-align:center"><input onclick="updateStatusUsuario(this)" type="checkbox" class="form-checkbox" usuarios_id ="<?php echo $usuario->id?>" <?php echo $usuario->status?" checked ":""?>/></td>
-                                                    <td id="usuarioStatus<?php echo $usuario->id?>"><?php echo $usuario->status==1?"Activo":"Baja"?></td>                                                
+                                                    <td id="usuarioStatus<?php echo $usuario->id?>"><?php echo $usuario->status==1?"Activo":"Baja"?></td>                                                    
                                                     <td style="text-align:center"><button class="btn btn-warning" data-toggle="modal" data-target="#changePassword" href="#" onclick="showchangePassword('<?php echo $usuario->cuenta?>',<?php echo $usuario->id?>)"><i style="" class="fa fa-key"></i></button></td>
                                             </tr>
                                         <?php endforeach;?>

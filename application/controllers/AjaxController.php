@@ -163,11 +163,11 @@ class AjaxController extends Zend_Controller_Action
     {
         if ($this->getRequest()->isXmlHttpRequest()) {
             $usuarios_id = $this->getRequest()->getParam("usuarios_id");
-            $password_actual = $this->getRequest()->getParam("password_actual");
+            //$password_actual = $this->getRequest()->getParam("password_actual");
             $password_nueva = $this->getRequest()->getParam("password_nueva");
             $password_confirma = $this->getRequest()->getParam("password_confirma");
             $modelUsuario = new Model_Usuario();
-            $existe = $modelUsuario->getUsuario($usuarios_id, $password_actual);
+            $existe = $modelUsuario->getUsuario($usuarios_id);
             if ($existe) {
                 $actualizada = $modelUsuario->actualizaPassword($usuarios_id, $password_nueva);
                 if ($actualizada)

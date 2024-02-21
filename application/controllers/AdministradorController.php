@@ -19,6 +19,9 @@ class AdministradorController extends Zend_Controller_Action
     public function indexAction()
     {        
  
+      if($this->varSession->rol!="ADMINISTRADOR" && $this->varSession->rol!="COORDINADOR"){
+        $this->redirect("/Index/deny");
+      }
       $ModelVentaItems = new Model_Ventaitems();
       $masvendidos = $ModelVentaItems->getMasVendidos(5);            
       $cadena = ".jpeg,image/jpeg| 

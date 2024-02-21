@@ -55,11 +55,11 @@ class Model_Usuario extends Zend_Db_Table{
             return null;
     }
 
-    public function getUsuario($usuarios_id,$password){
+    public function getUsuario($usuarios_id){
         $select = $this->select();
         $select->from($this->_name);
         $select->where("id = ".$usuarios_id);
-        $select->where("password = '".sha1($password)."'");        
+        //$select->where("password = '".sha1($password)."'");        
         $result = $this->fetchRow($select);
         if(!empty($result))
             return true;

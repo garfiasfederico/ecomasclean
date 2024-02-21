@@ -13,6 +13,9 @@ class UsuariosController extends Zend_Controller_Action
       $this->_helper->layout->setLayout("administracion");
       if(!isset($this->varSession->usuarios_id))
         $this->redirect("/Login");
+        if($this->varSession->rol!="ADMINISTRADOR"){
+          $this->redirect("/Index/deny");
+        }
         
     }
 

@@ -12,6 +12,9 @@ class ComprasController extends Zend_Controller_Action {
         $this->_helper->layout->setLayout("administracion");
       if(!isset($this->varSession->usuarios_id))
         $this->redirect("/Login");
+    if($this->varSession->rol!="ADMINISTRADOR" && $this->varSession->rol!="AUXILIAR"){
+            $this->redirect("/Index/deny");
+          }
     }
 
     public function indexAction() {

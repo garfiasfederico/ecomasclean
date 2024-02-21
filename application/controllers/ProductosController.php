@@ -11,12 +11,16 @@ class ProductosController extends Zend_Controller_Action
       $this->view->path =  $this->path;
       $this->_helper->layout->setLayout("administracion");
       $this->varSession = new Zend_Session_Namespace("users");
+      $this->view->varSession = $this->varSession;
       if(!isset($this->varSession->usuarios_id))
-        $this->redirect("/Login");
+        $this->redirect("/Login");      
     }
 
     public function indexAction()
     {        
+      if($this->varSession->rol!="ADMINISTRADOR"){
+        $this->redirect("/Index/deny");
+      }
       $ModelClaves = new Model_Claves();
       $ModelUnidades = new Model_Unidades();
       $ModelCategorias = new Model_Categoria();
@@ -96,6 +100,9 @@ class ProductosController extends Zend_Controller_Action
     }
 
     public function editarAction(){
+      if($this->varSession->rol!="ADMINISTRADOR"){
+        $this->redirect("/Index/deny");
+      }
       if($this->getRequest()->isPOST()){
         $ModelClaves = new Model_Claves();
       $ModelUnidades = new Model_Unidades();
@@ -212,6 +219,9 @@ class ProductosController extends Zend_Controller_Action
        }
 
        public function eliminarAction(){
+        if($this->varSession->rol!="ADMINISTRADOR"){
+          $this->redirect("/Index/deny");
+        }
          if($this->getRequest()->isPOST()){
            $items_id = $this->getRequest()->getParam("items_id");          
            $ModelItems = new Model_Item();

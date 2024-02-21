@@ -470,7 +470,7 @@ function showchangePassword(cuenta, usuarios_id) {
         '<hr/>' +
         '<table>' +
         '<tr>' +
-        '<td style="padding:5px">Contraseña Actual:*</td><td style="padding:5px"><input type="password" id="password_actual" class="form-control"/><div id="errorActual" style="color:red;display:none">*Rellene este campo</div></td>' +
+        //'<td style="padding:5px">Contraseña Actual:*</td><td style="padding:5px"><input type="password" id="password_actual" class="form-control"/><div id="errorActual" style="color:red;display:none">*Rellene este campo</div></td>' +
         '</tr>' +
         '<tr>' +
         '<td style="padding:5px">Nueva Contraseña:*</td><td style="padding:5px"><input type="password" id="password_nueva" class="form-control"/><div id="errorNueva" style="color:red;display:none">*Rellene este campo</div></td>' +
@@ -493,17 +493,17 @@ function showchangePassword(cuenta, usuarios_id) {
 
 function changePassword() {
     usuarios_id = $("#usuarios_id").val();
-    password_actual = $("#password_actual").val();
+    //password_actual = $("#password_actual").val();
     password_nueva = $("#password_nueva").val();
     password_confirma = $("#password_confirma").val();
     validacion = true;
 
-    if (password_actual.trim().length == 0) {
+  /*  if (password_actual.trim().length == 0) {
         $("#errorActual").show("slow");
         validacion = false;
     } else {
         $("#errorActual").hide("slow");
-    }
+    }*/
 
     if (password_nueva.trim().length == 0) {
         $("#errorNueva").show("slow");
@@ -521,7 +521,7 @@ function changePassword() {
 
     if (validacion) {
         $("#buttonChange").hide("fast");
-        data = { usuarios_id: usuarios_id, password_actual: password_actual, password_nueva: password_nueva, password_confirma: password_confirma }
+        data = { usuarios_id: usuarios_id, password_nueva: password_nueva, password_confirma: password_confirma }
         $.ajax({
             url: $("#path").val() + '/Ajax/actualizapassword',
             type: 'post',
