@@ -78,7 +78,7 @@ $varsSessions = new Zend_Session_Namespace("users");
                             </a>
                         <?php endif; ?>
                         <div class="sb-sidenav-menu-heading">Gestión</div>
-                        <?php if ($varsSessions->rol == "ADMINISTRADOR" || $varsSessions->rol == "CAJERO" ) : ?>
+                        <?php if ($varsSessions->rol == "ADMINISTRADOR" || $varsSessions->rol == "CAJERO" ||  $varsSessions->rol == "COORDINADOR" ||  $varsSessions->rol == "AUXILIAR") : ?>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns" style="color:red"></i></div>
                                 Artículos
