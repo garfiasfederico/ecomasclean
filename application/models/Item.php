@@ -114,7 +114,8 @@ class Model_Item Extends Zend_Db_Table{
         $select->from($this->_name,array("*"));
         $select->setIntegrityCheck(false);
         $select->joinInner("catalogo_unidades_sat","catalogo_unidades_sat.clave=items.unidad",array("unidad_descripcion"=>"catalogo_unidades_sat.descripcion"));
-        $select->where("items.clave like '".$identificador."' OR items.nombre like  '%".$identificador."%' OR items.identificador like '%".$identificador."'");         
+        $select->where("items.clave like '".$identificador."' OR items.nombre like  '%".$identificador."%' OR items.identificador like '%".$identificador."'");
+        $select->where("items.status = 1");
         $result = $this->fetchRow($select);        
         if(!empty($result))
             return $result;
