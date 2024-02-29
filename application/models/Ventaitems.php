@@ -135,7 +135,7 @@ class Model_Ventaitems Extends Zend_Db_Table{
         $select->joinInner("items","items.id = venta_items.items_id", array("nombre"));
         $select->joinInner("ventas","ventas.id = venta_items.ventas_id",array("estado_venta"=>"ventas.estado"));       
         $select->where("ventas_id = ".$ventas_id);                
-        $select->where("ventas.estado = 'cobrada'");        
+        $select->where("ventas.estado = 'cobrada' OR ventas.estado = 'credito'");                
         $result = $this->fetchAll($select);
         if($result->count()>0)
             return $result;
