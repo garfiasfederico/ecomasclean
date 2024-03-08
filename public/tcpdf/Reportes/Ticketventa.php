@@ -143,9 +143,11 @@ if($items!=null){
      
         $now = date("Y-m-d H:i:s");
         if($items!=null)
-                $total = number_format($infoVenta->total,2);
+                $total = number_format($infoVenta->total + $infoVenta->descuento ,2);
         else
                 $total = 0;
+
+        $descuento = number_format($infoVenta->descuento,2);
 
         if($montoUtilizadocupones!=null){
            $montoUtilizadocupones = number_format($montoUtilizadocupones,2);
@@ -226,6 +228,14 @@ if($items!=null){
                         <b>$ $total</b>
                         </td>                        
                 </tr>
+                <tr>
+                <td style="text-align:right;width:60%">                        
+                        DESCUENTO:
+                </td>
+                <td style="text-align:right;width:40%;">
+                <b>$ $descuento</b>
+                </td>                        
+        </tr>
                 <tr>
                         <td style="text-align:right;width:60%">                        
                                 $forma_pago:

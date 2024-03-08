@@ -147,9 +147,13 @@ if($items!=null){
      
         $now = date("Y-m-d H:i:s");
         if($items!=null)
-                $total = number_format($infoCotizacion->total,2);
+                $total = number_format($infoCotizacion->total+$infoCotizacion->descuento,2);
         else
-                $total = 0;        
+                $total = 0;  
+        
+        $descuento = number_format($infoCotizacion->descuento,2);
+        $tot=number_format($total-$descuento,2);
+
 
         require (dirname(getcwd()) . '/library/NumeroALetras.php');        
         $formatter = new NumeroALetras();
@@ -204,12 +208,30 @@ if($items!=null){
                 <tr>
                         <td style="text-align:right;width:60%">                        
                         <br/>
-                                TOTAL:
+                                SUBTOTAL:
                         </td>
                         <td style="text-align:right;width:40%;">                        
                         <b>$ $total</b>
                         </td>                        
-                </tr>                                
+                </tr>   
+                <tr>
+                        <td style="text-align:right;width:60%">                        
+                        <br/>
+                                DESCUENTO:
+                        </td>
+                        <td style="text-align:right;width:40%;">                        
+                        <b>$ $descuento</b>
+                        </td>                        
+                </tr> 
+                <tr>
+                        <td style="text-align:right;width:60%">                        
+                        <br/>
+                                TOTAL:
+                        </td>
+                        <td style="text-align:right;width:40%;">                        
+                        <b>$  $tot </b>
+                        </td>                        
+                </tr>                              
         </table>
         <div></div>
         <table style="width:100%;border:dotted .5px gray;">

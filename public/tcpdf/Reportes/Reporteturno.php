@@ -119,7 +119,7 @@ class Reporte_Reporteturno {
                         $descuento = number_format($venta->descuento,2);
                         $IVA = number_format($venta->iva,2);
                         $IEPS = number_format($venta->ieps,2);
-                        $total = number_format($venta->total,2);
+                        $total = number_format($venta->total+$venta->descuento,2);
                         $pago = number_format($venta->pago,2);
                         $cambio = number_format($venta->cambio,2);
 

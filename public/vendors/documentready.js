@@ -647,8 +647,12 @@ function actualizaVenta() {
     $(".descuentos").each(function () {
         descuentos += parseFloat($(this).val())
     });
+    if($("#descuentoglobal").val()==""){
+        $("#descuentoglobal").val("0.00")
+    }
+    descuentos+= parseFloat($("#descuentoglobal").val().replace(",", "").replace("$", ""));
 
-    subtotal = subtotal + descuentos;
+    //subtotal = subtotal - descuentos;
     gran_total = (subtotal - descuentos) + iva;
 
     if (isNaN(subtotal))
@@ -755,7 +759,7 @@ function almacenaVenta() {
         estado = "credito";
     else
         estado = "cobrada";
-    descuento = $("#descuento").html().replace(",", "").replace("$", "");
+    descuento = $("#descuentoglobal").val().replace(",", "").replace("$", "");
     iva = $("#iva").html().replace(",", "").replace("$", "");
     subtotal = $("#subtotal").html().replace(",", "").replace("$", "");
     total = $("#gran_total").html().replace(",", "").replace("$", "");
@@ -893,10 +897,12 @@ function limpiarVenta(desc = null) {
         if (confirm("¿Desea Limpiar la venta?")) {
             $("#body_productos").html("");
             $("#precio_de_venta").prop("disabled", false);
+            $("#descuentoglobal").val("0.00");
             actualizaVenta();
         }
     } else {
         $("#body_productos").html("");
+        $("#descuentoglobal").val("0.00");
         actualizaVenta();
     }
 
@@ -1020,7 +1026,7 @@ function loadAsociadosCompras() {
 function setTotalrow(id) {
     precio = parseFloat($("#precio" + id).html().replace(",", "").replace("$", ""));
     cantidad = parseFloat($("#cantidad" + id).val().replace(",", "").replace("$", ""));
-    descuento = parseFloat($("#descuento" + id).val().replace(",", "").replace("$", ""));
+    descuento = parseFloat($("#descuento" + id).val().replace(",", "").replace("$", ""));    
     iva = parseFloat($("#iva" + id).html().replace("%", "").replace("$", "") / 100);
     subtotal = ((precio * cantidad) - descuento);
     ivamonto = subtotal * iva;
@@ -1677,7 +1683,7 @@ function almacenaCotizacion() {
         $("#info").modal("show");
     } else {
         turnos_id = $("#turnos_id").val();
-        descuento = $("#descuento").html().replace(",", "").replace("$", "");
+        descuento = $("#descuentoglobal").val().replace(",", "").replace("$", "");
         iva = $("#iva").html().replace(",", "").replace("$", "");
         subtotal = $("#subtotal").html().replace(",", "").replace("$", "");
         total = $("#gran_total").html().replace(",", "").replace("$", "");
@@ -1792,6 +1798,7 @@ function limpiaCotizacion() {
     $("#inputCotizacion").val('');
     $("#id").val('');
     $("#cliente").val('0');
+    $("#descuentoglobal").val('0.00');
 
     actualizaVenta();
 }
