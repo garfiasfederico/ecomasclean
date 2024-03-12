@@ -152,7 +152,7 @@ if($items!=null){
                 $total = 0;  
         
         $descuento = number_format($infoCotizacion->descuento,2);
-        $tot=number_format($total-$descuento,2);
+        $tot=number_format($infoCotizacion->total-$infoCotizacion->descuento,2);
 
 
         require (dirname(getcwd()) . '/library/NumeroALetras.php');        

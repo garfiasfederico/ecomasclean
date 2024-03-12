@@ -61,8 +61,9 @@ class CajaController extends Zend_Controller_Action {
       if($this->varSession->rol=="ADMINISTRADOR")
         $turnos = $ModelTurno->getTurnos();
 
-      if($this->varSession->rol == "CAJERO")
+      if($this->varSession->rol == "CAJERO" || $this->varSession->rol == "COORDINADOR")
         $turnos = $ModelTurno->getTurnos($this->varSession->usuarios_id);
+
 
       $this->view->turnos = $turnos;      
     }
