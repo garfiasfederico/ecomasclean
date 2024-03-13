@@ -316,13 +316,14 @@ class Reporte_Reporteturno
                 if ($transferencia != null)
                         $total += $transferencia->total;
 
+                $total_venta = $total + $sumCup;
                 $total += $infoTurno->saldo_inicial;
 
                 if($credito!=null){
                         $total += $credito->total;
                 }
                 
-                $total_venta = $total - $sumCup;
+                
 
                 $total += $totalAbonos;
 
@@ -352,7 +353,7 @@ class Reporte_Reporteturno
                         <tr>
                                 <td style="background-color:#138496;color:white">Efectivo:</td>
                                 <td style="width:5%">$</td>
-                                <td style="text-align:right;border:dotter 1px gray;"><b>' . ($efectivo != null ? number_format($efectivo->total - $sumCup, 2) : "0.00") . '</b></td>
+                                <td style="text-align:right;border:dotter 1px gray;"><b>' . ($efectivo != null ? number_format($efectivo->total + $sumCup, 2) : "0.00") . '</b></td>
                         </tr>
                         <tr>
                                 <td style="background-color:#138496;color:white">Tarjeta:</td>
