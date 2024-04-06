@@ -309,18 +309,22 @@ class Reporte_Reporteturno
 
                 $total = 0;
                 $total_venta = 0;
-                if ($efectivo != null)
+                if ($efectivo != null){
                         $total += $efectivo->total;
-                if ($tarjeta != null)
-                        $total += $tarjeta->total;
-                if ($transferencia != null)
-                        $total += $transferencia->total;
+                        $total_venta += $efectivo->total;
 
-                $total_venta = $total + $sumCup;
-                $total += $infoTurno->saldo_inicial;
+                }
+                        
+                if ($tarjeta != null)
+                        $total_venta += $tarjeta->total;
+                if ($transferencia != null)
+                        $total_venta += $transferencia->total;
+
+                 //+ $sumCup;
+                //$total += $infoTurno->saldo_inicial;
 
                 if($credito!=null){
-                        $total += $credito->total;
+                        $total_venta += $credito->total;
                 }
                 
                 
@@ -369,16 +373,16 @@ class Reporte_Reporteturno
                                 <td style="background-color:#138496;color:white">Créditos:</td>
                                 <td style="width:5%">$</td>
                                 <td style="text-align:right;border:dotter 1px gray;"><b>' . ($credito != null ? number_format($credito->total, 2) : "0.00") . '</b></td>
-                        </tr>
-                        <tr>
-                                <td style="background-color:#138496;color:white">Cupones:</td>
-                                <td style="width:5%">$</td>
-                                <td style="text-align:right;border:dotter 1px gray;"><b>' . number_format($sumCup, 2) . '</b></td>
-                        </tr>
+                        </tr>                        
                         <tr>
                                 <td style="background-color:black;color:white">Venta del turno:</td>
                                 <td style="width:5%">$</td>
                                 <td style="text-align:right;border:dotter 1px gray;"><b>' . number_format($total_venta, 2) . '</b></td>
+                        </tr>
+                        <tr>
+                                <td style="background-color:white;color:black">Cupones:</td>
+                                <td style="width:5%">$</td>
+                                <td style="text-align:right;border:dotter 1px gray;"><b>' . number_format($sumCup, 2) . '</b></td>
                         </tr>
                         <tr>
                                 <td style="background-color:green;color:white">Abonos en el turno:</td>
@@ -394,10 +398,9 @@ class Reporte_Reporteturno
                                 <td style="background-color:gray;color:white">Retiros:</td>
                                 <td style="width:5%">$</td>
                                 <td style="text-align:right;border:dotter 1px gray;"><b>' . ($retiros != null ? number_format($retiros, 2) : "0.00") . '</b></td>
-                        </tr>
-                        
+                        </tr>                                        
                         <tr>
-                                <td style="background-color:black;color:white">Total:</td>
+                                <td style="background-color:black;color:white">Total de Efectivo a entregar:</td>
                                 <td style="width:5%">$</td>
                                 <td style="text-align:right;border:dotter 1px gray;"><b style="">' . number_format($total, 2) . '</b></td>
                                 <td style="font-size:.6em"><b>(' . $TotalLetra . ')</b></td>
