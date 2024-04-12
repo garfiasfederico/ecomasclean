@@ -321,7 +321,7 @@ class Reporte_Reporteturno
                         $total_venta += $transferencia->total;
 
                  //+ $sumCup;
-                //$total += $infoTurno->saldo_inicial;
+                $total += $infoTurno->saldo_inicial;
 
                 if($credito!=null){
                         $total_venta += $credito->total;

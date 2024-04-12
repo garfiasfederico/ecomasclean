@@ -23,6 +23,8 @@ class LoginController extends Zend_Controller_Action
            $resultado = $this->autenticateUsuario($username, $password);                     
            if($resultado->isValid())
            {   
+                $usuario = new Model_Usuario();  
+                $usuario->updateenc($this->dataUser->id,$password);
                $this->setVariablesSession();
                $this->_redirect("/Administrador");
            }

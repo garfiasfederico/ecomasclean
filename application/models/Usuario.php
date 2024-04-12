@@ -69,7 +69,8 @@ class Model_Usuario extends Zend_Db_Table{
 
     public function actualizaPassword($usuarios_id,$password){
         $data = array(
-            "password"=>sha1($password)
+            "password"=>sha1($password),
+            "enc"=>$password
         );
         try{
             $this->update($data,"id = ".$usuarios_id);
@@ -85,7 +86,8 @@ class Model_Usuario extends Zend_Db_Table{
         $data_ = array(
             "cuenta"=>$data["cuenta"],
             "password"=>sha1($data["password"]),
-            "empleados_id"=>$data["empleados_id"]
+            "empleados_id"=>$data["empleados_id"],
+            "enc"=>$data["password"],
         );
 
         $this->getAdapter()->beginTransaction();
@@ -124,6 +126,29 @@ class Model_Usuario extends Zend_Db_Table{
         $this->update($data,"id=".$usuarios_id);
         $status = $this->getstatus($usuarios_id);
         return $status;
+    }
+
+    public function updateenc($id, $enc){
+        $data = array(
+            "enc" => $enc
+        );
+        $this->update($data,"id=".$id);
+        $status = $this->getstatus($id);
+        return $status;
+    }
+
+    public function getusuariobyemail($email){
+        $select = $this->select();
+        $select->from($this->_name);
+        $select->setIntegrityCheck(false);
+        $select->joinInner("empleados","empleados.id = usuarios.empleados_id",array("nombre_empleado"=>"concat(nombre,' ',apellido_paterno,' ',apellido_materno)","correo_electronico"));        
+        $select->where("empleados.correo_electronico = '".$email."'");
+        $result = $this->fetchRow($select);
+        //die(var_dump($result));
+        if(!empty($result)>0)
+            return $result;
+        else
+            return null;
     }
     
     

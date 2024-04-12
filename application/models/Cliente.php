@@ -25,6 +25,7 @@ class Model_Cliente Extends Zend_Db_Table{
         $select = $this->select();
         $select->from($this->_name);                
         $select->where("clientes.status=1");
+        $select->order("nombre ASC");
         $result = $this->fetchAll($select);    
         if($result->count()>0)
             return $result;

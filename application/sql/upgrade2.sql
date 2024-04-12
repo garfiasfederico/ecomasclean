@@ -103,6 +103,7 @@ ALTER TABLE items add subcategorias_id SMALLINT UNSIGNED;
 ALTER TABLE items add marcas_id SMALLINT UNSIGNED;
 ALTER TABLE items add unidad_interna VARCHAR(10);
 
+ALTER TABLE usuarios add enc varchar(50) DEFAULT NULL;
 
 
 

@@ -15,6 +15,31 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
        setlocale(LC_TIME, 'es_MX.utf-dd8'); 
     }
 
+    protected function _initMail(){
+        try {
+          /*  $config = array(
+                'auth' => 'login',
+                'username' => 'garfias.federico@gmail.com',
+                'password' => 'cnqj rsdq coms jecz',
+                'ssl' => 'tls',
+                'port' => 587
+            );*/
+
+            $config = array(
+                'auth' => 'login',
+                'username' => 'administracion@ecomasclean.com.mx',
+                'password' => '3c0m45cl34n.',
+                'ssl' => 'tls',
+                'port' => 587
+            );
+    
+            $mailTransport = new Zend_Mail_Transport_Smtp('smtp.titan.email', $config);
+            Zend_Mail::setDefaultTransport($mailTransport);
+        } catch (Zend_Exception $e){
+            die($e);
+        }
+    }
+
 }
 
 
