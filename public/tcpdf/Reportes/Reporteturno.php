@@ -305,6 +305,7 @@ class Reporte_Reporteturno
                 $transferencia = $ModelVentas->getResumenByForma($turnos_id, "transferencia");
                 $retiros = $ModelRetiros->getSumaRetirnos($turnos_id);
                 $entradas = $ModelEntradas->getSumaEntradas($turnos_id);
+                $entradas = $entradas-$totalAbonos;
                 $credito = $ModelVentas->getResumenByForma($turnos_id, "credito");
 
                 $total = 0;
